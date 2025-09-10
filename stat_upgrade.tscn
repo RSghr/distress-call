@@ -1,0 +1,68 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpoei2qtjgegl"]
+
+[ext_resource type="Script" uid="uid://ddlccl07mp5le" path="res://stat_upgrade.gd" id="1_uwhcf"]
+
+[node name="StatUpgrade" type="HBoxContainer"]
+offset_right = 659.0
+offset_bottom = 171.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_uwhcf")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(541, 171)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Unit" type="RichTextLabel" parent="MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 45
+text = "Scout level"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Separator"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(177, 171)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Minus" type="Button" parent="HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "-"
+
+[node name="MarginContainer3" type="MarginContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(177, 171)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Level" type="RichTextLabel" parent="HBoxContainer/MarginContainer3"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "TEST"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(177, 171)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Plus" type="Button" parent="HBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "+"
+
+[connection signal="button_down" from="HBoxContainer/MarginContainer/Minus" to="." method="_on_minus_button_down"]
+[connection signal="button_down" from="HBoxContainer/MarginContainer2/Plus" to="." method="_on_plus_button_down"]

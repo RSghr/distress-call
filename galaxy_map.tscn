@@ -1,0 +1,12 @@
+[gd_scene load_steps=4 format=3 uid="uid://b1ubrv2hyhcqy"]
+
+[ext_resource type="Script" uid="uid://c6jh65g7vygjb" path="res://galaxy_map.gd" id="1_uw20o"]
+[ext_resource type="PackedScene" uid="uid://b8yqrqanmocv8" path="res://cfg_savers/galaxy_cfg_saver.tscn" id="2_cmydt"]
+[ext_resource type="PackedScene" uid="uid://dww7qkpskcnvf" path="res://cfg_savers/player_cfg_saver.tscn" id="3_kawwm"]
+
+[node name="Galaxy Map" type="Node2D"]
+script = ExtResource("1_uw20o")
+
+[node name="GalaxyCFGSaver" parent="." instance=ExtResource("2_cmydt")]
+
+[node name="player_cfg_saver" parent="." instance=ExtResource("3_kawwm")]

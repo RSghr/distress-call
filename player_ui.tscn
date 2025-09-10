@@ -1,0 +1,1075 @@
+[gd_scene load_steps=52 format=3 uid="uid://c0k4lbf6ystdb"]
+
+[ext_resource type="Script" uid="uid://u1dxgtktyy8b" path="res://player_ui.gd" id="1_5m0x8"]
+[ext_resource type="Texture2D" uid="uid://s73eehfujpsy" path="res://Planet Assets/Fleet.png" id="1_lwipk"]
+[ext_resource type="PackedScene" uid="uid://cpoei2qtjgegl" path="res://stat_upgrade.tscn" id="3_654h1"]
+[ext_resource type="PackedScene" uid="uid://ctthgxful8yuy" path="res://player_global_resources.tscn" id="4_pc08v"]
+[ext_resource type="PackedScene" uid="uid://f7273nartaw1" path="res://cooldown_unit.tscn" id="4_tybkg"]
+[ext_resource type="Texture2D" uid="uid://by4pgmc08q7tn" path="res://Warspite_pookies.png" id="5_a4em4"]
+[ext_resource type="Texture2D" uid="uid://bvlw46r5nuvd7" path="res://Validate.png" id="7_gxl1c"]
+[ext_resource type="Texture2D" uid="uid://dcepmqmnhr7fc" path="res://Deny.png" id="7_vg8o0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5c62b"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_305a2"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3kmrf"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r4e35"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6hhut"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0vt0w"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3mgol"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uw6x1"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eo76f"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vo2iv"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ei55t"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(640, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_861bd"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(704, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5oegl"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(768, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8gwei"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(832, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2c6ut"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(896, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0584u"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(960, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kou86"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(1024, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_id23i"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(1088, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l8324"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(1152, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j3bhh"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(1216, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sa5g5"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(1280, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x08co"]
+atlas = ExtResource("7_vg8o0")
+region = Rect2(1344, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gxl1c"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vg8o0"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hiloj"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cbg41"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_babf8"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qadsr"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wotjm"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iniqa"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nma07"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y7vyt"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s8sf8"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(640, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rvpd0"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(704, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4u8at"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(768, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sf2jf"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(832, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ynqnk"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(896, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3og2s"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(960, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gpudj"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(1024, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xxnn8"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(1088, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ee3s8"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(1152, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_caeub"]
+atlas = ExtResource("7_gxl1c")
+region = Rect2(1216, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5c62b"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5c62b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_305a2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3kmrf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r4e35")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6hhut")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0vt0w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3mgol")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uw6x1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eo76f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vo2iv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ei55t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_861bd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5oegl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8gwei")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2c6ut")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0584u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kou86")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_id23i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l8324")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j3bhh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sa5g5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x08co")
+}],
+"loop": false,
+"name": &"Deny",
+"speed": 16.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gxl1c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vg8o0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hiloj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cbg41")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_babf8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qadsr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wotjm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iniqa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nma07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y7vyt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s8sf8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rvpd0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4u8at")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sf2jf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ynqnk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3og2s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gpudj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xxnn8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ee3s8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_caeub")
+}],
+"loop": false,
+"name": &"Validate",
+"speed": 16.0
+}]
+
+[node name="PlayerUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 4.0
+offset_right = 6.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5m0x8")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_left = 182.0
+offset_top = 135.0
+offset_right = 1268.0
+offset_bottom = 863.0
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer"]
+layout_mode = 2
+current_tab = 3
+
+[node name="Ship status" type="VBoxContainer" parent="MarginContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Marge" type="MarginContainer" parent="MarginContainer/TabContainer/Ship status"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="MarginContainer/TabContainer/Ship status/Marge"]
+position = Vector2(510, 145)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("1_lwipk")
+
+[node name="Marge2" type="MarginContainer" parent="MarginContainer/TabContainer/Ship status"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Status" type="HBoxContainer" parent="MarginContainer/TabContainer/Ship status/Marge2"]
+layout_mode = 2
+alignment = 1
+metadata/_tab_index = 1
+
+[node name="Label" type="VBoxContainer" parent="MarginContainer/TabContainer/Ship status/Marge2/Status"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Ship status/Marge2/Status/Label"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Ship name" type="RichTextLabel" parent="MarginContainer/TabContainer/Ship status/Marge2/Status/Label/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 50
+text = "Ship name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/TabContainer/Ship status/Marge2/Status/Label"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Position" type="RichTextLabel" parent="MarginContainer/TabContainer/Ship status/Marge2/Status/Label/MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 50
+text = "Stationned in"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Values" type="VBoxContainer" parent="MarginContainer/TabContainer/Ship status/Marge2/Status"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Ship status/Marge2/Status/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Ship_name" type="LineEdit" parent="MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+placeholder_text = "Ship name"
+alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/TabContainer/Ship status/Marge2/Status/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Stationned" type="RichTextLabel" parent="MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 50
+text = "TEST"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Unit status" type="HBoxContainer" parent="MarginContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Label" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScoutContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect5" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Label/ScoutContainer"]
+layout_mode = 2
+color = Color(0.0392157, 0.443137, 1, 0.215686)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status/Label/ScoutContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label/ScoutContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Scout_Unit" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Label/ScoutContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Scouts' name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label/ScoutContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Scout_Upgrade" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Label/ScoutContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Unit upgrade"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label/ScoutContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Scout_position" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Label/ScoutContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Unit's position"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Label/Separator"]
+layout_mode = 2
+
+[node name="TroopContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect7" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Label/TroopContainer"]
+layout_mode = 2
+color = Color(0.723733, 0.157282, 0.162068, 0.215686)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status/Label/TroopContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label/TroopContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Troop_Unit" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Label/TroopContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Troops' name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label/TroopContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Troop_Upgrade" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Label/TroopContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Unit upgrade"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label/TroopContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Troop_position" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Label/TroopContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Unit's position"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator2" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Label/Separator2"]
+layout_mode = 2
+
+[node name="NegotiatorContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect9" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Label/NegotiatorContainer"]
+layout_mode = 2
+color = Color(0.273175, 0.463595, 0.160986, 0.215686)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status/Label/NegotiatorContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label/NegotiatorContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Negotiator_Unit" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Label/NegotiatorContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Negotiators' name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label/NegotiatorContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Negotiator_Upgrade" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Label/NegotiatorContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Unit upgrade"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label/NegotiatorContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Negotiator_position" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Label/NegotiatorContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Unit's position"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator3" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Label/Separator3"]
+layout_mode = 2
+
+[node name="ColonyContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect11" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Label/ColonyContainer"]
+layout_mode = 2
+color = Color(0.905882, 0.87451, 0.0627451, 0.215686)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status/Label/ColonyContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label/ColonyContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Colony_Unit" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Label/ColonyContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Colonies' name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label/ColonyContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Colony_Upgrade" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Label/ColonyContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Unit upgrade"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label/ColonyContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Colony_position" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Label/ColonyContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Unit's position"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Separator"]
+layout_mode = 2
+
+[node name="Values" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScoutContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Values/ScoutContainer"]
+layout_mode = 2
+color = Color(0.0392157, 0.443137, 1, 0.215686)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status/Values/ScoutContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values/ScoutContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Scout_Unit" type="LineEdit" parent="MarginContainer/TabContainer/Unit status/Values/ScoutContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+placeholder_text = "Unit name"
+alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values/ScoutContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Scout_Upgrade" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Values/ScoutContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Upgrade level"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values/ScoutContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Scout_position" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Values/ScoutContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Unit position"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Values/Separator"]
+layout_mode = 2
+
+[node name="TroopContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Values/TroopContainer"]
+layout_mode = 2
+color = Color(0.723733, 0.157282, 0.162068, 0.215686)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status/Values/TroopContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values/TroopContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Troop_Unit" type="LineEdit" parent="MarginContainer/TabContainer/Unit status/Values/TroopContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+placeholder_text = "Unit name"
+alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values/TroopContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Troop_Upgrade" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Values/TroopContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Upgrade level"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values/TroopContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Troop_position" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Values/TroopContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Unit position"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator2" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Values/Separator2"]
+layout_mode = 2
+
+[node name="NegotiatorContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer"]
+layout_mode = 2
+color = Color(0.273175, 0.463595, 0.160986, 0.215686)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Negotiator_Unit" type="LineEdit" parent="MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+placeholder_text = "Unit name"
+alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Negotiator_Upgrade" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Upgrade level"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Negotiator_position" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Unit position"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator3" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Values/Separator3"]
+layout_mode = 2
+
+[node name="ColonyContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Values/ColonyContainer"]
+layout_mode = 2
+color = Color(0.905882, 0.87451, 0.0627451, 0.215686)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status/Values/ColonyContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values/ColonyContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Colony_Unit" type="LineEdit" parent="MarginContainer/TabContainer/Unit status/Values/ColonyContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+placeholder_text = "Unit name"
+alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values/ColonyContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Colony_Upgrade" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Values/ColonyContainer/VBoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Upgrade level"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values/ColonyContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Colony_position" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Values/ColonyContainer/VBoxContainer/MarginContainer3"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Unit position"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="R&D" type="VBoxContainer" parent="MarginContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="ScoutUpgrade" parent="MarginContainer/TabContainer/R&D" instance=ExtResource("3_654h1")]
+layout_mode = 2
+stat_params = {
+&"type": 2,
+&"upgrade": 0
+}
+
+[node name="Separator" type="MarginContainer" parent="MarginContainer/TabContainer/R&D"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/R&D/Separator"]
+layout_mode = 2
+
+[node name="TroopUpgrade2" parent="MarginContainer/TabContainer/R&D" instance=ExtResource("3_654h1")]
+layout_mode = 2
+
+[node name="Separator2" type="MarginContainer" parent="MarginContainer/TabContainer/R&D"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/R&D/Separator2"]
+layout_mode = 2
+
+[node name="NegotiatorUpgrade3" parent="MarginContainer/TabContainer/R&D" instance=ExtResource("3_654h1")]
+layout_mode = 2
+stat_params = {
+&"type": 1,
+&"upgrade": 0
+}
+
+[node name="Separator3" type="MarginContainer" parent="MarginContainer/TabContainer/R&D"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/R&D/Separator3"]
+layout_mode = 2
+
+[node name="ColonyUpgrade4" parent="MarginContainer/TabContainer/R&D" instance=ExtResource("3_654h1")]
+layout_mode = 2
+stat_params = {
+&"type": 3,
+&"upgrade": 0
+}
+
+[node name="Unit Cooldown" type="HBoxContainer" parent="MarginContainer/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="Label" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit Cooldown"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScoutContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Label"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect5" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Label/ScoutContainer"]
+layout_mode = 2
+color = Color(0.0392157, 0.443137, 1, 0.215686)
+
+[node name="Scout_Unit" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit Cooldown/Label/ScoutContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 45
+text = "SCOUT STATUS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Label"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Label/Separator"]
+layout_mode = 2
+
+[node name="TroopContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Label"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect7" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Label/TroopContainer"]
+layout_mode = 2
+color = Color(0.723733, 0.157282, 0.162068, 0.215686)
+
+[node name="Troop_Unit" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit Cooldown/Label/TroopContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 45
+text = "TROOP STATUS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator2" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Label"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Label/Separator2"]
+layout_mode = 2
+
+[node name="NegotiatorContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Label"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect9" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Label/NegotiatorContainer"]
+layout_mode = 2
+color = Color(0.273175, 0.463595, 0.160986, 0.215686)
+
+[node name="Negotiator_Unit" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit Cooldown/Label/NegotiatorContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 45
+text = "NEGOTIATOR STATUS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator3" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Label"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Label/Separator3"]
+layout_mode = 2
+
+[node name="ColonyContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Label"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect11" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Label/ColonyContainer"]
+layout_mode = 2
+color = Color(0.905882, 0.87451, 0.0627451, 0.215686)
+
+[node name="Colony_Unit" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit Cooldown/Label/ColonyContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 45
+text = "COLONY STATUS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Separator"]
+layout_mode = 2
+
+[node name="Cooldown" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit Cooldown"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScoutContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect5" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/ScoutContainer"]
+layout_mode = 2
+color = Color(0.0392157, 0.443137, 1, 0.215686)
+
+[node name="cooldown_unit" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/ScoutContainer" instance=ExtResource("4_tybkg")]
+layout_mode = 2
+
+[node name="Separator" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/Separator"]
+layout_mode = 2
+
+[node name="TroopContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect7" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/TroopContainer"]
+layout_mode = 2
+color = Color(0.723733, 0.157282, 0.162068, 0.215686)
+
+[node name="cooldown_unit" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/TroopContainer" instance=ExtResource("4_tybkg")]
+layout_mode = 2
+
+[node name="Separator2" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/Separator2"]
+layout_mode = 2
+
+[node name="NegotiatorContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect9" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/NegotiatorContainer"]
+layout_mode = 2
+color = Color(0.273175, 0.463595, 0.160986, 0.215686)
+
+[node name="cooldown_unit" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/NegotiatorContainer" instance=ExtResource("4_tybkg")]
+layout_mode = 2
+
+[node name="Separator3" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/Separator3"]
+layout_mode = 2
+
+[node name="ColonyContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect11" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/ColonyContainer"]
+layout_mode = 2
+color = Color(0.905882, 0.87451, 0.0627451, 0.215686)
+
+[node name="cooldown_unit" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/ColonyContainer" instance=ExtResource("4_tybkg")]
+layout_mode = 2
+
+[node name="Free Tab" type="HBoxContainer" parent="MarginContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 4
+
+[node name="WarspitePookies" type="Sprite2D" parent="MarginContainer/TabContainer/Free Tab"]
+position = Vector2(557, 324)
+scale = Vector2(1.55, 1.55)
+texture = ExtResource("5_a4em4")
+
+[node name="PlayerGlobalResources" parent="." instance=ExtResource("4_pc08v")]
+layout_mode = 1
+
+[node name="Validate" type="AnimatedSprite2D" parent="." groups=["validate"]]
+position = Vector2(52.5, 937.5)
+scale = Vector2(1.79688, 1.79688)
+sprite_frames = SubResource("SpriteFrames_5c62b")
+animation = &"Validate"
+
+[connection signal="minus_upgrade" from="." to="." method="_on_minus_upgrade"]
+[connection signal="plus_upgrade" from="." to="." method="_on_plus_upgrade"]
+[connection signal="text_submitted" from="MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer/Ship_name" to="." method="_on_ship_name_text_submitted"]
+[connection signal="text_submitted" from="MarginContainer/TabContainer/Unit status/Values/ScoutContainer/VBoxContainer/MarginContainer/Scout_Unit" to="." method="_on_scout_unit_text_submitted"]
+[connection signal="text_submitted" from="MarginContainer/TabContainer/Unit status/Values/TroopContainer/VBoxContainer/MarginContainer/Troop_Unit" to="." method="_on_troop_unit_text_submitted"]
+[connection signal="text_submitted" from="MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer/VBoxContainer/MarginContainer/Negotiator_Unit" to="." method="_on_negotiator_unit_text_submitted"]
+[connection signal="text_submitted" from="MarginContainer/TabContainer/Unit status/Values/ColonyContainer/VBoxContainer/MarginContainer/Colony_Unit" to="." method="_on_colony_unit_text_submitted"]

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8yqrqanmocv8"]
+
+[ext_resource type="Script" uid="uid://c07jidyu4k61c" path="res://cfg_savers/galaxy_cfg_saver.gd" id="1_j22x8"]
+
+[node name="GalaxyCFGSaver" type="Node2D"]
+script = ExtResource("1_j22x8")

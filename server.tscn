@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=3 uid="uid://5rbgjrx7y38m"]
+
+[ext_resource type="Script" uid="uid://blyxyva4a8nmo" path="res://server.gd" id="1_lgb4g"]
+[ext_resource type="PackedScene" uid="uid://brpawivymxmk3" path="res://cfg_savers/cooldown_cfg_saver.tscn" id="2_r06b7"]
+[ext_resource type="PackedScene" uid="uid://b8yqrqanmocv8" path="res://cfg_savers/galaxy_cfg_saver.tscn" id="3_oawps"]
+[ext_resource type="PackedScene" uid="uid://dww7qkpskcnvf" path="res://cfg_savers/player_cfg_saver.tscn" id="4_7ucj2"]
+
+[node name="Server" type="Node2D"]
+script = ExtResource("1_lgb4g")
+
+[node name="Cooldown_cfg_saver" parent="." instance=ExtResource("2_r06b7")]
+
+[node name="GalaxyCFGSaver" parent="." instance=ExtResource("3_oawps")]
+
+[node name="player_cfg_saver" parent="." instance=ExtResource("4_7ucj2")]

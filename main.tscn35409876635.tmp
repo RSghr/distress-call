@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=3 uid="uid://ce4bmgcqmn00y"]
+
+[ext_resource type="Script" uid="uid://qcvnci083i5m" path="res://main.gd" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://b1ubrv2hyhcqy" path="res://galaxy_map.tscn" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://dklvd3m52mvjq" path="res://Planet Assets/MapCamera2D.gd" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://cloaow5okt3h1" path="res://Player Assets/player.tscn" id="4_1bvp3"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_0xm2m")
+
+[node name="Galaxy Map" parent="." instance=ExtResource("1_ig7tw")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("3_h2yge")
+
+[node name="Player" parent="." instance=ExtResource("4_1bvp3")]

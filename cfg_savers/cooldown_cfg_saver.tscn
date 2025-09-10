@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://brpawivymxmk3"]
+
+[ext_resource type="Script" uid="uid://cfg71ie4i5q2d" path="res://cfg_savers/cooldown_cfg_saver.gd" id="1_gnc5k"]
+
+[node name="Cooldown_cfg_saver" type="Node2D"]
+script = ExtResource("1_gnc5k")

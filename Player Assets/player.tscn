@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://cloaow5okt3h1"]
+
+[ext_resource type="Script" uid="uid://4e2a0s3aesad" path="res://Player Assets/player.gd" id="1_18858"]
+[ext_resource type="PackedScene" uid="uid://buv63r3gqv803" path="res://Player Assets/fleet.tscn" id="2_jernx"]
+[ext_resource type="PackedScene" uid="uid://dww7qkpskcnvf" path="res://cfg_savers/player_cfg_saver.tscn" id="3_mhh6v"]
+[ext_resource type="PackedScene" uid="uid://brpawivymxmk3" path="res://cfg_savers/cooldown_cfg_saver.tscn" id="4_aiq4r"]
+
+[node name="Player" type="Node2D"]
+script = ExtResource("1_18858")
+
+[node name="Fleet" parent="." instance=ExtResource("2_jernx")]
+
+[node name="player_cfg_saver" parent="." instance=ExtResource("3_mhh6v")]
+
+[node name="Cooldown_cfg_saver" parent="." instance=ExtResource("4_aiq4r")]
+
+[connection signal="move_to_planet" from="." to="." method="_on_move_to_planet"]

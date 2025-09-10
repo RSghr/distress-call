@@ -1,0 +1,68 @@
+[gd_scene load_steps=4 format=3 uid="uid://buv63r3gqv803"]
+
+[ext_resource type="Script" uid="uid://dlbk2m3scrw3h" path="res://Player Assets/fleet.gd" id="1_a24jp"]
+[ext_resource type="PackedScene" uid="uid://dgcpn1rlk6ud6" path="res://Player Assets/unit.tscn" id="2_fgvq5"]
+[ext_resource type="Texture2D" uid="uid://s73eehfujpsy" path="res://Planet Assets/Fleet.png" id="3_kn3g4"]
+
+[node name="Fleet" type="Node2D"]
+script = ExtResource("1_a24jp")
+
+[node name="Unit_Holder" type="Node2D" parent="."]
+
+[node name="Scout" parent="Unit_Holder" instance=ExtResource("2_fgvq5")]
+unit_params = {
+"deploying": false,
+&"space": 2,
+&"strength": 1.0,
+&"unit_name": "The scouts",
+&"unit_position": "Fleet",
+&"unit_type": 2,
+&"upgrade": 0.0
+}
+
+[node name="Troop" parent="Unit_Holder" instance=ExtResource("2_fgvq5")]
+unit_params = {
+"deploying": false,
+&"space": 3,
+&"strength": 1.0,
+&"unit_name": "Hellhound",
+&"unit_position": "Fleet",
+&"unit_type": 0,
+&"upgrade": 0.0
+}
+
+[node name="Colony" parent="Unit_Holder" instance=ExtResource("2_fgvq5")]
+unit_params = {
+"deploying": false,
+&"space": 5,
+&"strength": 1.0,
+&"unit_name": "Colony",
+&"unit_position": "Fleet",
+&"unit_type": 3,
+&"upgrade": 0.0
+}
+
+[node name="Negotiator" parent="Unit_Holder" instance=ExtResource("2_fgvq5")]
+unit_params = {
+"deploying": false,
+&"space": 2,
+&"strength": 1.0,
+&"unit_name": "Nogtiators",
+&"unit_position": "Fleet",
+&"unit_type": 1,
+&"upgrade": 0.0
+}
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+clip_children = 2
+scale = Vector2(0.2, 0.25)
+texture = ExtResource("3_kn3g4")
+
+[node name="Status" type="Button" parent="Sprite2D"]
+modulate = Color(1, 1, 1, 0.258824)
+offset_left = -710.0
+offset_top = -224.0
+offset_right = 755.0
+offset_bottom = 180.0
+
+[connection signal="button_down" from="Sprite2D/Status" to="." method="_on_status_button_down"]

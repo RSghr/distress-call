@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://dn3ss3o637ivv"]
+
+[ext_resource type="Script" uid="uid://w33nrl2yw5lh" path="res://cooldown_unit.gd" id="1_q50s8"]
+
+[node name="UnitCooldown" type="RichTextLabel"]
+top_level = true
+offset_right = 538.0
+offset_bottom = 170.0
+theme_override_font_sizes/normal_font_size = 60
+bbcode_enabled = true
+text = "Back in : 00:00"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("1_q50s8")

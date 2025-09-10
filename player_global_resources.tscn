@@ -1,0 +1,71 @@
+[gd_scene load_steps=2 format=3 uid="uid://ctthgxful8yuy"]
+
+[ext_resource type="Script" uid="uid://baqtt5mcop6au" path="res://player_global_resources.gd" id="1_12548"]
+
+[node name="PlayerGlobalResources" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_12548")
+
+[node name="CroissantLabel" type="RichTextLabel" parent="."]
+layout_mode = 1
+offset_right = 177.0
+offset_bottom = 46.0
+theme_override_font_sizes/normal_font_size = 30
+text = "Croissants :"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CroissantValue" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 177.0
+offset_right = 354.0
+offset_bottom = 46.0
+theme_override_font_sizes/normal_font_size = 30
+text = "100000000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpaceLabel" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 523.0
+offset_right = 700.0
+offset_bottom = 46.0
+theme_override_font_sizes/normal_font_size = 30
+text = "Upgrades :"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SpaceValue" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 700.0
+offset_right = 877.0
+offset_bottom = 46.0
+theme_override_font_sizes/normal_font_size = 30
+text = "10/10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FTLLabel" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 1143.0
+offset_right = 1320.0
+offset_bottom = 46.0
+theme_override_font_sizes/normal_font_size = 30
+text = "Upgrades :"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FTLValue" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 1320.0
+offset_right = 1497.0
+offset_bottom = 46.0
+theme_override_font_sizes/normal_font_size = 30
+text = "10/10"
+horizontal_alignment = 1
+vertical_alignment = 1

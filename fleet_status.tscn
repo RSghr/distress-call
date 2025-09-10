@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5s1sdpoq7561"]
+
+[ext_resource type="Script" uid="uid://bnpwgrl6a5dtq" path="res://fleet_status.gd" id="1_jiwh0"]
+[ext_resource type="PackedScene" uid="uid://c0k4lbf6ystdb" path="res://player_ui.tscn" id="1_jyf0k"]
+
+[node name="Fleet_Status" type="Camera2D"]
+script = ExtResource("1_jiwh0")
+
+[node name="PlayerUI" parent="." instance=ExtResource("1_jyf0k")]
+offset_left = -750.0
+offset_top = -499.0
+offset_right = -677.0
+offset_bottom = -422.0
+
+[node name="Back" type="Button" parent="."]
+offset_left = 598.0
+offset_top = 411.0
+offset_right = 730.0
+offset_bottom = 477.0
+
+[connection signal="button_down" from="Back" to="." method="_on_back_button_down"]
