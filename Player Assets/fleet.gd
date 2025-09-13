@@ -36,3 +36,6 @@ func _ready():
 func _on_status_button_down() -> void:
 	mainScene._update_ship_status()
 	mainScene.switch_to_fleet_status()
+
+func set_planet(planet):
+	fleet_params["fleet_position"] = planet

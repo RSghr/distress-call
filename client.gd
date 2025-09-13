@@ -29,11 +29,13 @@ func _on_connected_to_server():
 	
 #PLAYER-RPC
 @rpc("authority")
-func confirm_registration(server_offset):
+func confirm_registration(server_offset, fleet_list):
 	if is_server:
 		pass
 	else :
 		mainScene.player.fleet.server_offset = server_offset
+		fleet_list.erase(client_id)
+		mainScene.init_fleets(fleet_list)
 		mainScene.validate_server_call()
 		print("✅ Server confirmed registration for: ", client_id)
 

@@ -27,11 +27,11 @@ func _ready():
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
 func _on_peer_connected(id):
-	print("Client connected: ", id)
+	mainScene.logging("Client connected: " + str(id))
 	players.append(id)
 
 func _on_peer_disconnected(id):
-	print("Client disconnected: ", id)
+	mainScene.logging("Client disconnected: " + str(id))
 	players.erase(id)
 
 @rpc("any_peer") # clients can call this
@@ -40,9 +40,9 @@ func register_player(client_id):
 	mainScene.logging("request to connect " + client_id)
 	pcs.get_player_id(client_id)
 	if pcs.player_id != null :
-		players.append(pcs.player_id)
 		var peer = multiplayer.get_remote_sender_id()
-		mainScene.client.rpc_id(peer, "confirm_registration", Time.get_ticks_msec() / 1000.0)
+		var now = mainScene.now_server()
+		mainScene.client.rpc_id(peer, "confirm_registration", now, pcs.load_all_fleet())
 
 @rpc("any_peer")
 func request_load_fleet_units(player_id, fleet_params, scout, troop, negotiator, colony):

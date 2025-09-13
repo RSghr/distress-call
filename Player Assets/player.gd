@@ -6,7 +6,6 @@ signal move_to_planet
 @onready var pcs = $player_cfg_saver
 @onready var ccs = $Cooldown_cfg_saver
 var mainScene
-var galaxyScene
 
 var nearby_planet = []
 var current_planet
@@ -14,7 +13,6 @@ var current_planet
 #On ready attach objects
 func _ready():
 	mainScene = get_tree().root.get_child(0)
-	galaxyScene = mainScene.get_node("Galaxy Map")
 
 #Setup of the fleet position
 func init_player():
@@ -24,7 +22,7 @@ func init_player():
 
 #Gathering the possible routes
 func possible_routes():
-	for connexion in galaxyScene.connexion_line :
+	for connexion in mainScene.galaxy.connexion_line :
 		if current_planet == connexion[0]:
 			nearby_planet.append(connexion[1])
 		elif current_planet == connexion[1] :
@@ -32,7 +30,7 @@ func possible_routes():
 
 #Return the planet name
 func on_planet():
-	for planet in galaxyScene.placed_planet :
+	for planet in mainScene.galaxy.placed_planet :
 		if fleet.fleet_params["fleet_position"] == planet.planet_params["name"] :
 			return planet
 	printerr("Could not find the planet")
@@ -60,7 +58,7 @@ func _on_move_to_planet(planet) -> void:
 	possible_routes()
 	enable_route()
 	mainScene.on_fleet_units_action()
-	mainScene.displace_player(planet)
+	mainScene.displace_player($".", planet)
 
 func check_upgrade_bool():
 	if  fleet.fleet_params["current_space"] < fleet.fleet_params["total_space"] :
