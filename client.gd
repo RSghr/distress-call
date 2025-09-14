@@ -11,7 +11,7 @@ func _ready():
 	else :
 		mainScene = get_tree().root.get_child(0)
 		var peer = ENetMultiplayerPeer.new()
-		var result = peer.create_client("127.0.0.1", 9000) # IP + port
+		var result = peer.create_client("90.3.177.194", 9000) # IP + port
 		if result != OK:
 			print("Failed to connect to server")
 			return
