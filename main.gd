@@ -28,8 +28,8 @@ func _init_player_pos():
 
 func post_server_init_player_pos():
 	client.request_load_cooldown(player.fleet)
-	displace_player(player, player.on_planet())
 	player.init_player()
+	displace_player(player, player.on_planet())
 	_update_ship_status()
 	on_fleet_units_action()
 	startup = false
