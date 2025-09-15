@@ -6,7 +6,8 @@ extends Node2D
 	unit_position = "In the ship",
 	strength = 1.0,
 	upgrade = 0.0,
-	deploying = false
+	deploying = false,
+	next_available = 0.0
 }
 
 var type = {
@@ -24,8 +25,6 @@ const COOLDOWN = {
 	"Scout": 80.0, 
 	"Colony": 60.0
 	}
-
-var next_available = 0.0
 
 func init_unit():
 	##init the stats from save.

@@ -14,7 +14,7 @@ func _init_cd():
 		mainScene.fleetStatus.playerUI._init_cooldown()
 	else :
 		var now = Time.get_ticks_msec() / 1000.0 + server_offset
-		remaining = unit.next_available - now
+		remaining = unit.unit_params["next_available"] - now
 		if remaining <= 0.0 :
 			unit.return_to_ship()
 	#Replace that by how much is gotten from save

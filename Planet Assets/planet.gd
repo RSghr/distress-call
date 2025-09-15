@@ -22,8 +22,6 @@ var mainScene
 
 func _ready():
 	mainScene = get_tree().root.get_child(0)
-	init_planet()
-	init_sprite()
 
 func init_planet():
 	#planet_params["name"] = generate_word("icarusinbreadanddemocracywecrust", 6)
