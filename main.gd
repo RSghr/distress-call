@@ -41,11 +41,12 @@ func init_fleets(fleet_list):
 		fleet_old.queue_free()
 	
 	for fleet in fleet_list:
-		var instance = fleet_obj.instantiate()
-		instance.player_id = fleet
-		instance.fleet_params["fleet_position"] = fleet_list[fleet]
-		displace_player(instance, find_planet(instance.fleet_params["fleet_position"]))
-		fleetHolder.add_child(instance)
+		if fleet != player.fleet.player_id :
+			var instance = fleet_obj.instantiate()
+			instance.player_id = fleet
+			instance.fleet_params["fleet_position"] = fleet_list[fleet]
+			displace_player(instance, find_planet(instance.fleet_params["fleet_position"]))
+			fleetHolder.add_child(instance)
 
 func update_planet_data(planet_list):
 	galaxy.planet_list = planet_list

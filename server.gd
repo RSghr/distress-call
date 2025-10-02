@@ -42,7 +42,7 @@ func register_player(client_id):
 	if pcs.player_id != null :
 		var peer = multiplayer.get_remote_sender_id()
 		var now = mainScene.now_server()
-		mainScene.client.rpc_id(peer, "confirm_registration", now, pcs.load_all_fleet(), gcs.send_main_planet_info())
+		mainScene.client.rpc_id(peer, "confirm_registration", now, pcs.load_all_fleet(""), gcs.send_main_planet_info())
 
 @rpc("any_peer")
 func request_update_galaxy_map():
@@ -87,7 +87,7 @@ func request_move_fleet(player_id):
 		var peer = multiplayer.get_remote_sender_id()
 		mainScene.logging("request_move_fleet " + player_id)
 		mainScene.client.rpc_id(peer, "move_fleet", ccs.move_fleet_saver(player_id))
-		mainScene.client.rpc("fleet_update", pcs.load_all_fleet())
+		mainScene.client.rpc("fleet_update", pcs.load_all_fleet(player_id))
 
 func cooldown_done(player_id, planet_name, unit_type):
 	if is_server :
@@ -107,6 +107,7 @@ func payout():
 	if is_server :
 		gcs.generate_player_income()
 		mainScene.client.rpc("payout", gcs.send_main_planet_info())
+		mainScene.start_payout_cycle()
 
 @rpc("any_peer") # clients can call this
 func request_XXX():
