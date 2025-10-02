@@ -57,7 +57,7 @@ func reset_route():
 
 #Action of moving fleet
 func move_to_planet(planet):
-	mainScene.ftl_saver()
+	mainScene.ftl_saver(planet.planet_params["name"])
 	if mainScene.fleetStatus.playerUI.ftl_cooldown.cd_check():
 		current_planet = planet
 		fleet.fleet_params["fleet_position"] = current_planet.planet_params["name"]

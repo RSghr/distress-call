@@ -90,8 +90,8 @@ func _update_ship_status():
 func _deploy_unit(unit_type, planet_name):
 	client.request_deploy_unit(player.fleet, unit_type, planet_name)
 
-func ftl_saver():
-	client.request_move_fleet(player.fleet.player_id)
+func ftl_saver(planet_name):
+	client.request_move_fleet(player.fleet.player_id, planet_name)
 
 func job_done():
 	client.request_load_fleet_units(player.fleet)

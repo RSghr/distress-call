@@ -82,11 +82,11 @@ func request_load_cooldown(player_id):
 		mainScene.client.rpc_id(peer, "load_cooldown", ccs.load_all_cooldown(player_id))
 
 @rpc("any_peer") # clients can call this
-func request_move_fleet(player_id):
+func request_move_fleet(player_id, planet_name):
 	if is_server :
 		var peer = multiplayer.get_remote_sender_id()
 		mainScene.logging("request_move_fleet " + player_id)
-		mainScene.client.rpc_id(peer, "move_fleet", ccs.move_fleet_saver(player_id))
+		mainScene.client.rpc_id(peer, "move_fleet", ccs.move_fleet_saver(player_id, planet_name))
 		mainScene.client.rpc("fleet_update", pcs.load_all_fleet(player_id))
 
 func cooldown_done(player_id, planet_name, unit_type):

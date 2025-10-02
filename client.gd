@@ -151,9 +151,9 @@ func load_cooldown(cooldown_list):
 			mainScene.player.fleet.colony.unit_params["next_available"] = cooldown_list[3]
 
 #FTL CD REQUEST
-func request_move_fleet(player_id):
+func request_move_fleet(player_id, planet_name):
 	await get_tree().create_timer(1).timeout
-	mainScene.server.rpc_id(1, "request_move_fleet", player_id)
+	mainScene.server.rpc_id(1, "request_move_fleet", player_id, planet_name)
 
 @rpc("authority")
 func fleet_update(fleet_list):
