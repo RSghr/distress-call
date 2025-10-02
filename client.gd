@@ -29,15 +29,23 @@ func _on_connected_to_server():
 	
 #PLAYER-RPC
 @rpc("authority")
-func confirm_registration(server_offset, fleet_list):
+func confirm_registration(server_offset, fleet_list, planet_list):
 	if is_server:
 		pass
 	else :
 		mainScene.player.fleet.server_offset = server_offset
 		fleet_list.erase(client_id)
 		mainScene.init_fleets(fleet_list)
+		mainScene.update_planet_data(planet_list)
 		mainScene.validate_server_call()
 		print("✅ Server confirmed registration for: ", client_id)
+
+@rpc("authority")
+func update_galaxy_map(planet_list):
+	if is_server:
+		pass
+	else :
+		mainScene.update_planet_data(planet_list)
 
 @rpc
 func register_player(_player_id: String):
@@ -93,7 +101,7 @@ func request_deploy_unit(fleet, unit_type, planet_name):
 	mainScene.server.rpc_id(1, "request_deploy_unit", fleet.player_id, unit_type, planet_name)
 
 @rpc("authority")
-func deploy_unit(deploy_status, unit_type, planet_name):
+func deploy_unit(deploy_status, unit_type, planet_name, player_wealth):
 	if is_server :
 		pass
 	else :
@@ -117,12 +125,13 @@ func deploy_unit(deploy_status, unit_type, planet_name):
 					mainScene.player.fleet.colony.unit_params["deploying"] = false
 					mainScene.player.fleet.colony.unit_params["next_available"] = deploy_status[1]
 			mainScene.fleetStatus.playerUI._update_cooldown()
+			mainScene.fleetStatus.playerUI.playerGlobalResources.CoreUnit.text = str(player_wealth)
 			mainScene.validate_server_call()
 		else :
 			print("unit still on cooldown!")
 			mainScene.deny_server_call()
 
-#EXAMPLE REQUEST
+#COOLDOWN REQUEST
 func request_load_cooldown(fleet):
 	await get_tree().create_timer(1).timeout
 	mainScene.server.rpc_id(1, "request_load_cooldown", fleet.player_id)
@@ -140,6 +149,47 @@ func load_cooldown(cooldown_list):
 			mainScene.player.fleet.negotiator.unit_params["next_available"] = cooldown_list[1]
 			mainScene.player.fleet.scout.unit_params["next_available"] = cooldown_list[2]
 			mainScene.player.fleet.colony.unit_params["next_available"] = cooldown_list[3]
+
+#FTL CD REQUEST
+func request_move_fleet(player_id):
+	await get_tree().create_timer(1).timeout
+	mainScene.server.rpc_id(1, "request_move_fleet", player_id)
+
+func fleet_update(fleet_list):
+	if is_server :
+		pass
+	else :
+		mainScene.init_fleets(fleet_list)
+
+@rpc("authority")
+func move_fleet(ftl_result):
+	if is_server :
+		pass
+	else :
+		print("move_fleet")
+		if ftl_result[0]:
+			mainScene.player.fleet.fleet_params["next_available"] = ftl_result[1]
+			mainScene.fleetStatus.playerUI._update_cooldown()
+			mainScene.validate_server_call()
+		else :
+			print("unit still on cooldown!")
+			mainScene.deny_server_call()
+
+@rpc("authority")
+func job_done(planet_list):
+	if is_server :
+		pass
+	else :
+		mainScene.galaxy.planet_list = planet_list
+		mainScene.job_done()
+
+@rpc("authority")
+func payout(planet_list):
+	if is_server :
+		mainScene.start_payout_cycle()
+	else :
+		mainScene.galaxy.planet_list = planet_list
+		request_load_fleet_units(mainScene.player.fleet)
 
 #EXAMPLE REQUEST
 func request_XXX():

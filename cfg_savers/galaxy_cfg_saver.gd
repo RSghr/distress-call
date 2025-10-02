@@ -2,6 +2,11 @@ extends Node2D
 
 const SAVE_PATH = "res://Galaxy_Saver/galaxy_saver.cfg"
 
+var mainScene
+
+func _ready() -> void:
+	mainScene = get_tree().root.get_child(0)
+
 func save_planet(p):
 	var config = ConfigFile.new()
 	var currConfig = config.load(SAVE_PATH)

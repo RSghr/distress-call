@@ -1,7 +1,8 @@
 extends Control
 
 @onready var ship_name = $"MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer/Ship_name"
-@onready var stationned = $"MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer2/Stationned"
+@onready var space = $"MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer2/Space"
+@onready var ftl_cooldown = $"MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer3/Cooldown_FTL"
 
 @onready var scout_values = $"MarginContainer/TabContainer/Unit status/Values/ScoutContainer/VBoxContainer"
 @onready var troop_values = $"MarginContainer/TabContainer/Unit status/Values/TroopContainer/VBoxContainer"
@@ -21,9 +22,6 @@ extends Control
 @onready var playerGlobalResources = $PlayerGlobalResources
 
 var mainScene
-
-signal plus_upgrade(unit_type)
-signal minus_upgrade(unit_type)
 
 #On ready attach objects
 func _ready():
@@ -91,72 +89,39 @@ func _update_unit_values(unit_value):
 func _update_upgrade_values(unit_value):
 	match unit_value["unit_type"] :
 		0 : #Troop
-			troop_upgrade.stat_params["upgrade"] = int(unit_value["upgrade"] * 10)
 			troop_upgrade._init_stat()
 		1 : #Negotiator
-			negotiator_upgrade.stat_params["upgrade"] = int(unit_value["upgrade"] * 10)
 			negotiator_upgrade._init_stat()
 		2 : # Scout
-			scout_upgrade.stat_params["upgrade"] = int(unit_value["upgrade"] * 10)
 			scout_upgrade._init_stat()
 		3 : #Colony
-			colony_upgrade.stat_params["upgrade"] = int(unit_value["upgrade"] * 10)
 			colony_upgrade._init_stat()
 
-func _on_plus_upgrade(unit_type) -> void:
-	match unit_type :
-		0 : #Troop
-			if mainScene.player.check_upgrade_bool() :
-				mainScene.player.plus_upgrade_space(unit_type)
-				troop_upgrade.change_upgrade(true)
-		1 : #Negotiator
-			if mainScene.player.check_upgrade_bool() :
-				mainScene.player.plus_upgrade_space(unit_type)
-				negotiator_upgrade.change_upgrade(true)
-		2 : # Scout
-			if mainScene.player.check_upgrade_bool() :
-				mainScene.player.plus_upgrade_space(unit_type)
-				scout_upgrade.change_upgrade(true)
-		3 : #Colony
-			if mainScene.player.check_upgrade_bool() :
-				mainScene.player.plus_upgrade_space(unit_type)
-				colony_upgrade.change_upgrade(true)
+func _init_upgrade():
+	scout_upgrade.unit = mainScene.player.fleet.scout
+	troop_upgrade.unit = mainScene.player.fleet.troop
+	negotiator_upgrade.unit = mainScene.player.fleet.negotiator
+	colony_upgrade.unit = mainScene.player.fleet.colony
 	
-func _on_minus_upgrade(unit_type) -> void:
-	match unit_type :
-		0 : #Troop
-			if troop_upgrade.stat_params["upgrade"] > 0 :
-				mainScene.player.minus_upgrade_space(unit_type)
-				troop_upgrade.change_upgrade(false)
-		1 : #Negotiator
-			if negotiator_upgrade.stat_params["upgrade"] > 0 :
-				mainScene.player.minus_upgrade_space(unit_type)
-				negotiator_upgrade.change_upgrade(false)
-		2 : # Scout
-			if scout_upgrade.stat_params["upgrade"] > 0 :
-				mainScene.player.minus_upgrade_space(unit_type)
-				scout_upgrade.change_upgrade(false)
-		3 : #Colony
-			if colony_upgrade.stat_params["upgrade"] > 0 :
-				mainScene.player.minus_upgrade_space(unit_type)
-				colony_upgrade.change_upgrade(false)
-
 func _update_PGR():
-	playerGlobalResources.croissant.text = str(mainScene.player.fleet.fleet_params["croissant"])
-	playerGlobalResources.space.text = str(mainScene.player.fleet.fleet_params["current_space"]) + " / " + str(mainScene.player.fleet.fleet_params["total_space"])
-	playerGlobalResources.ftl.text = str(mainScene.player.fleet.fleet_params["ftl"])
+	playerGlobalResources.CoreUnit.text = str(mainScene.player.fleet.fleet_params["CoreUnit"])
+	mainScene.player.calcul_curr_upgrades(5)
+	space.text = str(mainScene.player.fleet.fleet_params["current_space"]) + " / " + str(mainScene.player.fleet.fleet_params["total_space"])
 
 func _init_cooldown():
+	ftl_cooldown.fleet = mainScene.player.fleet
 	scout_cooldown.unit = mainScene.player.fleet.scout
 	troop_cooldown.unit = mainScene.player.fleet.troop
 	negotiator_cooldown.unit = mainScene.player.fleet.negotiator
 	colony_cooldown.unit = mainScene.player.fleet.colony
+	ftl_cooldown.server_offset = mainScene.player.fleet.server_offset
 	scout_cooldown.server_offset = mainScene.player.fleet.server_offset
 	troop_cooldown.server_offset = mainScene.player.fleet.server_offset
 	negotiator_cooldown.server_offset = mainScene.player.fleet.server_offset
 	colony_cooldown.server_offset = mainScene.player.fleet.server_offset
 
 func _update_cooldown():
+	ftl_cooldown._init_cd()
 	scout_cooldown._init_cd()
 	troop_cooldown._init_cd()
 	negotiator_cooldown._init_cd()

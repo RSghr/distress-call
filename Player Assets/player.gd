@@ -1,7 +1,5 @@
 extends Node2D
 
-signal move_to_planet
-
 @onready var fleet = $Fleet
 @onready var pcs = $player_cfg_saver
 @onready var ccs = $Cooldown_cfg_saver
@@ -9,6 +7,13 @@ var mainScene
 
 var nearby_planet = []
 var current_planet
+
+const UNIT_COST = {
+	0:10000,
+	1:5000,
+	2:25000,
+	3:50000
+}
 
 #On ready attach objects
 func _ready():
@@ -51,49 +56,65 @@ func reset_route():
 	nearby_planet.clear()
 
 #Action of moving fleet
-func _on_move_to_planet(planet) -> void:
-	current_planet = planet
-	fleet.fleet_params["fleet_position"] = current_planet.planet_params["name"]
-	reset_route()
-	possible_routes()
-	enable_route()
-	mainScene.on_fleet_units_action()
-	mainScene.displace_player($".", planet)
+func move_to_planet(planet):
+	mainScene.ftl_saver()
+	if mainScene.fleetStatus.playerUI.ftl_cooldown.cd_check():
+		current_planet = planet
+		fleet.fleet_params["fleet_position"] = current_planet.planet_params["name"]
+		reset_route()
+		possible_routes()
+		enable_route()
+		mainScene.displace_player($".", planet)
 
 func check_upgrade_bool():
 	if  fleet.fleet_params["current_space"] < fleet.fleet_params["total_space"] :
 		return true
 	return false
 
-func calcul_curr_upgrades():
-	var curr = 0
-	for unit in fleet.unit_holder.get_children():
-		curr += int(unit.unit_params["upgrade"] * 10)
-	fleet.fleet_params["current_space"] = curr
-
-func minus_upgrade_space(unit_type):
-	fleet.fleet_params["current_space"] -= 1
-	match unit_type :
-		0 : #Troop
-			fleet.troop.unit_params["upgrade"] -= 0.1
-		1 : #Negotiator
-			fleet.negotiator.unit_params["upgrade"] -= 0.1
-		2 : #Scout
-			fleet.scout.unit_params["upgrade"] -= 0.1
-		3 : #Colony
-			fleet.colony.unit_params["upgrade"] -= 0.1
-
-func plus_upgrade_space(unit_type):
-	fleet.fleet_params["current_space"] += 1
-	match unit_type :
-		0 : #Troop
-			fleet.troop.unit_params["upgrade"] += 0.1
-		1 : #Negotiator
-			fleet.negotiator.unit_params["upgrade"] += 0.1
-		2 : #Scout
-			fleet.scout.unit_params["upgrade"] += 0.1
-		3 : #Colony
-			fleet.colony.unit_params["upgrade"] += 0.1
+func calcul_curr_upgrades(unit_type):
+	if cd_detect(unit_type) :
+		var curr = 0
+		for unit in fleet.unit_holder.get_children():
+			curr += int(unit.unit_params["upgrade"] * 10)
+		fleet.fleet_params["current_space"] = curr
+		return true
+	else :
+		return false
 
 func deploy_unit(unit_type, planet):
-	mainScene._deploy_unit(unit_type,planet)
+	if cd_detect(unit_type) and cost_detect(unit_type):
+		mainScene._deploy_unit(unit_type,planet)
+	else :
+		mainScene.deny_server_call()
+
+func cd_detect(unit_type):
+	match unit_type:
+		0 : #Troop
+			if !mainScene.fleetStatus.playerUI.troop_cooldown.cd_check():
+				return false
+		1 : #Negotiator
+			if !mainScene.fleetStatus.playerUI.negotiator_cooldown.cd_check():
+				return false
+		2 : #Scout
+			if !mainScene.fleetStatus.playerUI.scout_cooldown.cd_check():
+				return false
+		3 : #Colony
+			if !mainScene.fleetStatus.playerUI.colony_cooldown.cd_check():
+				return false
+	return true
+
+func cost_detect(unit_type):
+	var result = 0
+	match unit_type:
+		0 : #Troop
+			result = fleet.fleet_params["CoreUnit"] - 10000 * fleet.troop.total_strength
+		1 : #Negotiator
+			result = fleet.fleet_params["CoreUnit"] - 5000 * fleet.negotiator.total_strength
+		2 : #Scout
+			result = fleet.fleet_params["CoreUnit"] - 25000 * fleet.scout.total_strength
+		3 : #Colony
+			result = fleet.fleet_params["CoreUnit"] - 50000 * fleet.colony.total_strength
+	if result >= 0 :
+		return true
+	else :
+		return false

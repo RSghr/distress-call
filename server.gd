@@ -42,7 +42,13 @@ func register_player(client_id):
 	if pcs.player_id != null :
 		var peer = multiplayer.get_remote_sender_id()
 		var now = mainScene.now_server()
-		mainScene.client.rpc_id(peer, "confirm_registration", now, pcs.load_all_fleet())
+		mainScene.client.rpc_id(peer, "confirm_registration", now, pcs.load_all_fleet(), gcs.send_main_planet_info())
+
+@rpc("any_peer")
+func request_update_galaxy_map():
+	if is_server :
+		var peer = multiplayer.get_remote_sender_id()
+		mainScene.client.rpc_id(peer, "update_galaxy_map", gcs.send_main_planet_info())
 
 @rpc("any_peer")
 func request_load_fleet_units(player_id, fleet_params, scout, troop, negotiator, colony):
@@ -66,7 +72,7 @@ func request_deploy_unit(player_id, unit_type, planet_name):
 	if is_server :
 		var peer = multiplayer.get_remote_sender_id()
 		mainScene.logging("Deploying unit : " + str(unit_type) + " for " + player_id)
-		mainScene.client.rpc_id(peer, "deploy_unit", ccs.deploy_unit_saver(player_id, unit_type, planet_name), unit_type, planet_name)
+		mainScene.client.rpc_id(peer, "deploy_unit", ccs.deploy_unit_saver(player_id, unit_type, planet_name), unit_type, planet_name, pcs.unit_cost(player_id, unit_type))
 
 @rpc("any_peer") # clients can call this
 func request_load_cooldown(player_id):
@@ -74,6 +80,33 @@ func request_load_cooldown(player_id):
 		var peer = multiplayer.get_remote_sender_id()
 		mainScene.logging("Loading cooldowns for " + player_id)
 		mainScene.client.rpc_id(peer, "load_cooldown", ccs.load_all_cooldown(player_id))
+
+@rpc("any_peer") # clients can call this
+func request_move_fleet(player_id):
+	if is_server :
+		var peer = multiplayer.get_remote_sender_id()
+		mainScene.logging("request_move_fleet " + player_id)
+		mainScene.client.rpc_id(peer, "move_fleet", ccs.move_fleet_saver(player_id))
+		mainScene.client.rpc("fleet_update", pcs.load_all_fleet())
+
+func cooldown_done(player_id, planet_name, unit_type):
+	if is_server :
+		match unit_type:
+			0 : #Troop
+				gcs.troop_job_done(planet_name, player_id)
+			1 : #Negotiator
+				gcs.negotiator_job_done(planet_name, player_id)
+			2 : #Scout
+				gcs.scout_job_done(planet_name, player_id)
+			3 : #Colony
+				gcs.colony_job_done(planet_name, player_id)
+	
+	mainScene.client.rpc("job_done", gcs.send_main_planet_info())
+
+func payout():
+	if is_server :
+		gcs.generate_player_income()
+		mainScene.client.rpc("payout", gcs.send_main_planet_info())
 
 @rpc("any_peer") # clients can call this
 func request_XXX():

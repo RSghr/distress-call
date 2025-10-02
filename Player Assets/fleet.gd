@@ -8,15 +8,16 @@ extends Node2D
 
 var player_id
 
-var fleet_params = { 
+@export var fleet_params = { 
 	fleet_name = "",
 	fleet_type = 0,
 	fleet_position = "",
 	current_space = 0,
 	total_space = 10,
-	croissant = 100000,
+	CoreUnit = 100000,
 	faction = 0,
-	ftl = false
+	ftl = true,
+	next_available = 0.0
 }
 
 var faction_type = {

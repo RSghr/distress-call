@@ -11,47 +11,20 @@ script = ExtResource("1_a24jp")
 
 [node name="Scout" parent="Unit_Holder" instance=ExtResource("2_fgvq5")]
 unit_params = {
-"deploying": false,
-&"space": 2,
+&"deploying": false,
+&"next_available": 0.0,
 &"strength": 1.0,
-&"unit_name": "The scouts",
-&"unit_position": "Fleet",
-&"unit_type": 2,
-&"upgrade": 0.0
-}
-
-[node name="Troop" parent="Unit_Holder" instance=ExtResource("2_fgvq5")]
-unit_params = {
-"deploying": false,
-&"space": 3,
-&"strength": 1.0,
-&"unit_name": "Hellhound",
-&"unit_position": "Fleet",
+&"unit_name": "The scouties",
+&"unit_position": "In the ship",
 &"unit_type": 0,
 &"upgrade": 0.0
 }
 
+[node name="Troop" parent="Unit_Holder" instance=ExtResource("2_fgvq5")]
+
 [node name="Colony" parent="Unit_Holder" instance=ExtResource("2_fgvq5")]
-unit_params = {
-"deploying": false,
-&"space": 5,
-&"strength": 1.0,
-&"unit_name": "Colony",
-&"unit_position": "Fleet",
-&"unit_type": 3,
-&"upgrade": 0.0
-}
 
 [node name="Negotiator" parent="Unit_Holder" instance=ExtResource("2_fgvq5")]
-unit_params = {
-"deploying": false,
-&"space": 2,
-&"strength": 1.0,
-&"unit_name": "Nogtiators",
-&"unit_position": "Fleet",
-&"unit_type": 1,
-&"upgrade": 0.0
-}
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 clip_children = 2

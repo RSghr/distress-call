@@ -13,5 +13,3 @@ script = ExtResource("1_18858")
 [node name="player_cfg_saver" parent="." instance=ExtResource("3_mhh6v")]
 
 [node name="Cooldown_cfg_saver" parent="." instance=ExtResource("4_aiq4r")]
-
-[connection signal="move_to_planet" from="." to="." method="_on_move_to_planet"]

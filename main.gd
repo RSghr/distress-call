@@ -30,7 +30,6 @@ func post_server_init_player_pos():
 	client.request_load_cooldown(player.fleet)
 	player.init_player()
 	displace_player(player, player.on_planet())
-	_update_ship_status()
 	on_fleet_units_action()
 	startup = false
 
@@ -38,12 +37,20 @@ func displace_player(player_target,planet):
 	player_target.position = planet.position + Vector2(0, -300)
 
 func init_fleets(fleet_list):
+	for fleet_old in fleetHolder.get_children():
+		fleet_old.queue_free()
+	
 	for fleet in fleet_list:
 		var instance = fleet_obj.instantiate()
 		instance.player_id = fleet
 		instance.fleet_params["fleet_position"] = fleet_list[fleet]
 		displace_player(instance, find_planet(instance.fleet_params["fleet_position"]))
 		fleetHolder.add_child(instance)
+
+func update_planet_data(planet_list):
+	galaxy.planet_list = planet_list
+	galaxy.update_galaxy_map()
+	galaxy.update_galaxy_map_cfg()
 
 func find_planet(planet_name):
 	for planet in galaxy.placed_planet :
@@ -52,6 +59,7 @@ func find_planet(planet_name):
 
 func on_fleet_units_action():
 	client.request_save_fleet_units(player.fleet)
+	_update_ship_status()
 
 func switch_to_fleet_status():
 	if cam.is_current() :
@@ -68,8 +76,8 @@ func switch_to_fleet_status():
 
 func _update_ship_status():
 	fleetStatus.playerUI.ship_name.text = player.fleet.fleet_params["fleet_name"]
-	fleetStatus.playerUI.stationned.text = player.fleet.fleet_params["fleet_position"]
-	player.calcul_curr_upgrades()
+	fleetStatus.playerUI._init_upgrade()
+	fleetStatus.playerUI._init_cooldown()
 	for unit in player.fleet.get_child(0).get_children():
 		fleetStatus.playerUI._update_unit_values(unit.unit_params)
 		fleetStatus.playerUI._update_upgrade_values(unit.unit_params)
@@ -80,6 +88,14 @@ func _update_ship_status():
 
 func _deploy_unit(unit_type, planet_name):
 	client.request_deploy_unit(player.fleet, unit_type, planet_name)
+
+func ftl_saver():
+	client.request_move_fleet(player.fleet.player_id)
+
+func job_done():
+	client.request_load_fleet_units(player.fleet)
+	galaxy.job_done()
+	
 
 func validate_server_call():
 	for valid in valdiate_list:

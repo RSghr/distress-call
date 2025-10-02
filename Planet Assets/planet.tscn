@@ -9,6 +9,31 @@
 scale = Vector2(0.25, 0.25)
 script = ExtResource("1_1odxm")
 
+[node name="Conquered" type="TextureRect" parent="."]
+self_modulate = Color(0.0901961, 1, 1, 1)
+clip_children = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -304.0
+offset_top = -304.0
+offset_right = 304.0
+offset_bottom = 304.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_12alu")
+
+[node name="ColorRect" type="ColorRect" parent="Conquered"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.121405, 0.986313, 7.70092e-06, 1)
+
 [node name="Base" type="TextureRect" parent="."]
 self_modulate = Color(0.0901961, 1, 1, 1)
 clip_children = 2

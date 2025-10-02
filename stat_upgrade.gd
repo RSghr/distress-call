@@ -5,7 +5,7 @@ extends HBoxContainer
 @onready var minus = $HBoxContainer/MarginContainer/Minus
 @onready var plus = $HBoxContainer/MarginContainer2/Plus
 
-
+var unit
 
 @export var stat_params = {
 	type = 0,
@@ -25,20 +25,22 @@ func _ready():
 	mainScene = get_tree().root.get_child(0)
 	
 func _init_stat():
+	stat_params["upgrade"] = int(unit.unit_params["upgrade"] * 10)
 	stat_name.text = type[stat_params["type"]] + " level"
 	stat_level.text = "Lvl." + str(stat_params["upgrade"])
 
-
 func _on_minus_button_down() -> void:
-	mainScene.fleetStatus.playerUI.emit_signal("minus_upgrade", stat_params["type"])
+	if mainScene.player.calcul_curr_upgrades(stat_params["type"]) and stat_params["upgrade"] > 0 :
+		change_upgrade(false)
 
 func _on_plus_button_down() -> void:
-	mainScene.fleetStatus.playerUI.emit_signal("plus_upgrade", stat_params["type"])
+	if mainScene.player.calcul_curr_upgrades(stat_params["type"]) and mainScene.player.check_upgrade_bool():
+		change_upgrade(true)
 
 func change_upgrade(op) : #true = + // false = -
 	if op :
-		stat_params["upgrade"] += 1
+		unit.unit_params["upgrade"] += 0.1
 	else :
-		stat_params["upgrade"] -= 1
+		unit.unit_params["upgrade"] -= 0.1
 	_init_stat()
 	mainScene._update_ship_status()

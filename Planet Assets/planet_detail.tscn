@@ -1,8 +1,9 @@
-[gd_scene load_steps=47 format=3 uid="uid://dqvqtl88664n2"]
+[gd_scene load_steps=48 format=3 uid="uid://dqvqtl88664n2"]
 
 [ext_resource type="Script" uid="uid://vkby8odkq55s" path="res://Planet Assets/planet_detail.gd" id="1_6xqqp"]
 [ext_resource type="Texture2D" uid="uid://dcepmqmnhr7fc" path="res://Deny.png" id="2_2x5va"]
 [ext_resource type="Texture2D" uid="uid://bvlw46r5nuvd7" path="res://Validate.png" id="2_p4vhu"]
+[ext_resource type="PackedScene" uid="uid://clm408o2b5qjh" path="res://unit_cost.tscn" id="4_638ay"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_638ay"]
 atlas = ExtResource("2_2x5va")
@@ -312,6 +313,7 @@ animations = [{
 }]
 
 [node name="Planet_Detail" type="Control" groups=["Planets"]]
+z_index = 1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -333,10 +335,25 @@ layout_mode = 2
 alignment = 1
 metadata/_tab_index = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Actions"]
+[node name="Unit_Cost" parent="TabContainer/Actions" instance=ExtResource("4_638ay")]
+layout_mode = 2
+text = "."
+
+[node name="MarginContainer6" type="MarginContainer" parent="TabContainer/Actions"]
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
-[node name="Negotiate" type="Button" parent="TabContainer/Actions/MarginContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Actions/MarginContainer6"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 25
+text = "Actions"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer1" type="MarginContainer" parent="TabContainer/Actions"]
+layout_mode = 2
+
+[node name="Negotiate" type="Button" parent="TabContainer/Actions/MarginContainer1"]
 layout_mode = 2
 text = "NEGOTIATE"
 
@@ -357,7 +374,16 @@ text = "SCOUT"
 [node name="MarginContainer4" type="MarginContainer" parent="TabContainer/Actions"]
 layout_mode = 2
 
-[node name="Move to" type="Button" parent="TabContainer/Actions/MarginContainer4"]
+[node name="Colonize" type="Button" parent="TabContainer/Actions/MarginContainer4"]
+layout_mode = 2
+text = "COLONIZE"
+
+[node name="MarginContainer5" type="MarginContainer" parent="TabContainer/Actions"]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+theme_override_constants/margin_top = 50
+
+[node name="Move to" type="Button" parent="TabContainer/Actions/MarginContainer5"]
 layout_mode = 2
 text = "MOVE TO"
 
@@ -412,7 +438,18 @@ size_flags_vertical = 3
 [node name="Planet_Wealth" type="RichTextLabel" parent="TabContainer/Status/Label/MarginContainer4"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
-text = "Wealth"
+text = "Core Units"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer5" type="MarginContainer" parent="TabContainer/Status/Label"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Planet_Will" type="RichTextLabel" parent="TabContainer/Status/Label/MarginContainer5"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Will"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -465,18 +502,38 @@ text = "TEST"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="MarginContainer5" type="MarginContainer" parent="TabContainer/Status/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Planet_Will" type="RichTextLabel" parent="TabContainer/Status/Values/MarginContainer5"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "TEST"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="FreeTab" type="VBoxContainer" parent="TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
 [node name="Validate" type="AnimatedSprite2D" parent="." groups=["validate"]]
-position = Vector2(200.6, 335)
-scale = Vector2(1.79688, 1.79688)
+position = Vector2(203.2, 440)
+scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_2x5va")
 animation = &"Deny"
 
-[connection signal="button_down" from="TabContainer/Actions/MarginContainer/Negotiate" to="." method="_on_negotiate_button_down"]
+[connection signal="button_down" from="TabContainer/Actions/MarginContainer1/Negotiate" to="." method="_on_negotiate_button_down"]
+[connection signal="mouse_entered" from="TabContainer/Actions/MarginContainer1/Negotiate" to="." method="_on_negotiate_mouse_entered"]
+[connection signal="mouse_exited" from="TabContainer/Actions/MarginContainer1/Negotiate" to="." method="_on_negotiate_mouse_exited"]
 [connection signal="button_down" from="TabContainer/Actions/MarginContainer2/Attack" to="." method="_on_attack_button_down"]
+[connection signal="mouse_entered" from="TabContainer/Actions/MarginContainer2/Attack" to="." method="_on_attack_mouse_entered"]
+[connection signal="mouse_exited" from="TabContainer/Actions/MarginContainer2/Attack" to="." method="_on_attack_mouse_exited"]
 [connection signal="button_down" from="TabContainer/Actions/MarginContainer3/Scout" to="." method="_on_scout_button_down"]
-[connection signal="button_down" from="TabContainer/Actions/MarginContainer4/Move to" to="." method="_on_move_to_button_down"]
+[connection signal="mouse_entered" from="TabContainer/Actions/MarginContainer3/Scout" to="." method="_on_scout_mouse_entered"]
+[connection signal="mouse_exited" from="TabContainer/Actions/MarginContainer3/Scout" to="." method="_on_scout_mouse_exited"]
+[connection signal="button_down" from="TabContainer/Actions/MarginContainer4/Colonize" to="." method="_on_colonize_button_down"]
+[connection signal="mouse_entered" from="TabContainer/Actions/MarginContainer4/Colonize" to="." method="_on_colonize_mouse_entered"]
+[connection signal="mouse_exited" from="TabContainer/Actions/MarginContainer4/Colonize" to="." method="_on_colonize_mouse_exited"]
+[connection signal="button_down" from="TabContainer/Actions/MarginContainer5/Move to" to="." method="_on_move_to_button_down"]

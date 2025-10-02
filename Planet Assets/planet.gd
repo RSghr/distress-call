@@ -3,9 +3,12 @@ extends Node2D
 @onready var base = $Base
 @onready var land = $Base/Land
 @onready var name_text = $Planet_Name
+@onready var conquered = $Conquered
 var planet_detail
 
 var planet_details = load("res://Planet Assets/planet_detail.tscn")
+
+var initialScale = Vector2.ZERO
 
 var planet_params = {
 	name = "",
@@ -14,7 +17,9 @@ var planet_params = {
 	wealth = 0,
 	will = 0,
 	inhabited = false,
-	nearby = false
+	nearby = false,
+	discovered = false,
+	conquered = false
 }
 
 var connexion_route = []
@@ -22,7 +27,10 @@ var mainScene
 
 func _ready():
 	mainScene = get_tree().root.get_child(0)
+	conquered.self_modulate.a = 0
+	initialScale = scale
 
+#UNUSED
 func init_planet():
 	#planet_params["name"] = generate_word("icarusinbreadanddemocracywecrust", 6)
 
@@ -61,6 +69,8 @@ func init_sprite():
 
 func _on_details_toggled(toggled_on: bool) -> void:
 	if toggled_on :
+		var scaleCheck = scale.lerp(initialScale * 1.5, 1)
+		scale = scaleCheck
 		var instance = planet_details.instantiate()
 		add_child(instance)
 		instance.position += Vector2(256, -1000)
@@ -69,3 +79,4 @@ func _on_details_toggled(toggled_on: bool) -> void:
 	else :
 		mainScene.valdiate_list.erase(planet_detail)
 		planet_detail.queue_free()
+		scale = initialScale

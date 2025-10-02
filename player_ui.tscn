@@ -1,8 +1,9 @@
-[gd_scene load_steps=52 format=3 uid="uid://c0k4lbf6ystdb"]
+[gd_scene load_steps=53 format=3 uid="uid://c0k4lbf6ystdb"]
 
 [ext_resource type="Script" uid="uid://u1dxgtktyy8b" path="res://player_ui.gd" id="1_5m0x8"]
 [ext_resource type="Texture2D" uid="uid://s73eehfujpsy" path="res://Planet Assets/Fleet.png" id="1_lwipk"]
 [ext_resource type="PackedScene" uid="uid://cpoei2qtjgegl" path="res://stat_upgrade.tscn" id="3_654h1"]
+[ext_resource type="PackedScene" uid="uid://bgejqssaj7q7o" path="res://Player Assets/cooldown_ftl.tscn" id="3_hiloj"]
 [ext_resource type="PackedScene" uid="uid://ctthgxful8yuy" path="res://player_global_resources.tscn" id="4_pc08v"]
 [ext_resource type="PackedScene" uid="uid://f7273nartaw1" path="res://cooldown_unit.tscn" id="4_tybkg"]
 [ext_resource type="Texture2D" uid="uid://by4pgmc08q7tn" path="res://Warspite_pookies.png" id="5_a4em4"]
@@ -338,10 +339,9 @@ offset_bottom = 863.0
 
 [node name="TabContainer" type="TabContainer" parent="MarginContainer"]
 layout_mode = 2
-current_tab = 3
+current_tab = 0
 
 [node name="Ship status" type="VBoxContainer" parent="MarginContainer/TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -385,10 +385,21 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Position" type="RichTextLabel" parent="MarginContainer/TabContainer/Ship status/Marge2/Status/Label/MarginContainer2"]
+[node name="Space" type="RichTextLabel" parent="MarginContainer/TabContainer/Ship status/Marge2/Status/Label/MarginContainer2"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 50
-text = "Stationned in"
+text = "Ugrades"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/TabContainer/Ship status/Marge2/Status/Label"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FTL" type="RichTextLabel" parent="MarginContainer/TabContainer/Ship status/Marge2/Status/Label/MarginContainer3"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 50
+text = "FTL Status"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -411,12 +422,19 @@ alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Stationned" type="RichTextLabel" parent="MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer2"]
+[node name="Space" type="RichTextLabel" parent="MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer2"]
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 50
 text = "TEST"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/TabContainer/Ship status/Marge2/Status/Values"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Cooldown_FTL" parent="MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer3" instance=ExtResource("3_hiloj")]
+layout_mode = 2
 
 [node name="Unit status" type="HBoxContainer" parent="MarginContainer/TabContainer"]
 visible = false
@@ -881,6 +899,7 @@ stat_params = {
 }
 
 [node name="Unit Cooldown" type="HBoxContainer" parent="MarginContainer/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 3
 
@@ -1066,8 +1085,6 @@ scale = Vector2(1.79688, 1.79688)
 sprite_frames = SubResource("SpriteFrames_5c62b")
 animation = &"Validate"
 
-[connection signal="minus_upgrade" from="." to="." method="_on_minus_upgrade"]
-[connection signal="plus_upgrade" from="." to="." method="_on_plus_upgrade"]
 [connection signal="text_submitted" from="MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer/Ship_name" to="." method="_on_ship_name_text_submitted"]
 [connection signal="text_submitted" from="MarginContainer/TabContainer/Unit status/Values/ScoutContainer/VBoxContainer/MarginContainer/Scout_Unit" to="." method="_on_scout_unit_text_submitted"]
 [connection signal="text_submitted" from="MarginContainer/TabContainer/Unit status/Values/TroopContainer/VBoxContainer/MarginContainer/Troop_Unit" to="." method="_on_troop_unit_text_submitted"]
