@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ddlccl07mp5le" path="res://stat_upgrade.gd" id="1_uwhcf"]
 
 [node name="StatUpgrade" type="HBoxContainer"]
-offset_right = 659.0
+offset_right = 1498.0
 offset_bottom = 171.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -12,6 +12,7 @@ script = ExtResource("1_uwhcf")
 [node name="MarginContainer" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(541, 171)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Unit" type="RichTextLabel" parent="MarginContainer"]
@@ -21,15 +22,9 @@ text = "Scout level"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Separator" type="MarginContainer" parent="."]
-custom_minimum_size = Vector2(5, 5)
-layout_mode = 2
-
-[node name="ColorRect" type="ColorRect" parent="Separator"]
-layout_mode = 2
-
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
 custom_minimum_size = Vector2(177, 171)

@@ -5,6 +5,7 @@ extends Node2D
 @onready var  colony = $Unit_Holder/Colony
 @onready var  negotiator = $Unit_Holder/Negotiator
 @onready var unit_holder = $Unit_Holder
+@onready var fleet_name = $FleetName
 
 var player_id
 
@@ -28,7 +29,7 @@ var faction_type = {
 }
 
 var mainScene
-var server_offset
+var server_offset = 0
 
 #On ready attach objects
 func _ready():
@@ -40,3 +41,9 @@ func _on_status_button_down() -> void:
 
 func set_planet(planet):
 	fleet_params["fleet_position"] = planet
+
+func set_fleet_name():
+	if fleet_params["fleet_name"] == "" :
+		fleet_name.text = "Ally fleet"
+	else :
+		fleet_name.text = fleet_params["fleet_name"]

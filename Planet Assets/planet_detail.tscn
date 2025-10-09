@@ -1,7 +1,8 @@
-[gd_scene load_steps=48 format=3 uid="uid://dqvqtl88664n2"]
+[gd_scene load_steps=49 format=3 uid="uid://dqvqtl88664n2"]
 
 [ext_resource type="Script" uid="uid://vkby8odkq55s" path="res://Planet Assets/planet_detail.gd" id="1_6xqqp"]
 [ext_resource type="Texture2D" uid="uid://dcepmqmnhr7fc" path="res://Deny.png" id="2_2x5va"]
+[ext_resource type="Theme" uid="uid://r1cmuoc1rfu2" path="res://UI/Maintheme.tres" id="2_7n533"]
 [ext_resource type="Texture2D" uid="uid://bvlw46r5nuvd7" path="res://Validate.png" id="2_p4vhu"]
 [ext_resource type="PackedScene" uid="uid://clm408o2b5qjh" path="res://unit_cost.tscn" id="4_638ay"]
 
@@ -312,7 +313,7 @@ animations = [{
 "speed": 16.0
 }]
 
-[node name="Planet_Detail" type="Control" groups=["Planets"]]
+[node name="Planet_Detail" type="Control" groups=["Planets", "panel_UI"]]
 z_index = 1
 layout_mode = 3
 anchors_preset = 15
@@ -321,6 +322,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(5, 5)
+theme = ExtResource("2_7n533")
 script = ExtResource("1_6xqqp")
 
 [node name="TabContainer" type="TabContainer" parent="."]
@@ -336,8 +338,9 @@ alignment = 1
 metadata/_tab_index = 0
 
 [node name="Unit_Cost" parent="TabContainer/Actions" instance=ExtResource("4_638ay")]
+modulate = Color(1, 1, 1, 0)
 layout_mode = 2
-text = "."
+text = ""
 
 [node name="MarginContainer6" type="MarginContainer" parent="TabContainer/Actions"]
 custom_minimum_size = Vector2(0, 40)
@@ -415,7 +418,7 @@ size_flags_vertical = 3
 
 [node name="Planet_Race" type="RichTextLabel" parent="TabContainer/Status/Label/MarginContainer2"]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/normal_font_size = 18
 text = "Inhabitanting race"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -426,7 +429,7 @@ size_flags_vertical = 3
 
 [node name="Planet_Culture" type="RichTextLabel" parent="TabContainer/Status/Label/MarginContainer3"]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/normal_font_size = 18
 text = "Dominant culture"
 horizontal_alignment = 1
 vertical_alignment = 1

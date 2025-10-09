@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://djqy2o1an6fi0"]
+
+[ext_resource type="Script" uid="uid://dbquelwpwfhaw" path="res://UI/unit_cooldown_ui.gd" id="1_8lom4"]
+[ext_resource type="Texture2D" uid="uid://bnfjhq1nfsknh" path="res://UI/Units/Colony.png" id="1_ptd7u"]
+
+[node name="UnitCooldownUI" type="HBoxContainer"]
+offset_right = 246.0
+offset_bottom = 86.0
+script = ExtResource("1_8lom4")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("1_ptd7u")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/normal_font_size = 30
+text = "READY"
+horizontal_alignment = 1
+vertical_alignment = 1

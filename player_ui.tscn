@@ -1,14 +1,18 @@
-[gd_scene load_steps=53 format=3 uid="uid://c0k4lbf6ystdb"]
+[gd_scene load_steps=60 format=3 uid="uid://c0k4lbf6ystdb"]
 
 [ext_resource type="Script" uid="uid://u1dxgtktyy8b" path="res://player_ui.gd" id="1_5m0x8"]
 [ext_resource type="Texture2D" uid="uid://s73eehfujpsy" path="res://Planet Assets/Fleet.png" id="1_lwipk"]
+[ext_resource type="Theme" uid="uid://r1cmuoc1rfu2" path="res://UI/Maintheme.tres" id="2_qadsr"]
 [ext_resource type="PackedScene" uid="uid://cpoei2qtjgegl" path="res://stat_upgrade.tscn" id="3_654h1"]
 [ext_resource type="PackedScene" uid="uid://bgejqssaj7q7o" path="res://Player Assets/cooldown_ftl.tscn" id="3_hiloj"]
 [ext_resource type="PackedScene" uid="uid://ctthgxful8yuy" path="res://player_global_resources.tscn" id="4_pc08v"]
 [ext_resource type="PackedScene" uid="uid://f7273nartaw1" path="res://cooldown_unit.tscn" id="4_tybkg"]
 [ext_resource type="Texture2D" uid="uid://by4pgmc08q7tn" path="res://Warspite_pookies.png" id="5_a4em4"]
+[ext_resource type="Texture2D" uid="uid://wn1ryl7galni" path="res://UI/Units/UnitList.png" id="5_wotjm"]
+[ext_resource type="PackedScene" uid="uid://c510o7ictlouj" path="res://codex_entry.tscn" id="6_cbg41"]
 [ext_resource type="Texture2D" uid="uid://bvlw46r5nuvd7" path="res://Validate.png" id="7_gxl1c"]
 [ext_resource type="Texture2D" uid="uid://dcepmqmnhr7fc" path="res://Deny.png" id="7_vg8o0"]
+[ext_resource type="Texture2D" uid="uid://bda8pww2cmvco" path="res://UI/Enter.png" id="12_qadsr"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5c62b"]
 atlas = ExtResource("7_vg8o0")
@@ -317,6 +321,115 @@ animations = [{
 "speed": 16.0
 }]
 
+[sub_resource type="Animation" id="Animation_babf8"]
+resource_name = "Player UI"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MarginContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(500, 1500), Vector2(500, 500), Vector2(50, 75)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerGlobalResources:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(2000, 0), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MarginContainer:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.2, 0.2), Vector2(0.2, 0.2), Vector2(1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Back:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_qadsr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MarginContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(50, 75)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerGlobalResources:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MarginContainer:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Back:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wotjm"]
+_data = {
+&"Player UI": SubResource("Animation_babf8"),
+&"RESET": SubResource("Animation_qadsr")
+}
+
 [node name="PlayerUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -328,20 +441,23 @@ offset_right = 6.0
 offset_bottom = 4.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_qadsr")
 script = ExtResource("1_5m0x8")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 0
-offset_left = 182.0
-offset_top = 135.0
-offset_right = 1268.0
-offset_bottom = 863.0
+offset_left = 50.0
+offset_top = 75.0
+offset_right = 1411.0
+offset_bottom = 977.0
 
 [node name="TabContainer" type="TabContainer" parent="MarginContainer"]
 layout_mode = 2
-current_tab = 0
+theme = ExtResource("2_qadsr")
+current_tab = 1
 
 [node name="Ship status" type="VBoxContainer" parent="MarginContainer/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -437,9 +553,22 @@ size_flags_vertical = 3
 layout_mode = 2
 
 [node name="Unit status" type="HBoxContainer" parent="MarginContainer/TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/TabContainer/Unit status"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+texture = ExtResource("5_wotjm")
+expand_mode = 1
+
+[node name="Separator2" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Separator2"]
+layout_mode = 2
+color = Color(0.286618, 0.38521, 0.588966, 1)
 
 [node name="Label" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status"]
 layout_mode = 2
@@ -452,7 +581,7 @@ size_flags_vertical = 3
 
 [node name="ColorRect5" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Label/ScoutContainer"]
 layout_mode = 2
-color = Color(0.0392157, 0.443137, 1, 0.215686)
+color = Color(0.152941, 0.113725, 0.6, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status/Label/ScoutContainer"]
 layout_mode = 2
@@ -496,6 +625,7 @@ layout_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Label/Separator"]
 layout_mode = 2
+color = Color(0.286618, 0.38521, 0.588966, 1)
 
 [node name="TroopContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label"]
 layout_mode = 2
@@ -503,7 +633,7 @@ size_flags_vertical = 3
 
 [node name="ColorRect7" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Label/TroopContainer"]
 layout_mode = 2
-color = Color(0.723733, 0.157282, 0.162068, 0.215686)
+color = Color(0.501961, 0.00392157, 0.00392157, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status/Label/TroopContainer"]
 layout_mode = 2
@@ -547,6 +677,7 @@ layout_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Label/Separator2"]
 layout_mode = 2
+color = Color(0.286618, 0.38521, 0.588966, 1)
 
 [node name="NegotiatorContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label"]
 layout_mode = 2
@@ -554,7 +685,7 @@ size_flags_vertical = 3
 
 [node name="ColorRect9" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Label/NegotiatorContainer"]
 layout_mode = 2
-color = Color(0.273175, 0.463595, 0.160986, 0.215686)
+color = Color(0.541176, 0.541176, 0.0431373, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status/Label/NegotiatorContainer"]
 layout_mode = 2
@@ -598,6 +729,7 @@ layout_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Label/Separator3"]
 layout_mode = 2
+color = Color(0.286618, 0.38521, 0.588966, 1)
 
 [node name="ColonyContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label"]
 layout_mode = 2
@@ -605,7 +737,7 @@ size_flags_vertical = 3
 
 [node name="ColorRect11" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Label/ColonyContainer"]
 layout_mode = 2
-color = Color(0.905882, 0.87451, 0.0627451, 0.215686)
+color = Color(0.00784314, 0.4, 0.156863, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status/Label/ColonyContainer"]
 layout_mode = 2
@@ -649,6 +781,7 @@ layout_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Separator"]
 layout_mode = 2
+color = Color(0.286618, 0.38521, 0.588966, 1)
 
 [node name="Values" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status"]
 layout_mode = 2
@@ -661,7 +794,7 @@ size_flags_vertical = 3
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Values/ScoutContainer"]
 layout_mode = 2
-color = Color(0.0392157, 0.443137, 1, 0.215686)
+color = Color(0.152941, 0.113725, 0.6, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status/Values/ScoutContainer"]
 layout_mode = 2
@@ -704,6 +837,7 @@ layout_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Values/Separator"]
 layout_mode = 2
+color = Color(0.286618, 0.38521, 0.588966, 1)
 
 [node name="TroopContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values"]
 layout_mode = 2
@@ -711,7 +845,7 @@ size_flags_vertical = 3
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Values/TroopContainer"]
 layout_mode = 2
-color = Color(0.723733, 0.157282, 0.162068, 0.215686)
+color = Color(0.501961, 0.00392157, 0.00392157, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status/Values/TroopContainer"]
 layout_mode = 2
@@ -754,6 +888,7 @@ layout_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Values/Separator2"]
 layout_mode = 2
+color = Color(0.286618, 0.38521, 0.588966, 1)
 
 [node name="NegotiatorContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values"]
 layout_mode = 2
@@ -761,7 +896,7 @@ size_flags_vertical = 3
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer"]
 layout_mode = 2
-color = Color(0.273175, 0.463595, 0.160986, 0.215686)
+color = Color(0.541176, 0.541176, 0.0431373, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer"]
 layout_mode = 2
@@ -804,6 +939,7 @@ layout_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Values/Separator3"]
 layout_mode = 2
+color = Color(0.286618, 0.38521, 0.588966, 1)
 
 [node name="ColonyContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values"]
 layout_mode = 2
@@ -811,7 +947,7 @@ size_flags_vertical = 3
 
 [node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit status/Values/ColonyContainer"]
 layout_mode = 2
-color = Color(0.905882, 0.87451, 0.0627451, 0.215686)
+color = Color(0.00784314, 0.4, 0.156863, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit status/Values/ColonyContainer"]
 layout_mode = 2
@@ -851,6 +987,7 @@ vertical_alignment = 1
 [node name="R&D" type="VBoxContainer" parent="MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
+alignment = 1
 metadata/_tab_index = 2
 
 [node name="ScoutUpgrade" parent="MarginContainer/TabContainer/R&D" instance=ExtResource("3_654h1")]
@@ -860,21 +997,15 @@ stat_params = {
 &"upgrade": 0
 }
 
-[node name="Separator" type="MarginContainer" parent="MarginContainer/TabContainer/R&D"]
+[node name="Separator" type="HSeparator" parent="MarginContainer/TabContainer/R&D"]
 custom_minimum_size = Vector2(0, 5)
-layout_mode = 2
-
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/R&D/Separator"]
 layout_mode = 2
 
 [node name="TroopUpgrade2" parent="MarginContainer/TabContainer/R&D" instance=ExtResource("3_654h1")]
 layout_mode = 2
 
-[node name="Separator2" type="MarginContainer" parent="MarginContainer/TabContainer/R&D"]
+[node name="Separator2" type="HSeparator" parent="MarginContainer/TabContainer/R&D"]
 custom_minimum_size = Vector2(0, 5)
-layout_mode = 2
-
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/R&D/Separator2"]
 layout_mode = 2
 
 [node name="NegotiatorUpgrade3" parent="MarginContainer/TabContainer/R&D" instance=ExtResource("3_654h1")]
@@ -884,11 +1015,8 @@ stat_params = {
 &"upgrade": 0
 }
 
-[node name="Separator3" type="MarginContainer" parent="MarginContainer/TabContainer/R&D"]
+[node name="Separator3" type="HSeparator" parent="MarginContainer/TabContainer/R&D"]
 custom_minimum_size = Vector2(0, 5)
-layout_mode = 2
-
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/R&D/Separator3"]
 layout_mode = 2
 
 [node name="ColonyUpgrade4" parent="MarginContainer/TabContainer/R&D" instance=ExtResource("3_654h1")]
@@ -898,173 +1026,205 @@ stat_params = {
 &"upgrade": 0
 }
 
-[node name="Unit Cooldown" type="HBoxContainer" parent="MarginContainer/TabContainer"]
+[node name="Codex" type="BoxContainer" parent="MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 3
 
-[node name="Label" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit Cooldown"]
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/TabContainer/Codex"]
+layout_mode = 2
+size_flags_horizontal = 3
+current_tab = 0
+
+[node name="Player" type="HBoxContainer" parent="MarginContainer/TabContainer/Codex/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Player"]
+layout_mode = 2
+size_flags_horizontal = 3
+current_tab = 1
+
+[node name="Fleet" type="ScrollContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Fleet"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ScoutContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Label"]
+[node name="Codex_Entry2" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Fleet/VBoxContainer" instance=ExtResource("6_cbg41")]
 layout_mode = 2
-size_flags_vertical = 3
+codex_idx = "Player"
+text_size = 18
 
-[node name="ColorRect5" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Label/ScoutContainer"]
-layout_mode = 2
-color = Color(0.0392157, 0.443137, 1, 0.215686)
-
-[node name="Scout_Unit" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit Cooldown/Label/ScoutContainer"]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 45
-text = "SCOUT STATUS"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Separator" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Label"]
-custom_minimum_size = Vector2(0, 5)
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Fleet/VBoxContainer"]
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Label/Separator"]
+[node name="Codex_Entry" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Fleet/VBoxContainer" instance=ExtResource("6_cbg41")]
+layout_mode = 2
+codex_idx = "Fleet"
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Fleet/VBoxContainer"]
 layout_mode = 2
 
-[node name="TroopContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Label"]
+[node name="Codex_Entry3" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Fleet/VBoxContainer" instance=ExtResource("6_cbg41")]
 layout_mode = 2
-size_flags_vertical = 3
+codex_idx = "Units"
+text_size = 16
 
-[node name="ColorRect7" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Label/TroopContainer"]
-layout_mode = 2
-color = Color(0.723733, 0.157282, 0.162068, 0.215686)
-
-[node name="Troop_Unit" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit Cooldown/Label/TroopContainer"]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 45
-text = "TROOP STATUS"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Separator2" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Label"]
-custom_minimum_size = Vector2(0, 5)
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Fleet/VBoxContainer"]
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Label/Separator2"]
+[node name="Codex_Entry4" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Fleet/VBoxContainer" instance=ExtResource("6_cbg41")]
 layout_mode = 2
+codex_idx = "Economy"
+text_size = 18
 
-[node name="NegotiatorContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Label"]
+[node name="Scouts" type="ScrollContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer"]
 layout_mode = 2
-size_flags_vertical = 3
+metadata/_tab_index = 1
 
-[node name="ColorRect9" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Label/NegotiatorContainer"]
-layout_mode = 2
-color = Color(0.273175, 0.463595, 0.160986, 0.215686)
-
-[node name="Negotiator_Unit" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit Cooldown/Label/NegotiatorContainer"]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 45
-text = "NEGOTIATOR STATUS"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Separator3" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Label"]
-custom_minimum_size = Vector2(0, 5)
-layout_mode = 2
-
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Label/Separator3"]
-layout_mode = 2
-
-[node name="ColonyContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Label"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="ColorRect11" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Label/ColonyContainer"]
-layout_mode = 2
-color = Color(0.905882, 0.87451, 0.0627451, 0.215686)
-
-[node name="Colony_Unit" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit Cooldown/Label/ColonyContainer"]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 45
-text = "COLONY STATUS"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Separator" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown"]
-custom_minimum_size = Vector2(5, 0)
-layout_mode = 2
-
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Separator"]
-layout_mode = 2
-
-[node name="Cooldown" type="VBoxContainer" parent="MarginContainer/TabContainer/Unit Cooldown"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Scouts"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ScoutContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown"]
+[node name="Codex_Entry2" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Scouts/VBoxContainer" instance=ExtResource("6_cbg41")]
 layout_mode = 2
+codex_idx = "Scout Role"
+text_size = 25
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Scouts/VBoxContainer"]
+layout_mode = 2
+
+[node name="Codex_Entry" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Scouts/VBoxContainer" instance=ExtResource("6_cbg41")]
+layout_mode = 2
+codex_idx = "Scout Stats"
+text_size = 30
+
+[node name="Troop" type="ScrollContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Troop"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ColorRect5" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/ScoutContainer"]
+[node name="Codex_Entry2" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Troop/VBoxContainer" instance=ExtResource("6_cbg41")]
 layout_mode = 2
-color = Color(0.0392157, 0.443137, 1, 0.215686)
+codex_idx = "Troop Role"
+text_size = 25
 
-[node name="cooldown_unit" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/ScoutContainer" instance=ExtResource("4_tybkg")]
-layout_mode = 2
-
-[node name="Separator" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown"]
-custom_minimum_size = Vector2(0, 5)
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Troop/VBoxContainer"]
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/Separator"]
+[node name="Codex_Entry" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Troop/VBoxContainer" instance=ExtResource("6_cbg41")]
 layout_mode = 2
+codex_idx = "Troop Stats"
+text_size = 30
 
-[node name="TroopContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown"]
+[node name="Negotiator" type="ScrollContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer"]
+visible = false
 layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Negotiator"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ColorRect7" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/TroopContainer"]
+[node name="Codex_Entry2" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Negotiator/VBoxContainer" instance=ExtResource("6_cbg41")]
 layout_mode = 2
-color = Color(0.723733, 0.157282, 0.162068, 0.215686)
+codex_idx = "Negotiator Role"
+text_size = 23
 
-[node name="cooldown_unit" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/TroopContainer" instance=ExtResource("4_tybkg")]
-layout_mode = 2
-
-[node name="Separator2" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown"]
-custom_minimum_size = Vector2(0, 5)
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Negotiator/VBoxContainer"]
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/Separator2"]
+[node name="Codex_Entry" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Negotiator/VBoxContainer" instance=ExtResource("6_cbg41")]
 layout_mode = 2
+codex_idx = "Negotiator Stats"
+text_size = 30
 
-[node name="NegotiatorContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown"]
+[node name="Colony" type="ScrollContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer"]
+visible = false
 layout_mode = 2
+metadata/_tab_index = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Colony"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ColorRect9" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/NegotiatorContainer"]
+[node name="Codex_Entry2" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Colony/VBoxContainer" instance=ExtResource("6_cbg41")]
 layout_mode = 2
-color = Color(0.273175, 0.463595, 0.160986, 0.215686)
+codex_idx = "Colony Role"
+text_size = 25
 
-[node name="cooldown_unit" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/NegotiatorContainer" instance=ExtResource("4_tybkg")]
-layout_mode = 2
-
-[node name="Separator3" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown"]
-custom_minimum_size = Vector2(0, 5)
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Colony/VBoxContainer"]
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/Separator3"]
+[node name="Codex_Entry" parent="MarginContainer/TabContainer/Codex/TabContainer/Player/TabContainer/Colony/VBoxContainer" instance=ExtResource("6_cbg41")]
 layout_mode = 2
+codex_idx = "Colony Stats"
+text_size = 25
 
-[node name="ColonyContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown"]
+[node name="Galaxy" type="HBoxContainer" parent="MarginContainer/TabContainer/Codex/TabContainer"]
+visible = false
 layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Galaxy"]
+custom_minimum_size = Vector2(177, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Galaxy/MarginContainer"]
+layout_mode = 2
+current_tab = 1
+
+[node name="Galaxy status" type="ScrollContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Galaxy/MarginContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Galaxy/MarginContainer/TabContainer/Galaxy status"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ColorRect11" type="ColorRect" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/ColonyContainer"]
+[node name="Codex_Entry2" parent="MarginContainer/TabContainer/Codex/TabContainer/Galaxy/MarginContainer/TabContainer/Galaxy status/MarginContainer" instance=ExtResource("6_cbg41")]
 layout_mode = 2
-color = Color(0.905882, 0.87451, 0.0627451, 0.215686)
+codex_idx = "Major Order"
+text_size = 35
 
-[node name="cooldown_unit" parent="MarginContainer/TabContainer/Unit Cooldown/Cooldown/ColonyContainer" instance=ExtResource("4_tybkg")]
+[node name="Planet" type="ScrollContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Galaxy/MarginContainer/TabContainer"]
 layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Galaxy/MarginContainer/TabContainer/Planet"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Codex_Entry2" parent="MarginContainer/TabContainer/Codex/TabContainer/Galaxy/MarginContainer/TabContainer/Planet/MarginContainer" instance=ExtResource("6_cbg41")]
+layout_mode = 2
+codex_idx = "Planets"
+text_size = 35
+
+[node name="Diplomacy(WIP)" type="HBoxContainer" parent="MarginContainer/TabContainer/Codex/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TabContainer/Codex/TabContainer/Diplomacy(WIP)"]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="Free Tab" type="HBoxContainer" parent="MarginContainer/TabContainer"]
 visible = false
@@ -1072,8 +1232,8 @@ layout_mode = 2
 metadata/_tab_index = 4
 
 [node name="WarspitePookies" type="Sprite2D" parent="MarginContainer/TabContainer/Free Tab"]
-position = Vector2(557, 324)
-scale = Vector2(1.55, 1.55)
+position = Vector2(662, 406)
+scale = Vector2(2.04158, 1.48961)
 texture = ExtResource("5_a4em4")
 
 [node name="PlayerGlobalResources" parent="." instance=ExtResource("4_pc08v")]
@@ -1085,8 +1245,207 @@ scale = Vector2(1.79688, 1.79688)
 sprite_frames = SubResource("SpriteFrames_5c62b")
 animation = &"Validate"
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_wotjm")
+}
+
+[node name="Unit Cooldown" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+offset_left = 50.0
+offset_top = 75.0
+offset_right = 65.0
+offset_bottom = 114.0
+
+[node name="Label" type="VBoxContainer" parent="Unit Cooldown"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScoutContainer" type="MarginContainer" parent="Unit Cooldown/Label"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect5" type="ColorRect" parent="Unit Cooldown/Label/ScoutContainer"]
+layout_mode = 2
+color = Color(0.1545, 0.114, 0.6, 1)
+
+[node name="Scout_Unit" type="RichTextLabel" parent="Unit Cooldown/Label/ScoutContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 45
+text = "SCOUT STATUS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator" type="MarginContainer" parent="Unit Cooldown/Label"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Unit Cooldown/Label/Separator"]
+layout_mode = 2
+color = Color(0.286618, 0.38521, 0.588966, 1)
+
+[node name="TroopContainer" type="MarginContainer" parent="Unit Cooldown/Label"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect7" type="ColorRect" parent="Unit Cooldown/Label/TroopContainer"]
+layout_mode = 2
+color = Color(0.5, 0.005, 0.005, 1)
+
+[node name="Troop_Unit" type="RichTextLabel" parent="Unit Cooldown/Label/TroopContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 45
+text = "TROOP STATUS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator2" type="MarginContainer" parent="Unit Cooldown/Label"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Unit Cooldown/Label/Separator2"]
+layout_mode = 2
+color = Color(0.286618, 0.38521, 0.588966, 1)
+
+[node name="NegotiatorContainer" type="MarginContainer" parent="Unit Cooldown/Label"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect9" type="ColorRect" parent="Unit Cooldown/Label/NegotiatorContainer"]
+layout_mode = 2
+color = Color(0.541176, 0.541176, 0.0431373, 1)
+
+[node name="Negotiator_Unit" type="RichTextLabel" parent="Unit Cooldown/Label/NegotiatorContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 45
+text = "NEGOTIATOR STATUS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator3" type="MarginContainer" parent="Unit Cooldown/Label"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Unit Cooldown/Label/Separator3"]
+layout_mode = 2
+color = Color(0.286618, 0.38521, 0.588966, 1)
+
+[node name="ColonyContainer" type="MarginContainer" parent="Unit Cooldown/Label"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect11" type="ColorRect" parent="Unit Cooldown/Label/ColonyContainer"]
+layout_mode = 2
+color = Color(0.00799999, 0.4, 0.158267, 1)
+
+[node name="Colony_Unit" type="RichTextLabel" parent="Unit Cooldown/Label/ColonyContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 45
+text = "COLONY STATUS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator" type="MarginContainer" parent="Unit Cooldown"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Unit Cooldown/Separator"]
+layout_mode = 2
+color = Color(0.286618, 0.38521, 0.588966, 1)
+
+[node name="Cooldown" type="VBoxContainer" parent="Unit Cooldown"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScoutContainer" type="MarginContainer" parent="Unit Cooldown/Cooldown"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect5" type="ColorRect" parent="Unit Cooldown/Cooldown/ScoutContainer"]
+layout_mode = 2
+color = Color(0.152941, 0.113725, 0.6, 1)
+
+[node name="cooldown_unit" parent="Unit Cooldown/Cooldown/ScoutContainer" instance=ExtResource("4_tybkg")]
+layout_mode = 2
+
+[node name="Separator" type="MarginContainer" parent="Unit Cooldown/Cooldown"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Unit Cooldown/Cooldown/Separator"]
+layout_mode = 2
+color = Color(0.286618, 0.38521, 0.588966, 1)
+
+[node name="TroopContainer" type="MarginContainer" parent="Unit Cooldown/Cooldown"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect7" type="ColorRect" parent="Unit Cooldown/Cooldown/TroopContainer"]
+layout_mode = 2
+color = Color(0.501961, 0.00392157, 0.00392157, 1)
+
+[node name="cooldown_unit" parent="Unit Cooldown/Cooldown/TroopContainer" instance=ExtResource("4_tybkg")]
+layout_mode = 2
+
+[node name="Separator2" type="MarginContainer" parent="Unit Cooldown/Cooldown"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Unit Cooldown/Cooldown/Separator2"]
+layout_mode = 2
+color = Color(0.286618, 0.38521, 0.588966, 1)
+
+[node name="NegotiatorContainer" type="MarginContainer" parent="Unit Cooldown/Cooldown"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect9" type="ColorRect" parent="Unit Cooldown/Cooldown/NegotiatorContainer"]
+layout_mode = 2
+color = Color(0.54, 0.54, 0.0432, 1)
+
+[node name="cooldown_unit" parent="Unit Cooldown/Cooldown/NegotiatorContainer" instance=ExtResource("4_tybkg")]
+layout_mode = 2
+
+[node name="Separator3" type="MarginContainer" parent="Unit Cooldown/Cooldown"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Unit Cooldown/Cooldown/Separator3"]
+layout_mode = 2
+color = Color(0.286618, 0.38521, 0.588966, 1)
+
+[node name="ColonyContainer" type="MarginContainer" parent="Unit Cooldown/Cooldown"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ColorRect11" type="ColorRect" parent="Unit Cooldown/Cooldown/ColonyContainer"]
+layout_mode = 2
+color = Color(0.00784314, 0.4, 0.156863, 1)
+
+[node name="cooldown_unit" parent="Unit Cooldown/Cooldown/ColonyContainer" instance=ExtResource("4_tybkg")]
+layout_mode = 2
+
+[node name="Back" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1306.0
+offset_top = 874.0
+offset_right = 1370.0
+offset_bottom = 938.0
+scale = Vector2(1.25, 1.25)
+
+[node name="TextureRect" type="TextureRect" parent="Back"]
+layout_mode = 0
+offset_right = 66.0
+offset_bottom = 66.0
+texture = ExtResource("12_qadsr")
+expand_mode = 1
+
 [connection signal="text_submitted" from="MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer/Ship_name" to="." method="_on_ship_name_text_submitted"]
 [connection signal="text_submitted" from="MarginContainer/TabContainer/Unit status/Values/ScoutContainer/VBoxContainer/MarginContainer/Scout_Unit" to="." method="_on_scout_unit_text_submitted"]
 [connection signal="text_submitted" from="MarginContainer/TabContainer/Unit status/Values/TroopContainer/VBoxContainer/MarginContainer/Troop_Unit" to="." method="_on_troop_unit_text_submitted"]
 [connection signal="text_submitted" from="MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer/VBoxContainer/MarginContainer/Negotiator_Unit" to="." method="_on_negotiator_unit_text_submitted"]
 [connection signal="text_submitted" from="MarginContainer/TabContainer/Unit status/Values/ColonyContainer/VBoxContainer/MarginContainer/Colony_Unit" to="." method="_on_colony_unit_text_submitted"]
+[connection signal="button_down" from="Back" to="." method="_on_back_button_down"]

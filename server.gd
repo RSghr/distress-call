@@ -28,21 +28,22 @@ func _ready():
 
 func _on_peer_connected(id):
 	mainScene.logging("Client connected: " + str(id))
-	players.append(id)
+	players.append(str(id))
+	mainScene.display_player_list(players)
 
 func _on_peer_disconnected(id):
 	mainScene.logging("Client disconnected: " + str(id))
-	players.erase(id)
+	players.erase(str(id))
+	mainScene.display_player_list(players)
 
 @rpc("any_peer") # clients can call this
 func register_player(client_id):
 	await get_tree().create_timer(1).timeout
 	mainScene.logging("request to connect " + client_id)
-	pcs.get_player_id(client_id)
-	if pcs.player_id != null :
+	if pcs.get_player_id(client_id) != null :
 		var peer = multiplayer.get_remote_sender_id()
 		var now = mainScene.now_server()
-		mainScene.client.rpc_id(peer, "confirm_registration", now, pcs.load_all_fleet(""), gcs.send_main_planet_info())
+		mainScene.client.rpc_id(peer, "confirm_registration", now, pcs.load_all_fleet(), gcs.send_main_planet_info(), mainScene.payoutTimer.time_left)
 
 @rpc("any_peer")
 func request_update_galaxy_map():
@@ -73,6 +74,7 @@ func request_deploy_unit(player_id, unit_type, planet_name):
 		var peer = multiplayer.get_remote_sender_id()
 		mainScene.logging("Deploying unit : " + str(unit_type) + " for " + player_id)
 		mainScene.client.rpc_id(peer, "deploy_unit", ccs.deploy_unit_saver(player_id, unit_type, planet_name), unit_type, planet_name, pcs.unit_cost(player_id, unit_type))
+		mainScene.client.rpc("unit_update", pcs.get_all_active_units(player_id, "Troop"), pcs.get_all_active_units(player_id, "Negotiator"), pcs.get_all_active_units(player_id, "Scout"), pcs.get_all_active_units(player_id, "Colony"))
 
 @rpc("any_peer") # clients can call this
 func request_load_cooldown(player_id):
@@ -87,7 +89,7 @@ func request_move_fleet(player_id, planet_name):
 		var peer = multiplayer.get_remote_sender_id()
 		mainScene.logging("request_move_fleet " + player_id)
 		mainScene.client.rpc_id(peer, "move_fleet", ccs.move_fleet_saver(player_id, planet_name))
-		mainScene.client.rpc("fleet_update", pcs.load_all_fleet(player_id))
+		mainScene.client.rpc("fleet_update", pcs.load_all_fleet())
 
 func cooldown_done(player_id, planet_name, unit_type):
 	if is_server :
@@ -101,13 +103,13 @@ func cooldown_done(player_id, planet_name, unit_type):
 			3 : #Colony
 				gcs.colony_job_done(planet_name, player_id)
 	
-	mainScene.client.rpc("job_done", gcs.send_main_planet_info())
+	mainScene.client.rpc("job_done", gcs.send_main_planet_info(), player_id, planet_name, unit_type)
 
 func payout():
 	if is_server :
 		gcs.generate_player_income()
-		mainScene.client.rpc("payout", gcs.send_main_planet_info())
 		mainScene.start_payout_cycle()
+		mainScene.client.rpc("payout", gcs.send_main_planet_info(), mainScene.payoutTimer.time_left)
 
 @rpc("any_peer") # clients can call this
 func request_XXX():

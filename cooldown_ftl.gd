@@ -1,6 +1,7 @@
 extends RichTextLabel
 
 var fleet
+var fleetUI
 var mainScene
 var remaining = 0
 var server_offset = 0
@@ -27,7 +28,9 @@ func cd_check():
 
 func _process(_delta):
 	text = "AVAILABLE"
-	if fleet.fleet_params != null :
+	if fleet.fleet_params != null and fleetUI != null:
+		fleetUI.update_cooldown_text("READY")
 		if remaining > 0:
 			_init_cd()
 			text = "Back in : " + str(int(round(remaining))) + "s"
+			fleetUI.update_cooldown_text(str(int(round(remaining))) + "s")

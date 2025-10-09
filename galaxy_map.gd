@@ -2,7 +2,7 @@ extends Node2D
 
 @onready var gcs = $GalaxyCFGSaver
 const SAVE_PATH = "res://Galaxy_Saver/galaxy_saver.cfg"
-
+var unit_display = load("res://UI/unit_display.tscn")
 var num_planets = 500
 var galaxy_radius : float = 10000.0
 var min_distance : float = 500.0
@@ -78,6 +78,13 @@ func get_conquered(planet):
 			if p.position.distance_to(planet.position) < 1000  and p.planet_params["conquered"] and planet.planet_params["conquered"]:
 				conquered_line.append([p,planet])
 
+func get_conquered_amount():
+	var conquered_list = []
+	for p in placed_planet :
+		if p.planet_params["conquered"] :
+			conquered_list.append(p)
+	return conquered_list
+
 func _draw() -> void:
 	draw_circle(position, galaxy_radius + 200.0, Color.YELLOW_GREEN, false, 100.0)
 	for line in connexion_line:
@@ -115,7 +122,29 @@ func update_galaxy_map_cfg():
 						config.set_value(planet_name, key, planet_list[planet_name][key])
 		config.save(SAVE_PATH)
 
-func job_done():
+func job_done(player_id, planet_name, unit_type):
 	update_galaxy_map()
 	update_galaxy_map_cfg()
 	mainScene._update_ship_status()
+	unit_gone(player_id, planet_name, unit_type)
+
+func Unit_sent(player_id, planet_name, unit_type):
+	if unit_type < 4 :
+		var instance = unit_display.instantiate()
+		for planet in placed_planet :
+			if planet_name == planet.name :
+				instance.planet_name = planet_name
+				instance.type = unit_type
+				instance.player_id = player_id
+				planet.add_child(instance)
+
+func unit_gone(player_id, planet_name, unit_type):
+	if unit_type < 4 :
+		for planet in placed_planet :
+			for unit in planet.get_children():
+				if unit.name == player_id + "_" + str(unit_type) + "_" + planet_name :
+					unit.queue_free()
+
+func generate_active_unit(unit_list, unit_type):
+	for unit in unit_list.keys():
+		Unit_sent(unit, unit_list[unit], unit_type)

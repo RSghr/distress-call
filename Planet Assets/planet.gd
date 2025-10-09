@@ -4,9 +4,11 @@ extends Node2D
 @onready var land = $Base/Land
 @onready var name_text = $Planet_Name
 @onready var conquered = $Conquered
+@onready var details = $Base/Details
 var planet_detail
+var viewed = true
 
-var planet_details = load("res://Planet Assets/planet_detail.tscn")
+var planet_detail_obj = load("res://Planet Assets/planet_detail.tscn")
 
 var initialScale = Vector2.ZERO
 
@@ -67,16 +69,18 @@ func init_sprite():
 	land.position.y += randi_range(-256,256)
 	land.rotate(deg_to_rad(randf_range(0, 180)))
 
-func _on_details_toggled(toggled_on: bool) -> void:
-	if toggled_on :
+func _on_details_toggled(_toggled_on: bool) -> void:
+	if viewed :
 		var scaleCheck = scale.lerp(initialScale * 1.5, 1)
 		scale = scaleCheck
-		var instance = planet_details.instantiate()
+		var instance = planet_detail_obj.instantiate()
 		add_child(instance)
 		instance.position += Vector2(256, -1000)
 		instance.fill_info($".")
 		planet_detail = instance
+		viewed = false
 	else :
-		mainScene.valdiate_list.erase(planet_detail)
-		planet_detail.queue_free()
+		if planet_detail != null :
+			planet_detail.queue_free()
 		scale = initialScale
+		viewed = true

@@ -1,0 +1,65 @@
+[gd_resource type="Theme" load_steps=12 format=3 uid="uid://r1cmuoc1rfu2"]
+
+[ext_resource type="Texture2D" uid="uid://1baxpme7pbsv" path="res://UI/button.png" id="1_eve0e"]
+[ext_resource type="FontFile" uid="uid://d17mw47gg1psr" path="res://UI/Robotica.ttf" id="1_gjswn"]
+[ext_resource type="Texture2D" uid="uid://cxsvj75kxxwo1" path="res://UI/FronControl_3x3.png" id="1_k5vi4"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v7kl7"]
+texture = ExtResource("1_eve0e")
+modulate_color = Color(0.0468083, 0.0791044, 0.146421, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mfxc3"]
+texture = ExtResource("1_eve0e")
+modulate_color = Color(0.207973, 0.288355, 0.455323, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1o7uv"]
+texture = ExtResource("1_eve0e")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+modulate_color = Color(0.0936, 0.1424, 0.24, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ono1f"]
+texture = ExtResource("1_eve0e")
+texture_margin_left = 5.0
+texture_margin_right = 5.0
+modulate_color = Color(0.0941176, 0.141176, 0.239216, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k4hyj"]
+texture = ExtResource("1_eve0e")
+texture_margin_left = 10.0
+texture_margin_right = 10.0
+modulate_color = Color(0.0941176, 0.141176, 0.239216, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_270bb"]
+texture = ExtResource("1_k5vi4")
+texture_margin_left = 100.0
+texture_margin_top = 50.0
+texture_margin_right = 100.0
+texture_margin_bottom = 100.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eve0e"]
+texture = ExtResource("1_k5vi4")
+texture_margin_left = 35.0
+texture_margin_top = 35.0
+texture_margin_right = 35.0
+texture_margin_bottom = 35.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gjswn"]
+texture = ExtResource("1_k5vi4")
+expand_margin_bottom = 20.0
+
+[resource]
+Button/fonts/font = ExtResource("1_gjswn")
+Button/styles/disabled = SubResource("StyleBoxTexture_v7kl7")
+Button/styles/hover = SubResource("StyleBoxTexture_mfxc3")
+Button/styles/normal = SubResource("StyleBoxTexture_1o7uv")
+LineEdit/fonts/font = ExtResource("1_gjswn")
+LineEdit/styles/focus = SubResource("StyleBoxTexture_ono1f")
+LineEdit/styles/normal = SubResource("StyleBoxTexture_k4hyj")
+Panel/styles/panel = SubResource("StyleBoxTexture_270bb")
+RichTextLabel/fonts/normal_font = ExtResource("1_gjswn")
+TabContainer/fonts/font = ExtResource("1_gjswn")
+TabContainer/styles/panel = SubResource("StyleBoxTexture_eve0e")
+TabContainer/styles/tab_focus = SubResource("StyleBoxTexture_gjswn")

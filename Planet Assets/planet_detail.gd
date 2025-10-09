@@ -23,7 +23,6 @@ var mainScene
 
 func _ready():
 	mainScene = get_tree().root.get_child(0)
-	mainScene.valdiate_list = get_tree().get_nodes_in_group("validate")
 	
 func fill_info(planet_data):
 	planet = planet_data
@@ -50,17 +49,26 @@ func fill_info(planet_data):
 	# Fill actions tab dynamically
 	if planet.planet_params["nearby"] :
 		moveto.disabled = false
-		if !planet.planet_params["discovered"] :
-			scout.disabled = false
-		else :
-			if !planet.planet_params["conquered"] and planet.planet_params["inhabited"] :
+		if planet.planet_params["discovered"] :
+			if planet.planet_params["inhabited"] :
+				negotiate.disabled = false
+				if !planet.planet_params["conquered"] :
 					attack.disabled = false
 					negotiate.disabled = false
-	
-	if mainScene.player.on_planet() == planet and !planet.planet_params["conquered"] : 
-		colonize.disabled = false
-		attack.disabled = false
-		negotiate.disabled = false
+		else :
+			scout.disabled = false
+	elif mainScene.player.on_planet() == planet :
+		if planet.planet_params["discovered"] :
+			if planet.planet_params["conquered"] :
+				negotiate.disabled = false
+			else :
+				if planet.planet_params["inhabited"] :
+					negotiate.disabled = false
+					attack.disabled = false
+				if planet.planet_params["will"] <= 50 :
+					colonize.disabled = false
+		else :
+			scout.disabled = false
 
 func will_status(will):
 	if will > 100 :
@@ -96,29 +104,29 @@ func _on_colonize_button_down() -> void:
 
 #DISPLAY UNIT COST
 func _on_negotiate_mouse_entered() -> void:
-	unit_cost.self_modulate.a = 1
-	unit_cost.text = str(int(5000 * mainScene.player.fleet.negotiator.total_strength)) + " CU"
+	unit_cost.modulate.a = 1
+	unit_cost.text = str(int(5000 * mainScene.player.fleet.negotiator.total_strength))
 
 func _on_scout_mouse_entered() -> void:
-	unit_cost.self_modulate.a = 1
-	unit_cost.text = str(int(25000 * mainScene.player.fleet.scout.total_strength)) + " CU"
+	unit_cost.modulate.a = 1
+	unit_cost.text = str(int(25000 * mainScene.player.fleet.scout.total_strength))
 
 func _on_colonize_mouse_entered() -> void:
-	unit_cost.self_modulate.a = 1
-	unit_cost.text = str(int(50000 * mainScene.player.fleet.colony.total_strength)) + " CU"
+	unit_cost.modulate.a = 1
+	unit_cost.text = str(int(50000 * mainScene.player.fleet.colony.total_strength))
 
 func _on_attack_mouse_entered() -> void:
-	unit_cost.self_modulate.a = 1
-	unit_cost.text = str(int(10000 * mainScene.player.fleet.troop.total_strength)) + " CU"
+	unit_cost.modulate.a = 1
+	unit_cost.text = str(int(10000 * mainScene.player.fleet.troop.total_strength))
 
 func _on_negotiate_mouse_exited() -> void:
-	unit_cost.self_modulate.a = 0
+	unit_cost.modulate.a = 0
 
 func _on_attack_mouse_exited() -> void:
-	unit_cost.self_modulate.a = 0
+	unit_cost.modulate.a = 0
 
 func _on_scout_mouse_exited() -> void:
-	unit_cost.self_modulate.a = 0
+	unit_cost.modulate.a = 0
 
 func _on_colonize_mouse_exited() -> void:
-	unit_cost.self_modulate.a = 0
+	unit_cost.modulate.a = 0

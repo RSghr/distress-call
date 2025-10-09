@@ -1,3 +1,3 @@
 extends Control
 
-@onready var CoreUnit = $CoreUnitValue
+@onready var CoreUnit = $Panel/MarginContainer/HBoxContainer/CoreUnitValue
