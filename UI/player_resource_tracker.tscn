@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://jkh2dduq677c"]
+[gd_scene load_steps=11 format=3 uid="uid://jkh2dduq677c"]
 
 [ext_resource type="Script" uid="uid://cqubmvi7hvj6e" path="res://UI/player_resource_tracker.gd" id="1_l2151"]
 [ext_resource type="Theme" uid="uid://r1cmuoc1rfu2" path="res://UI/Maintheme.tres" id="1_uuial"]
@@ -6,6 +6,45 @@
 [ext_resource type="Texture2D" uid="uid://cxsvj75kxxwo1" path="res://UI/FronControl_3x3.png" id="3_3gj11"]
 [ext_resource type="PackedScene" uid="uid://djqy2o1an6fi0" path="res://UI/unit_cooldown_ui.tscn" id="3_k22nd"]
 [ext_resource type="Script" uid="uid://brsmgw2tbs033" path="res://addons/alternatetimer/AlternateTimer.gd" id="6_o1upi"]
+[ext_resource type="Texture2D" uid="uid://5ll3rxjbj5od" path="res://UI/Tuto_bubble.png" id="7_7mb36"]
+
+[sub_resource type="Animation" id="Animation_7mb36"]
+resource_name = "Tip_Glow"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.443137), Color(1, 1, 1, 0.196078), Color(1, 1, 1, 0.443137)]
+}
+
+[sub_resource type="Animation" id="Animation_7konj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TextureRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.443137)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_s5lwu"]
+_data = {
+&"RESET": SubResource("Animation_7konj"),
+&"Tip_Glow": SubResource("Animation_7mb36")
+}
 
 [node name="PlayerResourceTracker" type="Control"]
 layout_mode = 3
@@ -105,6 +144,33 @@ layout_mode = 2
 size_flags_horizontal = 3
 unit_type = "FTL.png"
 type = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="CooldownPanel"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = -116.0
+offset_right = 1497.0
+offset_bottom = 10.0
+
+[node name="TextureRect" type="TextureRect" parent="CooldownPanel/MarginContainer"]
+modulate = Color(1, 1, 1, 0.443137)
+layout_mode = 2
+texture = ExtResource("7_7mb36")
+expand_mode = 1
+
+[node name="Tip" type="RichTextLabel" parent="CooldownPanel/MarginContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_font_sizes/normal_font_size = 29
+text = "Press 'C' to locate your ship"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CooldownPanel/MarginContainer"]
+libraries = {
+&"": SubResource("AnimationLibrary_s5lwu")
+}
+autoplay = "Tip_Glow"
 
 [node name="PayoutPanel" type="NinePatchRect" parent="."]
 layout_mode = 1

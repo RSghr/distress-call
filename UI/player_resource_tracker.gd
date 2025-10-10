@@ -5,11 +5,29 @@ extends Control
 @onready var payoutTimer = $PayoutPanel/MarginContainer/AlternateTimer
 @onready var payoutDisplay = $PayoutPanel/MarginContainer/PayoutValue
 @onready var version = $Version
+@onready var tip_locate = $CooldownPanel/MarginContainer
 
-func _ready() -> void:
+var player_focus = Vector2.ZERO
+var tip_inc = 0
+var tip_delay = 150
+var mainScene
+#On ready attach objects
+func _ready():
+	mainScene = get_tree().root.get_child(0)
 	version.text = "Version: " + ProjectSettings.get_setting("application/config/version")
 
 func _process(_delta: float) -> void:
+	player_focus = mainScene.cam.position
+	var dist = player_focus.distance_to(mainScene.player.position)
+	if dist > 1000:
+		tip_inc += 1
+	else :
+		tip_locate.visible = false
+		tip_inc = 0
+
+	if tip_inc >= tip_delay :
+		tip_locate.visible = true
+		
 	if payoutTimer.timer_active :
 		var timerleft = payoutTimer.remaining_time()
 		var timerTxt = []
