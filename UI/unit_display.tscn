@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://cgol5mpift3ud"]
+
+[ext_resource type="Script" uid="uid://drnh534mgjwdj" path="res://unit_display.gd" id="1_etgv2"]
+[ext_resource type="Texture2D" uid="uid://6rrfpq3ffxop" path="res://Planet Assets/Base.png" id="2_3sdnu"]
+[ext_resource type="Texture2D" uid="uid://cjjmoxh3cogxw" path="res://UI/Units/Troops.png" id="3_qot7w"]
+[ext_resource type="Texture2D" uid="uid://c7hkvy0o8vo3m" path="res://UI/Units/Negotiators.png" id="4_j0gul"]
+[ext_resource type="Texture2D" uid="uid://c04ygpktjk2k8" path="res://UI/Units/Scouts.png" id="5_8di04"]
+[ext_resource type="Texture2D" uid="uid://bnfjhq1nfsknh" path="res://UI/Units/Colony.png" id="6_nh3cs"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wgki6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_qot7w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_j0gul")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_8di04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_nh3cs")
+}],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Unit_Display" type="Node2D"]
+script = ExtResource("1_etgv2")
+
+[node name="Unit" type="TextureRect" parent="."]
+self_modulate = Color(0.0901961, 1, 1, 1)
+clip_children = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_3sdnu")
+expand_mode = 1
+
+[node name="Unit_type" type="AnimatedSprite2D" parent="Unit"]
+position = Vector2(25, 25)
+scale = Vector2(0.0908203, 0.0908203)
+sprite_frames = SubResource("SpriteFrames_wgki6")

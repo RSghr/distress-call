@@ -8,17 +8,31 @@ extends Node2D
 @onready var galaxy = $"Galaxy Map"
 @onready var fleetStatus = $Fleet_Status
 @onready var fleetHolder = $FleetHolder
+@onready var audio_ost = $SpaceExplorationOst
+@onready var prt = $"Player UI/PlayerResourceTracker"
 
 var fleet_obj = load("res://Player Assets/fleet_Other.tscn")
 
 var startup = true
 
-var valdiate_list
+var planet_detail_list = []
 
 func _ready() -> void:
-	valdiate_list = get_tree().get_nodes_in_group("validate")
 	_init_player_pos()
 	_update_ship_status()
+
+func _unhandled_input(event):
+	if event.is_action_pressed("Increase_Volume") and audio_ost.volume_db < 5:
+		audio_ost.volume_db += 10
+	elif event.is_action_pressed("Decrease_Volume") and audio_ost.volume_db > -50:
+		audio_ost.volume_db -= 10
+	elif event.is_action_pressed("CloseAll") :
+		planet_detail_list = []
+		if fleetStatus.visible :
+			fleetStatus.playerUI._on_back_button_down()
+		planet_detail_list = get_tree().get_nodes_in_group("panel_UI")
+		for planet_detail in planet_detail_list :
+			planet_detail.get_parent()._on_details_toggled(false)
 
 func _init_player_pos():
 	if player.fleet.fleet_params["fleet_position"] == "" :
@@ -27,10 +41,10 @@ func _init_player_pos():
 		client.request_load_fleet_units(player.fleet)
 
 func post_server_init_player_pos():
-	client.request_load_cooldown(player.fleet)
 	player.init_player()
 	displace_player(player, player.on_planet())
 	on_fleet_units_action()
+	player.fleet.set_fleet_name()
 	startup = false
 
 func displace_player(player_target,planet):
@@ -44,9 +58,11 @@ func init_fleets(fleet_list):
 		if fleet != player.fleet.player_id :
 			var instance = fleet_obj.instantiate()
 			instance.player_id = fleet
-			instance.fleet_params["fleet_position"] = fleet_list[fleet]
+			instance.fleet_params["fleet_name"] = fleet_list[fleet][0]
+			instance.fleet_params["fleet_position"] = fleet_list[fleet][1]
 			displace_player(instance, find_planet(instance.fleet_params["fleet_position"]))
 			fleetHolder.add_child(instance)
+			instance.set_fleet_name()
 
 func update_planet_data(planet_list):
 	galaxy.planet_list = planet_list
@@ -68,12 +84,16 @@ func switch_to_fleet_status():
 		fleetStatus.visible = true
 		player.visible = false
 		galaxy.visible = false
+		prt.visible = false
+		fleetHolder.visible = false
 		
 	else :
 		cam.make_current()
 		fleetStatus.visible = false
 		player.visible = true
 		galaxy.visible = true
+		prt.visible = true
+		fleetHolder.visible = true
 
 func _update_ship_status():
 	fleetStatus.playerUI.ship_name.text = player.fleet.fleet_params["fleet_name"]
@@ -93,17 +113,19 @@ func _deploy_unit(unit_type, planet_name):
 func ftl_saver(planet_name):
 	client.request_move_fleet(player.fleet.player_id, planet_name)
 
-func job_done():
+func job_done(player_id, planet_name, unit_type):
 	client.request_load_fleet_units(player.fleet)
-	galaxy.job_done()
-	
+	galaxy.job_done(player_id, planet_name, unit_type)
 
 func validate_server_call():
-	for valid in valdiate_list:
+	for valid in get_tree().get_nodes_in_group("validate"):
 		if valid != null :
 			valid.play("Validate")
 
 func deny_server_call():
-	for valid in valdiate_list:
+	for valid in get_tree().get_nodes_in_group("validate"):
 		if valid != null :
 			valid.play("Deny")
+
+func _on_space_exploration_ost_finished() -> void:
+	audio_ost.play()

@@ -1,14 +1,16 @@
-[gd_scene load_steps=10 format=3 uid="uid://ce4bmgcqmn00y"]
+[gd_scene load_steps=12 format=3 uid="uid://ce4bmgcqmn00y"]
 
 [ext_resource type="Script" uid="uid://qcvnci083i5m" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://b1ubrv2hyhcqy" path="res://galaxy_map.tscn" id="1_ig7tw"]
-[ext_resource type="Script" uid="uid://dklvd3m52mvjq" path="res://Planet Assets/MapCamera2D.gd" id="3_h2yge"]
 [ext_resource type="PackedScene" uid="uid://cloaow5okt3h1" path="res://Player Assets/player.tscn" id="4_1bvp3"]
+[ext_resource type="Script" uid="uid://bmond65vxbodc" path="res://Player Assets/player_cam.gd" id="4_4c57u"]
+[ext_resource type="PackedScene" uid="uid://jkh2dduq677c" path="res://UI/player_resource_tracker.tscn" id="5_efxa6"]
 [ext_resource type="PackedScene" uid="uid://b5s1sdpoq7561" path="res://fleet_status.tscn" id="6_7mycd"]
 [ext_resource type="PackedScene" uid="uid://dww7qkpskcnvf" path="res://cfg_savers/player_cfg_saver.tscn" id="6_272bh"]
 [ext_resource type="PackedScene" uid="uid://dyakavkrkucu4" path="res://client.tscn" id="7_272bh"]
 [ext_resource type="PackedScene" uid="uid://5rbgjrx7y38m" path="res://server.tscn" id="8_5vw27"]
 [ext_resource type="Texture2D" uid="uid://b6j36kkjp6luh" path="res://Planet Assets/Background.png" id="9_kek77"]
+[ext_resource type="AudioStream" uid="uid://bhpa4qbelid2h" path="res://UI/space_exploration_OST.ogg" id="10_4c57u"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_0xm2m")
@@ -21,7 +23,12 @@ texture = ExtResource("9_kek77")
 [node name="Galaxy Map" parent="." instance=ExtResource("1_ig7tw")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-script = ExtResource("3_h2yge")
+limit_left = -13000
+limit_top = -13000
+limit_right = 13000
+limit_bottom = 13000
+editor_draw_limits = true
+script = ExtResource("4_4c57u")
 
 [node name="PlayerHolder" type="Node2D" parent="."]
 
@@ -37,3 +44,15 @@ visible = false
 [node name="Server" parent="." instance=ExtResource("8_5vw27")]
 
 [node name="FleetHolder" type="Node2D" parent="."]
+
+[node name="SpaceExplorationOst" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_4c57u")
+volume_db = -15.0
+autoplay = true
+mix_target = 1
+
+[node name="Player UI" type="CanvasLayer" parent="."]
+
+[node name="PlayerResourceTracker" parent="Player UI" instance=ExtResource("5_efxa6")]
+
+[connection signal="finished" from="SpaceExplorationOst" to="." method="_on_space_exploration_ost_finished"]

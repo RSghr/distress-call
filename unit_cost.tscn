@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://clm408o2b5qjh"]
+[gd_scene load_steps=2 format=3 uid="uid://clm408o2b5qjh"]
+
+[ext_resource type="Texture2D" uid="uid://1adqcaudehr3" path="res://UI/CoreUnit.png" id="1_tut10"]
 
 [node name="Unit_Cost" type="RichTextLabel"]
 custom_minimum_size = Vector2(330, 75)
@@ -17,5 +19,13 @@ theme_override_font_sizes/normal_font_size = 50
 bbcode_enabled = true
 text = "50000 CU"
 scroll_active = false
-horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 261.0
+offset_top = -0.5
+offset_right = 336.0
+offset_bottom = 74.5
+texture = ExtResource("1_tut10")
+expand_mode = 1

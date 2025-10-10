@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://c510o7ictlouj"]
+
+[ext_resource type="Script" uid="uid://liisjflwf1vv" path="res://codex_entry.gd" id="1_r736h"]
+
+[node name="Codex_Entry" type="HBoxContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_r736h")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+
+[node name="Label" type="RichTextLabel" parent="MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 28
+bbcode_enabled = true
+text = "General info"
+vertical_alignment = 1
+
+[node name="Separator" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+
+[node name="ColorRect" type="VSeparator" parent="Separator"]
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Content" type="RichTextLabel" parent="MarginContainer2"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+text = "Content"
+vertical_alignment = 1

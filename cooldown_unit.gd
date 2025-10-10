@@ -1,6 +1,7 @@
 extends RichTextLabel
 
 var unit
+var unitUI
 var mainScene
 var remaining = 0
 var server_offset = 0
@@ -28,7 +29,9 @@ func cd_check():
 
 func _process(_delta):
 	text = "DEPLOYABLE"
-	if unit.unit_params != null :
+	if unit.unit_params != null and unitUI != null:
+		unitUI.update_cooldown_text("READY")
 		if remaining > 0:
 			_init_cd()
 			text = "Back in : " + str(int(round(remaining))) + "s"
+			unitUI.update_cooldown_text(str(int(round(remaining))) + "s")

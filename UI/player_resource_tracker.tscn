@@ -1,0 +1,160 @@
+[gd_scene load_steps=7 format=3 uid="uid://jkh2dduq677c"]
+
+[ext_resource type="Script" uid="uid://cqubmvi7hvj6e" path="res://UI/player_resource_tracker.gd" id="1_l2151"]
+[ext_resource type="Theme" uid="uid://r1cmuoc1rfu2" path="res://UI/Maintheme.tres" id="1_uuial"]
+[ext_resource type="Texture2D" uid="uid://1adqcaudehr3" path="res://UI/CoreUnit.png" id="2_k22nd"]
+[ext_resource type="Texture2D" uid="uid://cxsvj75kxxwo1" path="res://UI/FronControl_3x3.png" id="3_3gj11"]
+[ext_resource type="PackedScene" uid="uid://djqy2o1an6fi0" path="res://UI/unit_cooldown_ui.tscn" id="3_k22nd"]
+[ext_resource type="Script" uid="uid://brsmgw2tbs033" path="res://addons/alternatetimer/AlternateTimer.gd" id="6_o1upi"]
+
+[node name="PlayerResourceTracker" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_l2151")
+
+[node name="CoreUnitPanel" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -413.0
+offset_bottom = 100.0
+grow_horizontal = 0
+theme = ExtResource("1_uuial")
+texture = ExtResource("3_3gj11")
+patch_margin_left = 50
+patch_margin_top = 50
+patch_margin_right = 50
+patch_margin_bottom = 50
+
+[node name="MarginContainer" type="MarginContainer" parent="CoreUnitPanel"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 16.0
+offset_right = 411.0
+offset_bottom = 82.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CoreUnitPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="CoreUnitPanel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("2_k22nd")
+expand_mode = 1
+
+[node name="CoreUnitValue" type="RichTextLabel" parent="CoreUnitPanel/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(330, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/normal_font_size = 45
+text = "8000000"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="CooldownPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -749.0
+offset_top = -121.0
+offset_right = 749.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("1_uuial")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CooldownPanel"]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 18.0
+offset_right = 1476.0
+offset_bottom = 102.0
+
+[node name="ScoutCD" parent="CooldownPanel/HBoxContainer" instance=ExtResource("3_k22nd")]
+layout_mode = 2
+size_flags_horizontal = 3
+unit_type = "Scouts.png"
+type = 2
+
+[node name="TroopCD" parent="CooldownPanel/HBoxContainer" instance=ExtResource("3_k22nd")]
+layout_mode = 2
+size_flags_horizontal = 3
+unit_type = "Troops.png"
+type = 0
+
+[node name="NegotiatorCD" parent="CooldownPanel/HBoxContainer" instance=ExtResource("3_k22nd")]
+layout_mode = 2
+size_flags_horizontal = 3
+unit_type = "Negotiators.png"
+type = 1
+
+[node name="ColonyCD" parent="CooldownPanel/HBoxContainer" instance=ExtResource("3_k22nd")]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FTLCD" parent="CooldownPanel/HBoxContainer" instance=ExtResource("3_k22nd")]
+layout_mode = 2
+size_flags_horizontal = 3
+unit_type = "FTL.png"
+type = 4
+
+[node name="PayoutPanel" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -564.0
+offset_right = -415.0
+offset_bottom = 100.0
+grow_horizontal = 0
+theme = ExtResource("1_uuial")
+texture = ExtResource("3_3gj11")
+patch_margin_left = 50
+patch_margin_top = 50
+patch_margin_right = 50
+patch_margin_bottom = 50
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PayoutPanel"]
+layout_mode = 2
+offset_top = -3.0
+offset_right = 148.0
+offset_bottom = 72.0
+text = "Payout in"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="PayoutPanel"]
+layout_mode = 0
+offset_top = 29.0
+offset_right = 148.0
+offset_bottom = 104.0
+
+[node name="PayoutValue" type="RichTextLabel" parent="PayoutPanel/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/normal_font_size = 27
+text = "00:00"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AlternateTimer" type="Node" parent="PayoutPanel/MarginContainer"]
+script = ExtResource("6_o1upi")
+one_shot = true
+metadata/_custom_type_script = "uid://brsmgw2tbs033"
+
+[node name="Version" type="RichTextLabel" parent="."]
+modulate = Color(1, 1, 1, 0.513726)
+layout_mode = 0
+offset_right = 117.0
+offset_bottom = 26.0
+text = "Version: 0.0.0 "
+scroll_active = false

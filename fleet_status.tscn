@@ -12,10 +12,5 @@ offset_top = -499.0
 offset_right = -677.0
 offset_bottom = -422.0
 
-[node name="Back" type="Button" parent="."]
-offset_left = 598.0
-offset_top = 411.0
-offset_right = 730.0
-offset_bottom = 477.0
-
-[connection signal="button_down" from="Back" to="." method="_on_back_button_down"]
+[connection signal="hidden" from="." to="." method="_on_hidden"]
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

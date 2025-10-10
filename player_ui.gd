@@ -14,12 +14,13 @@ extends Control
 @onready var negotiator_upgrade = $"MarginContainer/TabContainer/R&D/NegotiatorUpgrade3"
 @onready var colony_upgrade = $"MarginContainer/TabContainer/R&D/ColonyUpgrade4"
 
-@onready var scout_cooldown = $"MarginContainer/TabContainer/Unit Cooldown/Cooldown/ScoutContainer/cooldown_unit"
-@onready var troop_cooldown = $"MarginContainer/TabContainer/Unit Cooldown/Cooldown/TroopContainer/cooldown_unit"
-@onready var negotiator_cooldown = $"MarginContainer/TabContainer/Unit Cooldown/Cooldown/NegotiatorContainer/cooldown_unit"
-@onready var colony_cooldown = $"MarginContainer/TabContainer/Unit Cooldown/Cooldown/ColonyContainer/cooldown_unit"
+@onready var scout_cooldown = $"Unit Cooldown/Cooldown/ScoutContainer/cooldown_unit"
+@onready var troop_cooldown = $"Unit Cooldown/Cooldown/TroopContainer/cooldown_unit"
+@onready var negotiator_cooldown = $"Unit Cooldown/Cooldown/NegotiatorContainer/cooldown_unit"
+@onready var colony_cooldown = $"Unit Cooldown/Cooldown/ColonyContainer/cooldown_unit"
 
 @onready var playerGlobalResources = $PlayerGlobalResources
+@onready var anim_player = $AnimationPlayer
 
 var mainScene
 
@@ -31,6 +32,7 @@ func _ready():
 func _on_ship_name_text_submitted(new_text: String) -> void:
 	ship_name.text = new_text
 	mainScene.player.fleet.fleet_params["fleet_name"] = new_text
+	mainScene.player.fleet.set_fleet_name()
 	mainScene._update_ship_status()
 
 #UNIT STATUS TAB
@@ -105,6 +107,7 @@ func _init_upgrade():
 	
 func _update_PGR():
 	playerGlobalResources.CoreUnit.text = str(mainScene.player.fleet.fleet_params["CoreUnit"])
+	mainScene.prt.coreUnitCount.text = str(mainScene.player.fleet.fleet_params["CoreUnit"])
 	mainScene.player.calcul_curr_upgrades(5)
 	space.text = str(mainScene.player.fleet.fleet_params["current_space"]) + " / " + str(mainScene.player.fleet.fleet_params["total_space"])
 
@@ -119,6 +122,20 @@ func _init_cooldown():
 	troop_cooldown.server_offset = mainScene.player.fleet.server_offset
 	negotiator_cooldown.server_offset = mainScene.player.fleet.server_offset
 	colony_cooldown.server_offset = mainScene.player.fleet.server_offset
+	mainScene.prt.payoutTimer.server_offset = mainScene.player.fleet.server_offset
+	
+	for unitcd in mainScene.prt.unit_holder.get_children():
+		match unitcd.type:
+			0:
+				troop_cooldown.unitUI = unitcd
+			1:
+				negotiator_cooldown.unitUI = unitcd
+			2:
+				scout_cooldown.unitUI = unitcd
+			3:
+				colony_cooldown.unitUI = unitcd
+			4:
+				ftl_cooldown.fleetUI = unitcd
 
 func _update_cooldown():
 	ftl_cooldown._init_cd()
@@ -126,3 +143,8 @@ func _update_cooldown():
 	troop_cooldown._init_cd()
 	negotiator_cooldown._init_cd()
 	colony_cooldown._init_cd()
+
+
+func _on_back_button_down() -> void:
+	mainScene._update_ship_status()
+	mainScene.switch_to_fleet_status()

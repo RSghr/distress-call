@@ -20,10 +20,10 @@ var type = {
 var total_strength = 0
 
 const COOLDOWN = {
-	"Troop": 60.0, #100
-	"Negotiator": 35.0, #120 
-	"Scout": 90.0, #80
-	"Colony": 180.0 #60
+	"Troop": 		20.0, #100
+	"Negotiator": 	15.0, #120 
+	"Scout": 		25.0, #80
+	"Colony": 		30.0 #60
 	}
 
 func init_unit():

@@ -29,7 +29,7 @@ func _on_connected_to_server():
 	
 #PLAYER-RPC
 @rpc("authority")
-func confirm_registration(server_offset, fleet_list, planet_list):
+func confirm_registration(server_offset, fleet_list, planet_list, payoutTimer):
 	if is_server:
 		pass
 	else :
@@ -38,6 +38,7 @@ func confirm_registration(server_offset, fleet_list, planet_list):
 		mainScene.init_fleets(fleet_list)
 		mainScene.update_planet_data(planet_list)
 		mainScene.validate_server_call()
+		mainScene.prt.update_payout_timer(payoutTimer)
 		print("✅ Server confirmed registration for: ", client_id)
 
 @rpc("authority")
@@ -111,21 +112,22 @@ func deploy_unit(deploy_status, unit_type, planet_name, player_wealth):
 				0 : #Troop
 					mainScene.player.fleet.troop.unit_params["unit_position"] = str(planet_name)
 					mainScene.player.fleet.troop.unit_params["deploying"] = false
-					mainScene.player.fleet.troop.unit_params["next_available"] = deploy_status[1]
+					mainScene.player.fleet.troop.unit_params["next_available"] = deploy_status[1] + 10
 				1 : #Negotiator
 					mainScene.player.fleet.negotiator.unit_params["unit_position"] = str(planet_name)
 					mainScene.player.fleet.negotiator.unit_params["deploying"] = false
-					mainScene.player.fleet.negotiator.unit_params["next_available"] = deploy_status[1]
+					mainScene.player.fleet.negotiator.unit_params["next_available"] = deploy_status[1] + 10
 				2 : #Scout
 					mainScene.player.fleet.scout.unit_params["unit_position"] = str(planet_name)
 					mainScene.player.fleet.scout.unit_params["deploying"] = false
-					mainScene.player.fleet.scout.unit_params["next_available"] = deploy_status[1]
+					mainScene.player.fleet.scout.unit_params["next_available"] = deploy_status[1] + 10
 				3 : #Colony
 					mainScene.player.fleet.colony.unit_params["unit_position"] = str(planet_name)
 					mainScene.player.fleet.colony.unit_params["deploying"] = false
-					mainScene.player.fleet.colony.unit_params["next_available"] = deploy_status[1]
+					mainScene.player.fleet.colony.unit_params["next_available"] = deploy_status[1] + 10
 			mainScene.fleetStatus.playerUI._update_cooldown()
-			mainScene.fleetStatus.playerUI.playerGlobalResources.CoreUnit.text = str(player_wealth)
+			mainScene.player.fleet.fleet_params["CoreUnit"] = player_wealth
+			mainScene.galaxy.Unit_sent(client_id, str(planet_name), unit_type)
 			mainScene.validate_server_call()
 		else :
 			print("unit still on cooldown!")
@@ -177,19 +179,20 @@ func move_fleet(ftl_result):
 			mainScene.deny_server_call()
 
 @rpc("authority")
-func job_done(planet_list):
+func job_done(planet_list, player_id, planet_name, unit_type):
 	if is_server :
 		pass
 	else :
 		mainScene.galaxy.planet_list = planet_list
-		mainScene.job_done()
+		mainScene.job_done(player_id, planet_name, unit_type)
 
 @rpc("authority")
-func payout(planet_list):
+func payout(planet_list, payoutTimer):
 	if is_server :
-		mainScene.start_payout_cycle()
+		pass
 	else :
 		mainScene.galaxy.planet_list = planet_list
+		mainScene.prt.update_payout_timer(payoutTimer)
 		request_load_fleet_units(mainScene.player.fleet)
 
 #EXAMPLE REQUEST
