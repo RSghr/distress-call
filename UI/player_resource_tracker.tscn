@@ -150,3 +150,11 @@ vertical_alignment = 1
 script = ExtResource("6_o1upi")
 one_shot = true
 metadata/_custom_type_script = "uid://brsmgw2tbs033"
+
+[node name="Version" type="RichTextLabel" parent="."]
+modulate = Color(1, 1, 1, 0.513726)
+layout_mode = 0
+offset_right = 117.0
+offset_bottom = 26.0
+text = "Version: 0.0.0 "
+scroll_active = false

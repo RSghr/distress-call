@@ -59,6 +59,7 @@ LineEdit/fonts/font = ExtResource("1_gjswn")
 LineEdit/styles/focus = SubResource("StyleBoxTexture_ono1f")
 LineEdit/styles/normal = SubResource("StyleBoxTexture_k4hyj")
 Panel/styles/panel = SubResource("StyleBoxTexture_270bb")
+RichTextLabel/constants/line_separation = 10
 RichTextLabel/fonts/normal_font = ExtResource("1_gjswn")
 TabContainer/fonts/font = ExtResource("1_gjswn")
 TabContainer/styles/panel = SubResource("StyleBoxTexture_eve0e")

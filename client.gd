@@ -127,7 +127,7 @@ func deploy_unit(deploy_status, unit_type, planet_name, player_wealth):
 					mainScene.player.fleet.colony.unit_params["next_available"] = deploy_status[1] + 10
 			mainScene.fleetStatus.playerUI._update_cooldown()
 			mainScene.player.fleet.fleet_params["CoreUnit"] = player_wealth
-			mainScene.galaxy.Unit_sent(str(planet_name), unit_type)
+			mainScene.galaxy.Unit_sent(client_id, str(planet_name), unit_type)
 			mainScene.validate_server_call()
 		else :
 			print("unit still on cooldown!")
@@ -192,18 +192,8 @@ func payout(planet_list, payoutTimer):
 		pass
 	else :
 		mainScene.galaxy.planet_list = planet_list
-		mainScene.prt.prt.payoutTimer.update_payout_timer(payoutTimer)
+		mainScene.prt.update_payout_timer(payoutTimer)
 		request_load_fleet_units(mainScene.player.fleet)
-
-@rpc("authority")
-func unit_update(troop_active, negotiator_active, scout_active, colony_active):
-	if is_server :
-		pass
-	else :
-		mainScene.galaxy.update_active_unit(troop_active, 0)
-		mainScene.galaxy.update_active_unit(negotiator_active, 1)
-		mainScene.galaxy.update_active_unit(scout_active, 2)
-		mainScene.galaxy.update_active_unit(colony_active, 3)
 
 #EXAMPLE REQUEST
 func request_XXX():

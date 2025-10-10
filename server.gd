@@ -74,7 +74,6 @@ func request_deploy_unit(player_id, unit_type, planet_name):
 		var peer = multiplayer.get_remote_sender_id()
 		mainScene.logging("Deploying unit : " + str(unit_type) + " for " + player_id)
 		mainScene.client.rpc_id(peer, "deploy_unit", ccs.deploy_unit_saver(player_id, unit_type, planet_name), unit_type, planet_name, pcs.unit_cost(player_id, unit_type))
-		mainScene.client.rpc("unit_update", pcs.get_all_active_units(player_id, "Troop"), pcs.get_all_active_units(player_id, "Negotiator"), pcs.get_all_active_units(player_id, "Scout"), pcs.get_all_active_units(player_id, "Colony"))
 
 @rpc("any_peer") # clients can call this
 func request_load_cooldown(player_id):

@@ -4,6 +4,10 @@ extends Control
 @onready var coreUnitCount = $CoreUnitPanel/MarginContainer/HBoxContainer/CoreUnitValue
 @onready var payoutTimer = $PayoutPanel/MarginContainer/AlternateTimer
 @onready var payoutDisplay = $PayoutPanel/MarginContainer/PayoutValue
+@onready var version = $Version
+
+func _ready() -> void:
+	version.text = "Version: " + ProjectSettings.get_setting("application/config/version")
 
 func _process(_delta: float) -> void:
 	if payoutTimer.timer_active :

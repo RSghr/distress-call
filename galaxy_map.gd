@@ -89,9 +89,11 @@ func _draw() -> void:
 	draw_circle(position, galaxy_radius + 200.0, Color.YELLOW_GREEN, false, 100.0)
 	for line in connexion_line:
 		if !conquered_line.has(line):
-			draw_line(line[0].position, line[1].position, Color.SLATE_BLUE, 10.0)
+			draw_line(line[0].position, line[1].position, Color.DARK_SLATE_BLUE, 15.0)
+			draw_line(line[0].position, line[1].position, Color.SLATE_BLUE, 5.0)
 	for line in conquered_line:
-		draw_line(line[0].position, line[1].position, Color.GREEN, 10.0)
+		draw_line(line[0].position, line[1].position, Color.DARK_GREEN, 15.0)
+		draw_line(line[0].position, line[1].position, Color.GREEN, 5.0)
 
 func update_galaxy_map():
 	for planet in placed_planet :
@@ -144,7 +146,3 @@ func unit_gone(player_id, planet_name, unit_type):
 			for unit in planet.get_children():
 				if unit.name == player_id + "_" + str(unit_type) + "_" + planet_name :
 					unit.queue_free()
-
-func generate_active_unit(unit_list, unit_type):
-	for unit in unit_list.keys():
-		Unit_sent(unit, unit_list[unit], unit_type)

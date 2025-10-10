@@ -18,7 +18,7 @@ func _ready() -> void:
 			content.text = "You are in command of a fleet and you are tasked to conquer the galaxy along with your teammates. (other players connected) \nThis codex will teach you about everything you need to know.\n\n If something is missing, just send a message to Pengus!"
 		"Fleet":
 			label.text = codex_idx
-			content.text = "It is you own HQ and base of operation. It will display everything you need to know about your ship's status, as well as your units.\n- [u]\"SHIP STATUS\" :[/u] you can rename your ship, see how much upgrades have been allocated, and when is the next FTL jump available.\n- [u]\"UNIT STATUS\" :[/u] where you can rename your units, see on which planet they are, and what is their current level.\n- [u]\"R&D\" :[/u] where you can upgrade your units, allocating levels how ever you want, as long as the unit is NOT deployed.\n- [u]\"Cooldown\" :[/u] which displays the cooldown left for each unit."
+			content.text = "It is you own HQ and base of operation. It will display everything you need to know about your ship's status, as well as your units.\n- [u]SHIP STATUS :[/u] you can rename your ship, see how much upgrades have been allocated, and when is the next FTL jump available.\n- [u]UNIT STATUS :[/u] where you can rename your units, see on which planet they are, and what is their current level.\n- [u]R&D :[/u] where you can upgrade your units, allocating levels how ever you want, as long as the unit is NOT deployed."
 
 		"Units":
 			label.text = codex_idx

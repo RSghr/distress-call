@@ -127,15 +127,15 @@ func _init_cooldown():
 	for unitcd in mainScene.prt.unit_holder.get_children():
 		match unitcd.type:
 			0:
-				unitcd = troop_cooldown.unitUI
+				troop_cooldown.unitUI = unitcd
 			1:
-				unitcd = negotiator_cooldown.unitUI
+				negotiator_cooldown.unitUI = unitcd
 			2:
-				unitcd = scout_cooldown.unitUI
+				scout_cooldown.unitUI = unitcd
 			3:
-				unitcd = colony_cooldown.unitUI
+				colony_cooldown.unitUI = unitcd
 			4:
-				unitcd = ftl_cooldown.fleetUI
+				ftl_cooldown.fleetUI = unitcd
 
 func _update_cooldown():
 	ftl_cooldown._init_cd()

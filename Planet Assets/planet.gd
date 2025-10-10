@@ -29,7 +29,10 @@ var mainScene
 
 func _ready():
 	mainScene = get_tree().root.get_child(0)
-	conquered.self_modulate.a = 0
+	if planet_params["conquered"] :
+		conquered.self_modulate.a = 1
+	else :
+		conquered.self_modulate.a = 0
 	initialScale = scale
 
 #UNUSED

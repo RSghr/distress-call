@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://c0k4lbf6ystdb"]
+[gd_scene load_steps=61 format=3 uid="uid://c0k4lbf6ystdb"]
 
 [ext_resource type="Script" uid="uid://u1dxgtktyy8b" path="res://player_ui.gd" id="1_5m0x8"]
 [ext_resource type="Texture2D" uid="uid://s73eehfujpsy" path="res://Planet Assets/Fleet.png" id="1_lwipk"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://wn1ryl7galni" path="res://UI/Units/UnitList.png" id="5_wotjm"]
 [ext_resource type="PackedScene" uid="uid://c510o7ictlouj" path="res://codex_entry.tscn" id="6_cbg41"]
 [ext_resource type="Texture2D" uid="uid://bvlw46r5nuvd7" path="res://Validate.png" id="7_gxl1c"]
+[ext_resource type="Theme" uid="uid://cr4wqlqrjqtjv" path="res://UI/codex.tres" id="7_iniqa"]
 [ext_resource type="Texture2D" uid="uid://dcepmqmnhr7fc" path="res://Deny.png" id="7_vg8o0"]
 [ext_resource type="Texture2D" uid="uid://bda8pww2cmvco" path="res://UI/Enter.png" id="12_qadsr"]
 
@@ -441,7 +442,6 @@ offset_right = 6.0
 offset_bottom = 4.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("2_qadsr")
 script = ExtResource("1_5m0x8")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -454,11 +454,12 @@ offset_bottom = 977.0
 [node name="TabContainer" type="TabContainer" parent="MarginContainer"]
 layout_mode = 2
 theme = ExtResource("2_qadsr")
-current_tab = 1
+current_tab = 3
 
 [node name="Ship status" type="VBoxContainer" parent="MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
+theme = ExtResource("2_qadsr")
 metadata/_tab_index = 0
 
 [node name="Marge" type="MarginContainer" parent="MarginContainer/TabContainer/Ship status"]
@@ -553,7 +554,9 @@ size_flags_vertical = 3
 layout_mode = 2
 
 [node name="Unit status" type="HBoxContainer" parent="MarginContainer/TabContainer"]
+visible = false
 layout_mode = 2
+theme = ExtResource("2_qadsr")
 metadata/_tab_index = 1
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/TabContainer/Unit status"]
@@ -987,6 +990,7 @@ vertical_alignment = 1
 [node name="R&D" type="VBoxContainer" parent="MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
+theme = ExtResource("2_qadsr")
 alignment = 1
 metadata/_tab_index = 2
 
@@ -1027,13 +1031,14 @@ stat_params = {
 }
 
 [node name="Codex" type="BoxContainer" parent="MarginContainer/TabContainer"]
-visible = false
 layout_mode = 2
+theme = ExtResource("7_iniqa")
 metadata/_tab_index = 3
 
 [node name="TabContainer" type="TabContainer" parent="MarginContainer/TabContainer/Codex"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme = ExtResource("7_iniqa")
 current_tab = 0
 
 [node name="Player" type="HBoxContainer" parent="MarginContainer/TabContainer/Codex/TabContainer"]
