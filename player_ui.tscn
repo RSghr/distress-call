@@ -1,4 +1,4 @@
-[gd_scene load_steps=61 format=3 uid="uid://c0k4lbf6ystdb"]
+[gd_scene load_steps=72 format=3 uid="uid://c0k4lbf6ystdb"]
 
 [ext_resource type="Script" uid="uid://u1dxgtktyy8b" path="res://player_ui.gd" id="1_5m0x8"]
 [ext_resource type="Texture2D" uid="uid://s73eehfujpsy" path="res://Planet Assets/Fleet.png" id="1_lwipk"]
@@ -13,7 +13,10 @@
 [ext_resource type="Texture2D" uid="uid://bvlw46r5nuvd7" path="res://Validate.png" id="7_gxl1c"]
 [ext_resource type="Theme" uid="uid://cr4wqlqrjqtjv" path="res://UI/codex.tres" id="7_iniqa"]
 [ext_resource type="Texture2D" uid="uid://dcepmqmnhr7fc" path="res://Deny.png" id="7_vg8o0"]
+[ext_resource type="PackedScene" uid="uid://bro8xp2hofqo6" path="res://shop_item.tscn" id="7_y7vyt"]
 [ext_resource type="Texture2D" uid="uid://bda8pww2cmvco" path="res://UI/Enter.png" id="12_qadsr"]
+[ext_resource type="Texture2D" uid="uid://0ptndq8c6e8p" path="res://UI/Loading-Sheet.png" id="13_s8sf8"]
+[ext_resource type="PackedScene" uid="uid://cwvyaoa0by0w" path="res://tooltip.tscn" id="15_nma07"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5c62b"]
 atlas = ExtResource("7_vg8o0")
@@ -102,6 +105,38 @@ region = Rect2(1280, 0, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_x08co"]
 atlas = ExtResource("7_vg8o0")
 region = Rect2(1344, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7k4nn"]
+atlas = ExtResource("13_s8sf8")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wfakn"]
+atlas = ExtResource("13_s8sf8")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3veot"]
+atlas = ExtResource("13_s8sf8")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a5t2b"]
+atlas = ExtResource("13_s8sf8")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nywns"]
+atlas = ExtResource("13_s8sf8")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_urn77"]
+atlas = ExtResource("13_s8sf8")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_47jxv"]
+atlas = ExtResource("13_s8sf8")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5tb1l"]
+atlas = ExtResource("13_s8sf8")
+region = Rect2(448, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gxl1c"]
 atlas = ExtResource("7_gxl1c")
@@ -254,6 +289,35 @@ animations = [{
 }],
 "loop": false,
 "name": &"Deny",
+"speed": 16.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7k4nn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wfakn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3veot")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a5t2b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nywns")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_urn77")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_47jxv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5tb1l")
+}],
+"loop": true,
+"name": &"Loading",
 "speed": 16.0
 }, {
 "frames": [{
@@ -1030,10 +1094,186 @@ stat_params = {
 &"upgrade": 0
 }
 
+[node name="Galactic Shop" type="VBoxContainer" parent="MarginContainer/TabContainer"]
+layout_mode = 2
+theme = ExtResource("2_qadsr")
+metadata/_tab_index = 3
+
+[node name="Category1" type="RichTextLabel" parent="MarginContainer/TabContainer/Galactic Shop"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Unit base cost reduction"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="UnitCost" type="GridContainer" parent="MarginContainer/TabContainer/Galactic Shop"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+columns = 4
+
+[node name="ShopItem" parent="MarginContainer/TabContainer/Galactic Shop/UnitCost" instance=ExtResource("7_y7vyt")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Troops cost reduction"
+item_id = "TroopCost"
+tooltip = "Reduce the cost of Troops by 10%"
+price = 30000
+amount = 1
+
+[node name="ShopItem2" parent="MarginContainer/TabContainer/Galactic Shop/UnitCost" instance=ExtResource("7_y7vyt")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Negotiators cost reduction"
+item_id = "NegotiatorCost"
+tooltip = "Reduce the cost of Negotiators by 10%"
+price = 15000
+amount = 1
+
+[node name="ShopItem3" parent="MarginContainer/TabContainer/Galactic Shop/UnitCost" instance=ExtResource("7_y7vyt")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Scouts cost reduction"
+item_id = "ScoutCost"
+tooltip = "Reduce the cost of Scouts by 10%"
+price = 75000
+amount = 1
+
+[node name="ShopItem4" parent="MarginContainer/TabContainer/Galactic Shop/UnitCost" instance=ExtResource("7_y7vyt")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Colonies cost reduction"
+item_id = "ColonyCost"
+tooltip = "Reduce the cost of Colonies by 10%"
+price = 150000
+amount = 1
+
+[node name="Category2" type="RichTextLabel" parent="MarginContainer/TabContainer/Galactic Shop"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Unit base strength increase"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="UnitStrength" type="GridContainer" parent="MarginContainer/TabContainer/Galactic Shop"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+columns = 4
+
+[node name="ShopItem" parent="MarginContainer/TabContainer/Galactic Shop/UnitStrength" instance=ExtResource("7_y7vyt")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Troops strength increase"
+item_id = "TroopSTR"
+tooltip = "Increase base strength of the Troops by 10%"
+price = 20000
+amount = 1
+
+[node name="ShopItem2" parent="MarginContainer/TabContainer/Galactic Shop/UnitStrength" instance=ExtResource("7_y7vyt")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Negotiators strength increase"
+item_id = "NegotiatorSTR"
+tooltip = "Increase base strength of the Negotiator by 10%"
+price = 10000
+amount = 1
+
+[node name="ShopItem3" parent="MarginContainer/TabContainer/Galactic Shop/UnitStrength" instance=ExtResource("7_y7vyt")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Scouts strength increase"
+item_id = "ScoutSTR"
+tooltip = "Increase base strength of the Scouts by 10%"
+price = 50000
+
+[node name="ShopItem4" parent="MarginContainer/TabContainer/Galactic Shop/UnitStrength" instance=ExtResource("7_y7vyt")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Colonies strength increase"
+item_id = "ColonySTR"
+tooltip = "Increase base strength of the Colony by 10%"
+price = 100000
+
+[node name="Category3" type="RichTextLabel" parent="MarginContainer/TabContainer/Galactic Shop"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Ship modules"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="ShipUpgrades" type="GridContainer" parent="MarginContainer/TabContainer/Galactic Shop"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+columns = 4
+
+[node name="ShopItem" parent="MarginContainer/TabContainer/Galactic Shop/ShipUpgrades" instance=ExtResource("7_y7vyt")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Increase the maximum upgrade"
+item_id = "FleetMaxUp"
+tooltip = "Increase the maximum upgrades available by 5"
+price = 50000
+amount = 1
+
+[node name="ShopItem2" parent="MarginContainer/TabContainer/Galactic Shop/ShipUpgrades" instance=ExtResource("7_y7vyt")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Coming Soon"
+
+[node name="ShopItem3" parent="MarginContainer/TabContainer/Galactic Shop/ShipUpgrades" instance=ExtResource("7_y7vyt")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Coming Soon"
+
+[node name="ShopItem4" parent="MarginContainer/TabContainer/Galactic Shop/ShipUpgrades" instance=ExtResource("7_y7vyt")]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Coming Soon"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/TabContainer/Galactic Shop"]
+layout_mode = 2
+
+[node name="Donation" type="Button" parent="MarginContainer/TabContainer/Galactic Shop"]
+custom_minimum_size = Vector2(600, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 50
+text = "DONATE NOW!"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/TabContainer/Galactic Shop/Donation"]
+layout_mode = 0
+offset_top = 72.0
+offset_right = 598.0
+offset_bottom = 94.0
+theme_override_font_sizes/normal_font_size = 10
+text = "10 000 CU per donation"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DonationBar" type="ProgressBar" parent="MarginContainer/TabContainer/Galactic Shop"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 1
+max_value = 100000.0
+
 [node name="Codex" type="BoxContainer" parent="MarginContainer/TabContainer"]
+visible = false
 layout_mode = 2
 theme = ExtResource("7_iniqa")
-metadata/_tab_index = 3
+metadata/_tab_index = 4
 
 [node name="TabContainer" type="TabContainer" parent="MarginContainer/TabContainer/Codex"]
 layout_mode = 2
@@ -1234,7 +1474,7 @@ size_flags_horizontal = 3
 [node name="Free Tab" type="HBoxContainer" parent="MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 4
+metadata/_tab_index = 5
 
 [node name="WarspitePookies" type="Sprite2D" parent="MarginContainer/TabContainer/Free Tab"]
 position = Vector2(662, 406)
@@ -1245,10 +1485,10 @@ texture = ExtResource("5_a4em4")
 layout_mode = 1
 
 [node name="Validate" type="AnimatedSprite2D" parent="." groups=["validate"]]
-position = Vector2(52.5, 937.5)
+position = Vector2(121, 909)
 scale = Vector2(1.79688, 1.79688)
 sprite_frames = SubResource("SpriteFrames_5c62b")
-animation = &"Validate"
+animation = &"Loading"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -1448,9 +1688,18 @@ offset_bottom = 66.0
 texture = ExtResource("12_qadsr")
 expand_mode = 1
 
+[node name="Tooltip" parent="." instance=ExtResource("15_nma07")]
+visible = false
+layout_mode = 0
+offset_left = 5.0
+offset_top = 11.0
+offset_right = 505.0
+offset_bottom = 161.0
+
 [connection signal="text_submitted" from="MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer/Ship_name" to="." method="_on_ship_name_text_submitted"]
 [connection signal="text_submitted" from="MarginContainer/TabContainer/Unit status/Values/ScoutContainer/VBoxContainer/MarginContainer/Scout_Unit" to="." method="_on_scout_unit_text_submitted"]
 [connection signal="text_submitted" from="MarginContainer/TabContainer/Unit status/Values/TroopContainer/VBoxContainer/MarginContainer/Troop_Unit" to="." method="_on_troop_unit_text_submitted"]
 [connection signal="text_submitted" from="MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer/VBoxContainer/MarginContainer/Negotiator_Unit" to="." method="_on_negotiator_unit_text_submitted"]
 [connection signal="text_submitted" from="MarginContainer/TabContainer/Unit status/Values/ColonyContainer/VBoxContainer/MarginContainer/Colony_Unit" to="." method="_on_colony_unit_text_submitted"]
+[connection signal="button_down" from="MarginContainer/TabContainer/Galactic Shop/Donation" to="." method="_on_donation_button_down"]
 [connection signal="button_down" from="Back" to="." method="_on_back_button_down"]

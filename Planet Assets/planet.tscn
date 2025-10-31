@@ -1,10 +1,76 @@
-[gd_scene load_steps=6 format=3 uid="uid://bg5s5mkmlnai"]
+[gd_scene load_steps=17 format=3 uid="uid://bg5s5mkmlnai"]
 
 [ext_resource type="Script" uid="uid://buc8pjp404vby" path="res://Planet Assets/planet.gd" id="1_1odxm"]
 [ext_resource type="Texture2D" uid="uid://6rrfpq3ffxop" path="res://Planet Assets/Base.png" id="2_12alu"]
 [ext_resource type="Texture2D" uid="uid://v7ug3rayw5iy" path="res://Planet Assets/Land.png" id="3_phj21"]
 [ext_resource type="Script" uid="uid://dkc8nryparkye" path="res://Planet Assets/planet_name.gd" id="4_phj21"]
 [ext_resource type="Theme" uid="uid://r1cmuoc1rfu2" path="res://UI/Maintheme.tres" id="4_qimmr"]
+[ext_resource type="Material" uid="uid://d2r0a32uc13gh" path="res://UI/cupickup.tres" id="6_1sekk"]
+[ext_resource type="Texture2D" uid="uid://blhmkc3twcny8" path="res://UI/CUPickup_Sheet.png" id="6_jp5cb"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1sekk"]
+atlas = ExtResource("6_jp5cb")
+region = Rect2(0, 0, 200, 330)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h7120"]
+atlas = ExtResource("6_jp5cb")
+region = Rect2(200, 0, 200, 330)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nq8kx"]
+atlas = ExtResource("6_jp5cb")
+region = Rect2(400, 0, 200, 330)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t4htj"]
+atlas = ExtResource("6_jp5cb")
+region = Rect2(600, 0, 200, 330)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r8wka"]
+atlas = ExtResource("6_jp5cb")
+region = Rect2(800, 0, 200, 330)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ipj2x"]
+atlas = ExtResource("6_jp5cb")
+region = Rect2(1000, 0, 200, 330)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_drp46"]
+atlas = ExtResource("6_jp5cb")
+region = Rect2(1200, 0, 200, 330)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gb28a"]
+atlas = ExtResource("6_jp5cb")
+region = Rect2(1400, 0, 200, 330)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_j40rk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1sekk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h7120")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nq8kx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t4htj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r8wka")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ipj2x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_drp46")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gb28a")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
 
 [node name="Planet" type="Node2D" groups=["Planets"]]
 script = ExtResource("1_1odxm")
@@ -85,5 +151,26 @@ text = "TEST"
 horizontal_alignment = 1
 vertical_alignment = 1
 script = ExtResource("4_phj21")
+
+[node name="StoredCU" type="Panel" parent="."]
+visible = false
+material = ExtResource("6_1sekk")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -115.0
+offset_top = -435.0
+offset_right = 115.0
+offset_bottom = -241.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StoredCU_Sprite" type="AnimatedSprite2D" parent="StoredCU"]
+position = Vector2(115, 75)
+sprite_frames = SubResource("SpriteFrames_j40rk")
+autoplay = "default"
+frame_progress = 0.4235
 
 [connection signal="toggled" from="Base/Details" to="." method="_on_details_toggled"]

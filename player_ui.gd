@@ -21,6 +21,7 @@ extends Control
 
 @onready var playerGlobalResources = $PlayerGlobalResources
 @onready var anim_player = $AnimationPlayer
+@onready var tooltip = $Tooltip
 
 var mainScene
 
@@ -144,7 +145,17 @@ func _update_cooldown():
 	negotiator_cooldown._init_cd()
 	colony_cooldown._init_cd()
 
-
 func _on_back_button_down() -> void:
 	mainScene._update_ship_status()
 	mainScene.switch_to_fleet_status()
+
+func display_tooltip(txt, hovering):
+	if hovering :
+		tooltip.visible = true
+		tooltip.set_tooltip(txt)
+	else :
+		tooltip.visible = false
+
+
+func _on_donation_button_down() -> void:
+	pass # Replace with function body.

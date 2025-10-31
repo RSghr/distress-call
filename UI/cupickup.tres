@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://d2r0a32uc13gh"]
+
+[ext_resource type="Shader" uid="uid://14tlx6rv3dw5" path="res://UI/cupickup.gdshader" id="1_j1okw"]
+
+[resource]
+shader = ExtResource("1_j1okw")
+shader_parameter/shine_num = 8.0
+shader_parameter/rotation_speed = 3.0
+shader_parameter/light_magnitude = 2.0
+shader_parameter/filter_distence = 1.0
+shader_parameter/filter_magnitude = 1.0
+shader_parameter/filter_minv = 0.75
+shader_parameter/cut_inner_radius = 0.1
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/NOISE_speed = Vector2(0, 0)
+shader_parameter/NOISE_magnitude = 0.0

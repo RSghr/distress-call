@@ -5,6 +5,7 @@ extends Node2D
 @onready var name_text = $Planet_Name
 @onready var conquered = $Conquered
 @onready var details = $Base/Details
+@onready var storedCU_Sprite = $StoredCU
 var planet_detail
 var viewed = true
 
@@ -17,6 +18,7 @@ var planet_params = {
 	race = "",
 	culture = "",
 	wealth = 0,
+	storedCU = 0,
 	will = 0,
 	inhabited = false,
 	nearby = false,
@@ -76,14 +78,32 @@ func _on_details_toggled(_toggled_on: bool) -> void:
 	if viewed :
 		var scaleCheck = scale.lerp(initialScale * 1.5, 1)
 		scale = scaleCheck
-		var instance = planet_detail_obj.instantiate()
-		add_child(instance)
-		instance.position += Vector2(256, -1000)
-		instance.fill_info($".")
-		planet_detail = instance
+		if  mainScene.prt.planetDetail.planet != null :
+			if mainScene.prt.planetDetail.planet != $".":
+				mainScene.prt.planetDetail.planet.reset_planet_view()
+				mainScene.prt.planetDetail.fill_info($".")
+			else :
+				mainScene.prt.planetDetail.fill_info($".")
+		else :
+			mainScene.prt.planetDetail.fill_info($".")
+			mainScene.prt.animPlayer.play("PlanetDetailShow")
 		viewed = false
 	else :
-		if planet_detail != null :
-			planet_detail.queue_free()
+		reset_planet_view()
+
+func reset_planet_view():
+	if !viewed :
 		scale = initialScale
 		viewed = true
+
+func contains_storedCU():
+	if planet_params["storedCU"] > 0:
+		storedCU_Sprite.visible = true
+	else :
+		storedCU_Sprite.visible = false
+
+func _unhandled_input(event):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
+			reset_planet_view()
+			mainScene.prt.planetDetail.planet = null
+			mainScene.prt.animPlayer.play_backwards("PlanetDetailShow")

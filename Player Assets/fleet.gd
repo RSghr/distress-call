@@ -31,9 +31,12 @@ var faction_type = {
 var mainScene
 var server_offset = 0
 
+var initialScale = Vector2.ZERO
+
 #On ready attach objects
 func _ready():
 	mainScene = get_tree().root.get_child(0)
+	initialScale = scale
 
 func _on_status_button_down() -> void:
 	mainScene._update_ship_status()
@@ -47,3 +50,10 @@ func set_fleet_name():
 		fleet_name.text = "Ally fleet"
 	else :
 		fleet_name.text = fleet_params["fleet_name"]
+
+
+func _on_status_mouse_entered() -> void:
+	scale = scale.lerp(initialScale * 1.5, 1)
+
+func _on_status_mouse_exited() -> void:
+	scale = initialScale

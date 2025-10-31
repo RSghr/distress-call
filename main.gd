@@ -27,28 +27,35 @@ func _unhandled_input(event):
 	elif event.is_action_pressed("Decrease_Volume") and audio_ost.volume_db > -50:
 		audio_ost.volume_db -= 10
 	elif event.is_action_pressed("CloseAll") :
-		planet_detail_list = []
 		if fleetStatus.visible :
 			fleetStatus.playerUI._on_back_button_down()
-		planet_detail_list = get_tree().get_nodes_in_group("panel_UI")
-		for planet_detail in planet_detail_list :
-			planet_detail.get_parent()._on_details_toggled(false)
+		for planet in get_tree().get_nodes_in_group("Planets") :
+			if !planet.viewed:
+				planet._on_details_toggled(false)
 
 func _init_player_pos():
 	if player.fleet.fleet_params["fleet_position"] == "" :
 		player.pcs.get_player_id()
 		client.send_id(player.fleet.player_id)
 		client.request_load_fleet_units(player.fleet)
+		wait_server_call()
 
 func post_server_init_player_pos():
 	player.init_player()
-	displace_player(player, player.on_planet())
+	displace_player(player, player.on_planet(), 1)
 	on_fleet_units_action()
 	player.fleet.set_fleet_name()
 	startup = false
 
-func displace_player(player_target,planet):
-	player_target.position = planet.position + Vector2(0, -300)
+#func displace_player(player_target,planet):
+	#player_target.position = planet.position + Vector2(0, -300)
+
+func displace_player(player_fleet, destination, duration) -> void:
+
+	var fleet_destination = destination.position + Vector2(0, -300)
+	# Create a new tween
+	var tween = create_tween()
+	tween.tween_property(player_fleet, "position", fleet_destination, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 func init_fleets(fleet_list):
 	for fleet_old in fleetHolder.get_children():
@@ -60,7 +67,10 @@ func init_fleets(fleet_list):
 			instance.player_id = fleet
 			instance.fleet_params["fleet_name"] = fleet_list[fleet][0]
 			instance.fleet_params["fleet_position"] = fleet_list[fleet][1]
-			displace_player(instance, find_planet(instance.fleet_params["fleet_position"]))
+			if startup :
+				displace_player(instance, find_planet(instance.fleet_params["fleet_position"]), 1)
+			else :
+				displace_player(instance, find_planet(instance.fleet_params["fleet_position"]), 10)
 			fleetHolder.add_child(instance)
 			instance.set_fleet_name()
 
@@ -76,6 +86,7 @@ func find_planet(planet_name):
 
 func on_fleet_units_action():
 	client.request_save_fleet_units(player.fleet)
+	wait_server_call()
 	_update_ship_status()
 
 func switch_to_fleet_status():
@@ -106,17 +117,26 @@ func _update_ship_status():
 	fleetStatus.playerUI._update_cooldown()
 	if !startup :
 		client.request_save_fleet_units(player.fleet)
+		wait_server_call()
 
 func _deploy_unit(unit_type, planet_name):
 	client.request_deploy_unit(player.fleet, unit_type, planet_name)
+	wait_server_call()
 
 func ftl_saver(planet_name):
 	client.request_move_fleet(player.fleet.player_id, planet_name)
+	wait_server_call()
 
 func job_done(player_id, planet_name, unit_type):
 	client.request_load_fleet_units(player.fleet)
+	wait_server_call()
 	galaxy.job_done(player_id, planet_name, unit_type)
 
+func buy_item(item_id):
+	client.request_buy_item(player.fleet.player_id, item_id)
+	wait_server_call()
+
+#Server Comms status
 func validate_server_call():
 	for valid in get_tree().get_nodes_in_group("validate"):
 		if valid != null :
@@ -126,6 +146,11 @@ func deny_server_call():
 	for valid in get_tree().get_nodes_in_group("validate"):
 		if valid != null :
 			valid.play("Deny")
+
+func wait_server_call():
+	for valid in get_tree().get_nodes_in_group("validate"):
+		if valid != null :
+			valid.play("Loading")
 
 func _on_space_exploration_ost_finished() -> void:
 	audio_ost.play()

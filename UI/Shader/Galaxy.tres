@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cblwgq4kq82fa"]
+
+[ext_resource type="Shader" uid="uid://c3g7d0bbofym8" path="res://UI/Shader/Galaxy.gdshader" id="1_f5mg8"]
+
+[resource]
+shader = ExtResource("1_f5mg8")
+shader_parameter/movement_speed = 0.0
+shader_parameter/movement_scale = 0.264
+shader_parameter/color_1 = Color(0.34, 0, 0.085, 1)
+shader_parameter/color_2 = Color(0.16, 0.16, 0.16, 1)

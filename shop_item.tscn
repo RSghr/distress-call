@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bro8xp2hofqo6"]
+
+[ext_resource type="Script" uid="uid://chcqjj5h1vaae" path="res://shop_item.gd" id="1_glqc6"]
+[ext_resource type="Theme" uid="uid://r1cmuoc1rfu2" path="res://UI/Maintheme.tres" id="1_wxfep"]
+
+[node name="ShopItem" type="Button"]
+offset_right = 150.0
+offset_bottom = 80.0
+theme = ExtResource("1_wxfep")
+text = "Item to buy"
+script = ExtResource("1_glqc6")
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

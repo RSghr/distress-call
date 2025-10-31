@@ -18,6 +18,7 @@ extends Control
 @onready var planet_will = $TabContainer/Status/Values/MarginContainer5/Planet_Will
 
 @onready var unit_cost = $TabContainer/Actions/Unit_Cost
+@onready var tooltip = $Tooltip
 var planet
 var mainScene
 
@@ -105,28 +106,40 @@ func _on_colonize_button_down() -> void:
 #DISPLAY UNIT COST
 func _on_negotiate_mouse_entered() -> void:
 	unit_cost.modulate.a = 1
+	tooltip.modulate.a = 1
+	tooltip.set_tooltip("Reduce the will of the planet slightly\nIncrease the total CU in the conquered planet.")
 	unit_cost.text = str(int(5000 * mainScene.player.fleet.negotiator.total_strength))
 
 func _on_scout_mouse_entered() -> void:
 	unit_cost.modulate.a = 1
+	tooltip.modulate.a = 1
+	tooltip.set_tooltip("Scout a planet for its resources and inhabitants.")
 	unit_cost.text = str(int(25000 * mainScene.player.fleet.scout.total_strength))
 
 func _on_colonize_mouse_entered() -> void:
 	unit_cost.modulate.a = 1
+	tooltip.modulate.a = 1
+	tooltip.set_tooltip("Conquer the planet once the will threshold is reached.")
 	unit_cost.text = str(int(50000 * mainScene.player.fleet.colony.total_strength))
 
 func _on_attack_mouse_entered() -> void:
 	unit_cost.modulate.a = 1
+	tooltip.modulate.a = 1
+	tooltip.set_tooltip("Reduce the will vastly at the cost of reducing the total CU.")
 	unit_cost.text = str(int(10000 * mainScene.player.fleet.troop.total_strength))
 
 func _on_negotiate_mouse_exited() -> void:
 	unit_cost.modulate.a = 0
+	tooltip.modulate.a = 0
 
 func _on_attack_mouse_exited() -> void:
 	unit_cost.modulate.a = 0
+	tooltip.modulate.a = 0
 
 func _on_scout_mouse_exited() -> void:
 	unit_cost.modulate.a = 0
+	tooltip.modulate.a = 0
 
 func _on_colonize_mouse_exited() -> void:
 	unit_cost.modulate.a = 0
+	tooltip.modulate.a = 0

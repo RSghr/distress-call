@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwvyaoa0by0w"]
+
+[ext_resource type="Theme" uid="uid://r1cmuoc1rfu2" path="res://UI/Maintheme.tres" id="1_gwequ"]
+[ext_resource type="Script" uid="uid://bxkfwitkhcwqn" path="res://tooltip.gd" id="1_oxk8h"]
+
+[node name="Tooltip" type="Panel"]
+offset_right = 500.0
+offset_bottom = 150.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_gwequ")
+script = ExtResource("1_oxk8h")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 2
+offset_left = 20.0
+offset_top = 15.0
+offset_right = 469.0
+offset_bottom = 136.0
+theme = ExtResource("1_gwequ")
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "This is a test tooltip"
+scroll_active = false
+vertical_alignment = 1

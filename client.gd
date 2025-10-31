@@ -11,7 +11,7 @@ func _ready():
 	else :
 		mainScene = get_tree().root.get_child(0)
 		var peer = ENetMultiplayerPeer.new()
-		var result = peer.create_client("90.3.177.194", 9000) # IP + port
+		var result = peer.create_client("distresscall.ddns.net", 9009) # IP + port 90.3.177.194
 		if result != OK:
 			print("Failed to connect to server")
 			return
@@ -127,6 +127,7 @@ func deploy_unit(deploy_status, unit_type, planet_name, player_wealth):
 					mainScene.player.fleet.colony.unit_params["next_available"] = deploy_status[1] + 10
 			mainScene.fleetStatus.playerUI._update_cooldown()
 			mainScene.player.fleet.fleet_params["CoreUnit"] = player_wealth
+			mainScene.fleetStatus.playerUI._update_PGR()
 			mainScene.galaxy.Unit_sent(client_id, str(planet_name), unit_type)
 			mainScene.validate_server_call()
 		else :
@@ -165,14 +166,16 @@ func fleet_update(fleet_list):
 		mainScene.init_fleets(fleet_list)
 
 @rpc("authority")
-func move_fleet(ftl_result):
+func move_fleet(ftl_result, new_CU):
 	if is_server :
 		pass
 	else :
 		print("move_fleet")
 		if ftl_result[0]:
 			mainScene.player.fleet.fleet_params["next_available"] = ftl_result[1]
+			mainScene.player.fleet.fleet_params["CoreUnit"] = new_CU
 			mainScene.fleetStatus.playerUI._update_cooldown()
+			mainScene.fleetStatus.playerUI._update_PGR()
 			mainScene.validate_server_call()
 		else :
 			print("unit still on cooldown!")
@@ -195,10 +198,28 @@ func payout(planet_list, payoutTimer):
 		mainScene.prt.update_payout_timer(payoutTimer)
 		request_load_fleet_units(mainScene.player.fleet)
 
+#Shop REQUEST
+func request_buy_item(_player_id, item_id):
+	await get_tree().create_timer(1).timeout
+	mainScene.server.rpc_id(1, "request_buy_item", _player_id, item_id)
+
+@rpc("authority")
+func buy_item(fleet_list):
+	if is_server :
+		pass
+	else :
+		print("Consulted Shop")
+
+func request_send_report(feedbacktxt):
+	await get_tree().create_timer(1).timeout
+	mainScene.server.rpc_id(1, "request_send_report", feedbacktxt)
+	mainScene.validate_server_call()
+
 #EXAMPLE REQUEST
 func request_XXX():
 	await get_tree().create_timer(1).timeout
 	mainScene.server.rpc_id(1, "request_XXX")
+	mainScene.validate_server_call()
 
 @rpc("authority")
 func XXX():

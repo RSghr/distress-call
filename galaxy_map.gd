@@ -16,8 +16,8 @@ var planet_list = {}
 var mainScene
 
 func _ready() -> void:
-	generate_galaxy()
 	mainScene = get_tree().root.get_child(0)
+	generate_galaxy()
 
 func generate_galaxy():
 	for i in range(num_planets):
@@ -108,6 +108,7 @@ func update_galaxy_map():
 		else :
 			planet.conquered.self_modulate.a = 0
 		get_conquered(planet)
+		planet.contains_storedCU()
 	queue_redraw()
 
 func update_galaxy_map_cfg():
@@ -146,3 +147,8 @@ func unit_gone(player_id, planet_name, unit_type):
 			for unit in planet.get_children():
 				if unit.name == player_id + "_" + str(unit_type) + "_" + planet_name :
 					unit.queue_free()
+
+func reset_storedCU(planet_name):
+	if planet_list.has(planet_name):
+		var claimedPlanet = planet_list[planet_name]
+		claimedPlanet.planet_params["storedCU"] = 0

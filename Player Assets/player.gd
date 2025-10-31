@@ -57,14 +57,17 @@ func reset_route():
 
 #Action of moving fleet
 func move_to_planet(planet):
-	mainScene.ftl_saver(planet.planet_params["name"])
-	if mainScene.fleetStatus.playerUI.ftl_cooldown.cd_check():
-		current_planet = planet
-		fleet.fleet_params["fleet_position"] = current_planet.planet_params["name"]
-		reset_route()
-		possible_routes()
-		enable_route()
-		mainScene.displace_player($".", planet)
+	if cd_detect(4) :
+		mainScene.ftl_saver(planet.planet_params["name"])
+		if mainScene.fleetStatus.playerUI.ftl_cooldown.cd_check():
+			current_planet = planet
+			fleet.fleet_params["fleet_position"] = current_planet.planet_params["name"]
+			reset_route()
+			possible_routes()
+			enable_route()
+			mainScene.displace_player($".", planet, 10)
+	else :
+		mainScene.deny_server_call()
 
 func check_upgrade_bool():
 	if  fleet.fleet_params["current_space"] < fleet.fleet_params["total_space"] :
@@ -100,6 +103,9 @@ func cd_detect(unit_type):
 				return false
 		3 : #Colony
 			if !mainScene.fleetStatus.playerUI.colony_cooldown.cd_check():
+				return false
+		4 : #Fleet
+			if !mainScene.fleetStatus.playerUI.ftl_cooldown.cd_check():
 				return false
 	return true
 

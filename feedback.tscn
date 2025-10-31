@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxd2f5vcf2kv6"]
+
+[ext_resource type="Theme" uid="uid://r1cmuoc1rfu2" path="res://UI/Maintheme.tres" id="1_tt07q"]
+[ext_resource type="Script" uid="uid://ckumaicsqa2m2" path="res://feedback.gd" id="2_3m4nc"]
+
+[node name="Feedback" type="Panel"]
+offset_right = 381.0
+offset_bottom = 381.0
+theme = ExtResource("1_tt07q")
+script = ExtResource("2_3m4nc")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 74.0
+offset_top = -39.0
+offset_right = 308.0
+offset_bottom = 45.0
+
+[node name="FeedbackTitle" type="RichTextLabel" parent="Panel"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 23.0
+offset_right = 214.0
+offset_bottom = 63.0
+theme_override_font_sizes/normal_font_size = 16
+text = "Feedback report"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FeedbackText" type="TextEdit" parent="."]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 62.0
+offset_right = 358.0
+offset_bottom = 351.0
+placeholder_text = "Write your feedback about any bug, QoL change, or your general experience!"
+wrap_mode = 1
+
+[node name="Send" type="Button" parent="."]
+layout_mode = 0
+offset_left = 113.0
+offset_top = 354.0
+offset_right = 276.0
+offset_bottom = 402.0
+text = "SEND REPORT"
+
+[connection signal="button_down" from="Send" to="." method="_on_send_button_down"]

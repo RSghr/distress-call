@@ -2,18 +2,24 @@ extends Control
 
 @onready var unit_holder = $CooldownPanel/HBoxContainer
 @onready var coreUnitCount = $CoreUnitPanel/MarginContainer/HBoxContainer/CoreUnitValue
-@onready var payoutTimer = $PayoutPanel/MarginContainer/AlternateTimer
-@onready var payoutDisplay = $PayoutPanel/MarginContainer/PayoutValue
+@onready var payoutTimer = $PayoutPanel/HBoxContainer/VBoxContainer/MarginContainer/AlternateTimer
+@onready var payoutDisplay = $PayoutPanel/HBoxContainer/VBoxContainer/MarginContainer/PayoutValue
+@onready var payoutAmount = $PayoutPanel/HBoxContainer/PayoutAmount
 @onready var version = $Version
 @onready var tip_locate = $CooldownPanel/MarginContainer
+@onready var planetDetail = $Planet_Container/Planet_Detail
+@onready var animPlayer = $CooldownPanel/MarginContainer/AnimationPlayer
+@onready var feedbackPnl = $FeedbackPnl
 
 var player_focus = Vector2.ZERO
 var tip_inc = 0
 var tip_delay = 150
 var mainScene
+
 #On ready attach objects
 func _ready():
 	mainScene = get_tree().root.get_child(0)
+	planetDetail.modulate.a = 0
 	version.text = "Version: " + ProjectSettings.get_setting("application/config/version")
 
 func _process(_delta: float) -> void:
@@ -46,3 +52,9 @@ func _process(_delta: float) -> void:
 func update_payout_timer(payTime):
 	payoutTimer.wait_time = int(round(payTime))  * 1000
 	payoutTimer.start()
+
+func _on_feedback_button_down() -> void:
+	if feedbackPnl.visible :
+		feedbackPnl.hide()
+	else :
+		feedbackPnl.show()

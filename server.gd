@@ -4,6 +4,10 @@ extends Node
 @onready var pcs = $player_cfg_saver
 @onready var ccs = $Cooldown_cfg_saver
 
+const SAVE_PATH = "res://Player_Saver/Server_values.cfg"
+const FEEDBACK_PATH = "res://Player_Saver/Server_values.cfg"
+var port = 9000
+
 var players = []
 
 @export var players_loaded = 0
@@ -13,15 +17,21 @@ var is_server = false
 var mainScene
 
 func _ready():
+	var config = ConfigFile.new()
+	var currConfig = config.load(SAVE_PATH)
+	
+	if currConfig == OK:
+		port = config.get_value("Server", "Port", port)
+	
 	mainScene = get_tree().root.get_child(0)
 	if is_server :
 		var peer = ENetMultiplayerPeer.new()
-		var result = peer.create_server(9000) # Port number
+		var result = peer.create_server(port) # Port number
 		if result != OK:
 			mainScene.logging("Failed to start server")
 			return
 		multiplayer.multiplayer_peer = peer
-		mainScene.logging("Server started on port 9000")
+		mainScene.logging("Server started on port " + str(port) + " - Version: " + ProjectSettings.get_setting("application/config/version"))
 
 		multiplayer.peer_connected.connect(_on_peer_connected)
 		multiplayer.peer_disconnected.connect(_on_peer_disconnected)
@@ -87,7 +97,7 @@ func request_move_fleet(player_id, planet_name):
 	if is_server :
 		var peer = multiplayer.get_remote_sender_id()
 		mainScene.logging("request_move_fleet " + player_id)
-		mainScene.client.rpc_id(peer, "move_fleet", ccs.move_fleet_saver(player_id, planet_name))
+		mainScene.client.rpc_id(peer, "move_fleet", ccs.move_fleet_saver(player_id, planet_name), gcs.send_player_storedCU(player_id, planet_name))
 		mainScene.client.rpc("fleet_update", pcs.load_all_fleet())
 
 func cooldown_done(player_id, planet_name, unit_type):
@@ -106,9 +116,26 @@ func cooldown_done(player_id, planet_name, unit_type):
 
 func payout():
 	if is_server :
-		gcs.generate_player_income()
+		gcs.generate_storecCU()
 		mainScene.start_payout_cycle()
 		mainScene.client.rpc("payout", gcs.send_main_planet_info(), mainScene.payoutTimer.time_left)
+
+@rpc("any_peer") # clients can call this
+func request_buy_item(player_id, item_id):
+	if is_server :
+		var peer = multiplayer.get_remote_sender_id()
+		mainScene.logging("Buying " + item_id)
+		mainScene.client.rpc_id(peer, "buy_item", pcs.check_upgrade_bool())
+
+@rpc("any_peer") # clients can call this
+func request_send_report(feedbacktxt):
+	if is_server :
+		mainScene.logging("request_send_report")
+		var config = ConfigFile.new()
+		var currConfig = config.load(FEEDBACK_PATH)
+		var peer = multiplayer.get_remote_sender_id()
+		if currConfig == OK :
+			config.set(peer, feedbacktxt)
 
 @rpc("any_peer") # clients can call this
 func request_XXX():
@@ -116,4 +143,3 @@ func request_XXX():
 		var peer = multiplayer.get_remote_sender_id()
 		mainScene.logging("XXX")
 		mainScene.client.rpc_id(peer, "XXX", pcs.check_upgrade_bool())
-		

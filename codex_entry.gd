@@ -26,7 +26,7 @@ func _ready() -> void:
 
 		"Economy":
 			label.text = codex_idx
-			content.text = "You have guessed it, in order to scout, conquer and colonize a planet, you need to have money. In this world, Core Units is the main currency, tradable with every civilisation encountered.\n Every X minutes, all players recieve a portion of each planet's wealth under the players' control, plus a bonus for how many planets have been conquered."
+			content.text = "You have guessed it, in order to scout, conquer and colonize a planet, you need to have money. In this world, Core Units is the main currency, tradable with every civilisation encountered.\n Every 3 minutes, all players recieve a portion of each planet's wealth under the players' control, plus a bonus for how many planets have been conquered."
 		#Unit Tab
 		"Scout Role":
 			label.text = codex_idx
@@ -34,7 +34,7 @@ func _ready() -> void:
 
 		"Scout Stats":
 			label.text = codex_idx
-			content.text = "- [u]Base Price :[/u] 25000\n- [u]Base Cooldown :[/u] 25 seconds"
+			content.text = "- [u]Base Price :[/u] 25000 + 10% per upgrade\n- [u]Base Cooldown :[/u] 25 seconds"
 
 		"Troop Role":
 			label.text = codex_idx
@@ -42,15 +42,15 @@ func _ready() -> void:
 
 		"Troop Stats":
 			label.text = codex_idx
-			content.text = "- [u]Base Price :[/u] 10000\n- [u]Base Cooldown :[/u] 20 seconds"
+			content.text = "- [u]Base Price :[/u] 10000 + 10% per upgrade\n- [u]Base Cooldown :[/u] 20 seconds"
 
 		"Negotiator Role":
 			label.text = codex_idx
-			content.text = "Negotiators are the only units who have 2 uses.\nBefore conquering a planet, they align the planets populace with our intentions, with out hurting the reserves of core units harverstable.\nOnce the planet is conquered, they can be sent again in order to open up new processing facilities, and put more workers in the mines, increasing the planet's current wealth.\n\nUpgrading them allows them to reduce more will, and help planets to yield more."
+			content.text = "Negotiators are the only units who have 2 uses.\nBefore conquering a planet, they align the planets populace with our intentions, without hurting the reserves of core units harverstable.\nOnce the planet is conquered, they can be sent again in order to open up new processing facilities, and put more workers in the mines, increasing the planet's current wealth.\n\nUpgrading them allows them to reduce more will, and help planets to yield more."
 
 		"Negotiator Stats":
 			label.text = codex_idx
-			content.text = "- [u]Base Price :[/u] 5000\n- [u]Base Cooldown :[/u] 15 seconds"
+			content.text = "- [u]Base Price :[/u] 5000 + 10% per upgrade\n- [u]Base Cooldown :[/u] 15 seconds"
 
 		"Colony Role":
 			label.text = codex_idx
@@ -58,7 +58,7 @@ func _ready() -> void:
 
 		"Colony Stats":
 			label.text = codex_idx
-			content.text = "- [u]Base Price :[/u] 50000\n- [u]Base Cooldown :[/u] 30 seconds"
+			content.text = "- [u]Base Price :[/u] 50000 + 10% per upgrade\n- [u]Base Cooldown :[/u] 30 seconds"
 		#Galaxy Tab
 		"Major Order":
 			label.text = codex_idx
