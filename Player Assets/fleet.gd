@@ -31,6 +31,7 @@ var faction_type = {
 var mainScene
 var server_offset = 0
 var unit_costs = {} # Unit name -> cost in CU, as computed by the server
+var colony_threshold = 50 # Highest will a planet may have to be colonized (R&D raises it)
 
 var initialScale = Vector2.ZERO
 

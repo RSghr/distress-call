@@ -30,16 +30,18 @@ func fill_info(planet_data):
 	# Fill status tab
 	planet_name.text = planet.planet_params["name"]
 	
+	var threshold = mainScene.player.fleet.colony_threshold
 	if planet.planet_params["discovered"]:
 		planet_race.text = planet.planet_params["race"]
 		planet_culture.text = planet.planet_params["culture"]
 		planet_wealth.text = str(planet.planet_params["wealth"])
-		planet_will.text = str(planet.planet_params["will"]) + " / 50"
+		planet_will.text = str(planet.planet_params["will"]) + " / " + str(threshold)
 		will_status(planet.planet_params["will"])
 	else :
 		planet_race.text = "Unknown"
 		planet_culture.text = "Unknown"
-		planet_wealth.text = "Unknown"
+		# Sensor Sweep reveals wealth without scouting the planet
+		planet_wealth.text = str(planet.planet_params["wealth"]) if planet.planet_params.get("surveyed", false) else "Unknown"
 		planet_will.text = "Unknown"
 	
 	attack.disabled = true
@@ -66,7 +68,7 @@ func fill_info(planet_data):
 				if planet.planet_params["inhabited"] :
 					negotiate.disabled = false
 					attack.disabled = false
-				if planet.planet_params["will"] <= 50 :
+				if planet.planet_params["will"] <= threshold :
 					colonize.disabled = false
 		else :
 			scout.disabled = false

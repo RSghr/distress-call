@@ -62,8 +62,11 @@ func apply_fleet_state(server_now, state):
 		unit.init_unit()
 	player.fleet.set_fleet_name()
 	_update_ship_status()
+	player.fleet.colony_threshold = state.get("colony_threshold", 50)
 	fleetStatus.playerUI.update_investment(state.get("investment"))
 	fleetStatus.playerUI.update_research(state.get("research"))
+	fleetStatus.playerUI.update_modules(state.get("modules"))
+	prt.update_modules(state.get("modules"))
 
 func on_investment_update(investment):
 	fleetStatus.playerUI.update_investment(investment)

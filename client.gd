@@ -86,6 +86,12 @@ func request_research(node_id):
 func request_invest(project_id, amount):
 	mainScene.server.rpc_id(1, "request_invest", str(project_id), int(amount))
 
+func request_equip_module(module_id, equip):
+	mainScene.server.rpc_id(1, "request_equip_module", str(module_id), bool(equip))
+
+func request_use_module(module_id):
+	mainScene.server.rpc_id(1, "request_use_module", str(module_id))
+
 func request_send_report(feedbacktxt):
 	mainScene.server.rpc_id(1, "request_send_report", str(feedbacktxt))
 	mainScene.validate_server_call()
@@ -153,6 +159,18 @@ func buy_result(success, item_id, reason):
 		print("Purchase of ", item_id, " refused: ", reason)
 		mainScene.deny_server_call()
 		mainScene.fleetStatus.playerUI.show_message(reason)
+
+## Result of equipping or using a module; message is the effect or the reason it failed.
+@rpc("authority", "call_remote", "reliable")
+func module_result(success, module_id, message):
+	if is_server:
+		return
+	if success:
+		mainScene.validate_server_call()
+	else:
+		mainScene.deny_server_call()
+		mainScene.fleetStatus.playerUI.show_message(str(message))
+	mainScene.prt.show_module_message(str(message), success)
 
 ## A community project received CU (from anyone).
 @rpc("authority", "call_remote", "reliable")

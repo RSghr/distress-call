@@ -23,6 +23,7 @@ var planet_params = {
 	inhabited = false,
 	nearby = false,
 	discovered = false,
+	surveyed = false,
 	conquered = false
 }
 

@@ -35,6 +35,7 @@ func _ready():
 	mainScene = get_tree().root.get_child(0)
 	_build_research_tab()
 	_build_investment_tab()
+	_build_module_list()
 
 #SHIP STATUS TAB
 func _on_ship_name_text_submitted(new_text: String) -> void:
@@ -128,7 +129,7 @@ func update_unit_exp(unit_value):
 func _update_PGR():
 	playerGlobalResources.CoreUnit.text = str(mainScene.player.fleet.fleet_params["CoreUnit"])
 	mainScene.prt.coreUnitCount.text = str(mainScene.player.fleet.fleet_params["CoreUnit"])
-	space.text = str(mainScene.player.fleet.fleet_params["current_space"]) + " / " + str(mainScene.player.fleet.fleet_params["total_space"])
+	# Space = module slots (see update_modules)
 
 func _init_cooldown():
 	ftl_cooldown.fleet = mainScene.player.fleet
@@ -193,6 +194,7 @@ var investment = {}       # project id -> data from the server
 var investment_rows = {}  # project id -> {"bar", "status", "buttons"}
 var research_message
 var investment_message
+var research_points_text = ""
 
 static func format_cu(value) -> String:
 	var digits = str(int(value))
@@ -206,7 +208,7 @@ func _build_research_tab():
 	for child in research_tab.get_children():
 		child.visible = false # Old R&D level allocation, replaced by the grid
 	research_message = Label.new()
-	research_message.text = "Permanent upgrades paid in Core Units. Spend 6 points in a tier to open the next one.\nThe Ship column is funded by every player in the Investment Center."
+	research_message.text = _research_intro()
 	research_message.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	research_message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	research_tab.add_child(research_message)
@@ -257,14 +259,17 @@ func update_research(research):
 	if research == null:
 		return
 	research_nodes = research["nodes"]
+	research_points_text = "R&D points: %d available (%d earned from unit levels). Every %d points spent opens the next tier." % [research["points_available"], research["points_total"], research["tier_step"]]
+	if research_message.modulate == Color.WHITE:
+		research_message.text = _research_intro()
 	for node_id in research_nodes:
 		var node = research_nodes[node_id]
 		var cell = research_cells.get(node["column"] + ":" + str(int(node["tier"])))
 		if cell == null:
 			continue
-		cell.text = "%s\n%d/%d" % [node["name"], node["rank"], node["ranks"]]
-		if node["rank"] < node["ranks"]:
-			cell.text += "\n" + format_cu(node["price"]) + " CU"
+		cell.text = ("* " if node["active"] else "") + node["name"] + "\n%d/%d" % [node["rank"], node["ranks"]]
+		if node["active"]:
+			cell.text += "\nActive module"
 		cell.disabled = node["refusal"] != ""
 		if node["rank"] >= node["ranks"]:
 			cell.modulate = Color(0.6, 1.0, 0.6)
@@ -416,7 +421,7 @@ var message_serial = 0
 func show_message(text):
 	message_serial += 1
 	var serial = message_serial
-	for label in [research_message, investment_message]:
+	for label in [research_message, investment_message, module_title]:
 		if label != null:
 			label.text = text
 			label.modulate = Color(1, 0.4, 0.4)
@@ -425,9 +430,74 @@ func show_message(text):
 		return # A newer message is showing
 	if research_message != null:
 		research_message.modulate = Color.WHITE
-		research_message.text = "Permanent upgrades paid in Core Units. Spend 6 points in a tier to open the next one.\nThe Ship column is funded by every player in the Investment Center."
+		research_message.text = _research_intro()
+	if module_title != null:
+		module_title.modulate = Color.WHITE
+		module_title.text = "Modules"
 	if investment_message != null:
 		investment_message.modulate = Color.WHITE
 		investment_message.text = "Community projects: every player's Core Units go into the same pot, and the bonus applies to everyone."
+#endregion
+
+func _research_intro():
+	var text = research_points_text if research_points_text != "" else "Units earn 1 R&D point per level."
+	return text + "\n* = active module (equip it in Ship status). The Ship column is funded in the Investment Center."
+
+#region MODULES (Ship status tab)
+## Space is the number of modules you can equip; it grows with the highest R&D tier you opened.
+@onready var ship_tab = $"MarginContainer/TabContainer/Ship status"
+var module_list
+var module_rows = {}
+var module_title
+
+func _build_module_list():
+	get_node("MarginContainer/TabContainer/Ship status/Marge2/Status/Label/MarginContainer2/Space").text = "Space"
+	module_title = Label.new()
+	module_title.text = "Modules"
+	module_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	ship_tab.add_child(module_title)
+	var scroll = ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	ship_tab.add_child(scroll)
+	module_list = VBoxContainer.new()
+	module_list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	module_list.add_theme_constant_override("separation", 6)
+	scroll.add_child(module_list)
+
+func update_modules(state):
+	if state == null:
+		return
+	space.text = "%d / %d" % [state["used"], state["slots"]]
+	for module_id in state["modules"]:
+		var module = state["modules"][module_id]
+		if !module_rows.has(module_id):
+			var row = HBoxContainer.new()
+			var label = Label.new()
+			label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			var button = Button.new()
+			button.custom_minimum_size = Vector2(150, 40)
+			button.button_down.connect(_on_module_toggle.bind(module_id))
+			row.add_child(label)
+			row.add_child(button)
+			module_list.add_child(row)
+			module_rows[module_id] = {"label": label, "button": button, "equipped": false}
+		var entry = module_rows[module_id]
+		entry["equipped"] = module["equipped"]
+		var cooldown = "%d min cooldown" % ceil(module["cooldown"] / 60.0)
+		var cost = (", %s CU per use" % format_cu(module["cu_cost"])) if module["cu_cost"] > 0 else ""
+		entry["label"].text = "%s - %s (%s%s)" % [module["name"], module["desc"], cooldown, cost]
+		if !module["unlocked"]:
+			entry["label"].text += "\n   Locked: " + module["source"]
+			entry["label"].modulate = Color(1, 1, 1, 0.45)
+		else:
+			entry["label"].modulate = Color.WHITE
+		entry["button"].text = "Remove" if module["equipped"] else "Equip"
+		entry["button"].disabled = !module["unlocked"]
+
+func _on_module_toggle(module_id):
+	mainScene.client.request_equip_module(module_id, !module_rows[module_id]["equipped"])
+	mainScene.wait_server_call()
 #endregion
 

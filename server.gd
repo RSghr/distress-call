@@ -193,6 +193,33 @@ func request_invest(project_id: String, amount: int):
 		mainScene.client.rpc("investment_update", scs.investment_state())
 
 @rpc("any_peer", "call_remote", "reliable")
+func request_equip_module(module_id: String, equip: bool):
+	if not is_server:
+		return
+	var player_id := _sender_player()
+	if player_id == "":
+		return
+	var peer := multiplayer.get_remote_sender_id()
+	var error: String = scs.equip_module(player_id, module_id, equip)
+	_send_fleet_state(peer, player_id)
+	mainScene.client.rpc_id(peer, "module_result", error == "", module_id, error)
+
+@rpc("any_peer", "call_remote", "reliable")
+func request_use_module(module_id: String):
+	if not is_server:
+		return
+	var player_id := _sender_player()
+	if player_id == "":
+		return
+	var peer := multiplayer.get_remote_sender_id()
+	var result: Dictionary = scs.use_module(player_id, module_id)
+	_send_fleet_state(peer, player_id)
+	var ok: bool = result["error"] == ""
+	mainScene.client.rpc_id(peer, "module_result", ok, module_id, result["error"] if not ok else result["message"])
+	if ok and result["galaxy_changed"]:
+		mainScene.client.rpc("update_galaxy_map", gcs.send_main_planet_info())
+
+@rpc("any_peer", "call_remote", "reliable")
 func request_send_report(feedbacktxt: String):
 	if is_server:
 		mainScene.logging("Feedback received from " + _sender_player())
@@ -207,18 +234,12 @@ func cooldown_done(player_id: String, planet_name: String, unit_type: int) -> vo
 	var strength: float = pcs.total_strength(player_id, unit_type)
 	match unit_type:
 		0:
-			var will_multiplier := 1.5 if pcs.has_ability(player_id, 0) else 1.0
-			var destroyed: int = gcs.troop_job_done(planet_name, strength, will_multiplier)
+			var destroyed: int = gcs.troop_job_done(planet_name, strength)
 			var loot := int(destroyed * pcs.troop_loot_share(player_id))
 			pcs.add_core_units(player_id, loot)
 			mainScene.logging("%s's troops brought back %d CU from %s" % [player_id, loot, planet_name])
-		1:
-			if pcs.has_ability(player_id, 1) and gcs.get_value(planet_name, "conquered", false):
-				var deal := int(gcs.get_value(planet_name, "wealth", 0) * 0.02)
-				pcs.add_core_units(player_id, deal)
-				mainScene.logging("%s's trade agreement on %s paid %d CU" % [player_id, planet_name, deal])
-			gcs.negotiator_job_done(planet_name, strength)
-		2: gcs.scout_job_done(planet_name, strength, pcs.has_ability(player_id, 2))
+		1: gcs.negotiator_job_done(planet_name, strength)
+		2: gcs.scout_job_done(planet_name, strength, scs.has_survey(pcs.load_fleet(player_id)))
 		3: gcs.colony_job_done(planet_name, strength)
 	pcs.give_exp(player_id, unit_type)
 	mainScene.logging("%s's %s finished its mission on %s" % [player_id, pcs.UNIT_SECTIONS[unit_type], planet_name])
