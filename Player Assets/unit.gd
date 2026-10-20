@@ -5,7 +5,8 @@ extends Node2D
 	unit_type = 0,
 	unit_position = "In the ship",
 	strength = 1.0,
-	upgrade = 0.0,
+	level = 0,
+	exp = 0,
 	deploying = false,
 	next_available = 0.0
 }
@@ -28,7 +29,7 @@ const COOLDOWN = {
 
 func init_unit():
 	##init the stats from save.
-	total_strength = unit_params["strength"] + unit_params["strength"] * unit_params["upgrade"]
+	total_strength = unit_params["strength"] + unit_params["strength"] * (unit_params["level"] * 0.1)
 	
 func return_to_ship():
 	unit_params["unit_position"] = "Fleet"

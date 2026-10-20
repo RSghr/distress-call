@@ -1,27 +1,32 @@
 extends Control
 
-@onready var ship_name = $"MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer/Ship_name"
-@onready var space = $"MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer2/Space"
-@onready var ftl_cooldown = $"MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer3/Cooldown_FTL"
+@onready var ship_name				= $"MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer/Ship_name"
+@onready var space					= $"MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer2/Space"
+@onready var ftl_cooldown			= $"MarginContainer/TabContainer/Ship status/Marge2/Status/Values/MarginContainer3/Cooldown_FTL"
 
-@onready var scout_values = $"MarginContainer/TabContainer/Unit status/Values/ScoutContainer/VBoxContainer"
-@onready var troop_values = $"MarginContainer/TabContainer/Unit status/Values/TroopContainer/VBoxContainer"
-@onready var negotiator_values = $"MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer/VBoxContainer"
-@onready var colony_values = $"MarginContainer/TabContainer/Unit status/Values/ColonyContainer/VBoxContainer"
+@onready var scout_values			= $"MarginContainer/TabContainer/Unit status/Values/ScoutContainer/VBoxContainer"
+@onready var troop_values			= $"MarginContainer/TabContainer/Unit status/Values/TroopContainer/VBoxContainer"
+@onready var negotiator_values			= $"MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer/VBoxContainer"
+@onready var colony_values			= $"MarginContainer/TabContainer/Unit status/Values/ColonyContainer/VBoxContainer"
 
-@onready var scout_upgrade = $"MarginContainer/TabContainer/R&D/ScoutUpgrade"
-@onready var troop_upgrade = $"MarginContainer/TabContainer/R&D/TroopUpgrade2"
-@onready var negotiator_upgrade = $"MarginContainer/TabContainer/R&D/NegotiatorUpgrade3"
-@onready var colony_upgrade = $"MarginContainer/TabContainer/R&D/ColonyUpgrade4"
+@onready var scout_upgrade			= $"MarginContainer/TabContainer/R&D/ScoutUpgrade"
+@onready var troop_upgrade			= $"MarginContainer/TabContainer/R&D/TroopUpgrade2"
+@onready var negotiator_upgrade		= $"MarginContainer/TabContainer/R&D/NegotiatorUpgrade3"
+@onready var colony_upgrade			= $"MarginContainer/TabContainer/R&D/ColonyUpgrade4"
 
-@onready var scout_cooldown = $"Unit Cooldown/Cooldown/ScoutContainer/cooldown_unit"
-@onready var troop_cooldown = $"Unit Cooldown/Cooldown/TroopContainer/cooldown_unit"
-@onready var negotiator_cooldown = $"Unit Cooldown/Cooldown/NegotiatorContainer/cooldown_unit"
-@onready var colony_cooldown = $"Unit Cooldown/Cooldown/ColonyContainer/cooldown_unit"
+@onready var scout_exp				= $"MarginContainer/TabContainer/Unit status/Values/ScoutContainer/VBoxContainer/MarginContainer4/ProgressBar"
+@onready var troop_exp				= $"MarginContainer/TabContainer/Unit status/Values/TroopContainer/VBoxContainer/MarginContainer4/ProgressBar"
+@onready var negotiator_exp			= $"MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer/VBoxContainer/MarginContainer4/ProgressBar"
+@onready var colony_exp				= $"MarginContainer/TabContainer/Unit status/Values/ColonyContainer/VBoxContainer/MarginContainer4/ProgressBar"
 
-@onready var playerGlobalResources = $PlayerGlobalResources
-@onready var anim_player = $AnimationPlayer
-@onready var tooltip = $Tooltip
+@onready var scout_cooldown			= $"Unit Cooldown/Cooldown/ScoutContainer/cooldown_unit"
+@onready var troop_cooldown			= $"Unit Cooldown/Cooldown/TroopContainer/cooldown_unit"
+@onready var negotiator_cooldown	= $"Unit Cooldown/Cooldown/NegotiatorContainer/cooldown_unit"
+@onready var colony_cooldown		= $"Unit Cooldown/Cooldown/ColonyContainer/cooldown_unit"
+
+@onready var playerGlobalResources	= $PlayerGlobalResources
+@onready var anim_player			= $AnimationPlayer
+@onready var tooltip				= $Tooltip
 
 var mainScene
 
@@ -61,50 +66,62 @@ func _update_unit_values(unit_value):
 	match unit_value["unit_type"] :
 		0 :	#Troop
 			troop_values.get_node("MarginContainer/Troop_Unit").text = unit_value["unit_name"]
-			troop_values.get_node("MarginContainer2/Troop_Upgrade").text = "Lvl." + str(int(unit_value["upgrade"] * 10))
+			troop_values.get_node("MarginContainer2/Troop_Upgrade").text = "Lvl." + str(int(unit_value["exp"] / 5))
 			if unit_value["unit_position"] == "Fleet" and mainScene.player.fleet.fleet_params["fleet_name"] != "":
 				troop_values.get_node("MarginContainer3/Troop_position").text = mainScene.player.fleet.fleet_params["fleet_name"]
 			else :
 				troop_values.get_node("MarginContainer3/Troop_position").text = unit_value["unit_position"]
 		1 :	#Negotiator
 			negotiator_values.get_node("MarginContainer/Negotiator_Unit").text = unit_value["unit_name"]
-			negotiator_values.get_node("MarginContainer2/Negotiator_Upgrade").text = "Lvl." + str(int(unit_value["upgrade"] * 10))
+			negotiator_values.get_node("MarginContainer2/Negotiator_Upgrade").text = "Lvl." + str(int(unit_value["exp"] / 5))
 			if unit_value["unit_position"] == "Fleet" and mainScene.player.fleet.fleet_params["fleet_name"] != "":
 				negotiator_values.get_node("MarginContainer3/Negotiator_position").text = mainScene.player.fleet.fleet_params["fleet_name"]
 			else :
 				negotiator_values.get_node("MarginContainer3/Negotiator_position").text = unit_value["unit_position"]
 		2 :	#Scout
 			scout_values.get_node("MarginContainer/Scout_Unit").text = unit_value["unit_name"]
-			scout_values.get_node("MarginContainer2/Scout_Upgrade").text = "Lvl." + str(int(unit_value["upgrade"] * 10))
+			scout_values.get_node("MarginContainer2/Scout_Upgrade").text = "Lvl." + str(int(unit_value["exp"] / 5))
 			if unit_value["unit_position"] == "Fleet" and mainScene.player.fleet.fleet_params["fleet_name"] != "":
 				scout_values.get_node("MarginContainer3/Scout_position").text = mainScene.player.fleet.fleet_params["fleet_name"]
 			else :
 				scout_values.get_node("MarginContainer3/Scout_position").text = unit_value["unit_position"]
 		3 :	#Colony
 			colony_values.get_node("MarginContainer/Colony_Unit").text = unit_value["unit_name"]
-			colony_values.get_node("MarginContainer2/Colony_Upgrade").text = "Lvl." + str(int(unit_value["upgrade"] * 10))
+			colony_values.get_node("MarginContainer2/Colony_Upgrade").text = "Lvl." + str(int(unit_value["exp"] / 5))
 			if unit_value["unit_position"] == "Fleet" and mainScene.player.fleet.fleet_params["fleet_name"] != "":
 				colony_values.get_node("MarginContainer3/Colony_position").text = mainScene.player.fleet.fleet_params["fleet_name"]
 			else :
 				colony_values.get_node("MarginContainer3/Colony_position").text = unit_value["unit_position"]
+	update_unit_exp(unit_value)
+
+func update_unit_exp(unit_value):
+	match unit_value["unit_type"] :
+		0 :	#Troop
+			troop_exp.value = int(fmod(unit_value["exp"], 5))
+		1 :	#Negotiator
+			negotiator_exp.value = int(fmod(unit_value["exp"], 5))
+		2 :	#Scout
+			scout_exp.value = int(fmod(unit_value["exp"], 5))
+		3 :	#Colony
+			colony_exp.value = int(fmod(unit_value["exp"], 5))
 
 #R&D TAB
-func _update_upgrade_values(unit_value):
-	match unit_value["unit_type"] :
-		0 : #Troop
-			troop_upgrade._init_stat()
-		1 : #Negotiator
-			negotiator_upgrade._init_stat()
-		2 : # Scout
-			scout_upgrade._init_stat()
-		3 : #Colony
-			colony_upgrade._init_stat()
+#func _update_upgrade_values(unit_value):
+	#match unit_value["unit_type"] :
+		#0 : #Troop
+			#troop_upgrade._init_stat()
+		#1 : #Negotiator
+			#negotiator_upgrade._init_stat()
+		#2 : # Scout
+			#scout_upgrade._init_stat()
+		#3 : #Colony
+			#colony_upgrade._init_stat()
 
-func _init_upgrade():
-	scout_upgrade.unit = mainScene.player.fleet.scout
-	troop_upgrade.unit = mainScene.player.fleet.troop
-	negotiator_upgrade.unit = mainScene.player.fleet.negotiator
-	colony_upgrade.unit = mainScene.player.fleet.colony
+#func _init_upgrade():
+	#scout_upgrade.unit = mainScene.player.fleet.scout
+	#troop_upgrade.unit = mainScene.player.fleet.troop
+	#negotiator_upgrade.unit = mainScene.player.fleet.negotiator
+	#colony_upgrade.unit = mainScene.player.fleet.colony
 	
 func _update_PGR():
 	playerGlobalResources.CoreUnit.text = str(mainScene.player.fleet.fleet_params["CoreUnit"])
@@ -155,7 +172,6 @@ func display_tooltip(txt, hovering):
 		tooltip.set_tooltip(txt)
 	else :
 		tooltip.visible = false
-
 
 func _on_donation_button_down() -> void:
 	pass # Replace with function body.

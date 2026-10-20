@@ -69,20 +69,20 @@ func move_to_planet(planet):
 	else :
 		mainScene.deny_server_call()
 
-func check_upgrade_bool():
-	if  fleet.fleet_params["current_space"] < fleet.fleet_params["total_space"] :
-		return true
-	return false
+#func check_upgrade_bool():
+	#if  fleet.fleet_params["current_space"] < fleet.fleet_params["total_space"] :
+		#return true
+	#return false
 
-func calcul_curr_upgrades(unit_type):
-	if cd_detect(unit_type) :
-		var curr = 0
-		for unit in fleet.unit_holder.get_children():
-			curr += int(unit.unit_params["upgrade"] * 10)
-		fleet.fleet_params["current_space"] = curr
-		return true
-	else :
-		return false
+#func calcul_curr_upgrades(unit_type):
+	#if cd_detect(unit_type) :
+		#var curr = 0
+		#for unit in fleet.unit_holder.get_children():
+			#curr += int(unit.unit_params["level"] * 10)
+		#fleet.fleet_params["current_space"] = curr
+		#return true
+	#else :
+		#return false
 
 func deploy_unit(unit_type, planet):
 	if cd_detect(unit_type) and cost_detect(unit_type):

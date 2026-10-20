@@ -9,7 +9,7 @@ uniform sampler2D vertical_gradient; // Used to set alpha values
 uniform sampler2D color_gradient; // Sets the effect color
 uniform float size_effect: hint_range(1.0, 10.0, 1.0) = 1.0; // Size of the effect in pixel units
 uniform float speed = 1; // Effect speed
-uniform float highlight_strength: hint_range(-4.0, 4.0, 0.05) = 0.5; // Strength of the highlight
+uniform float highlight_strength: hint_range(-10.0, 10.0, 0.01) = 0.1; // Strength of the highlight
 uniform bool color_mode_toggle = false; // Toggle for color gradient application
 uniform bool is_horizontal = true; // Switches effect direction
 uniform float pause_duration = 0.5; // Pause duration between cycles

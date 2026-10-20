@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=3 uid="uid://c0k4lbf6ystdb"]
+[gd_scene load_steps=74 format=3 uid="uid://c0k4lbf6ystdb"]
 
 [ext_resource type="Script" uid="uid://u1dxgtktyy8b" path="res://player_ui.gd" id="1_5m0x8"]
 [ext_resource type="Texture2D" uid="uid://s73eehfujpsy" path="res://Planet Assets/Fleet.png" id="1_lwipk"]
@@ -9,9 +9,11 @@
 [ext_resource type="PackedScene" uid="uid://f7273nartaw1" path="res://cooldown_unit.tscn" id="4_tybkg"]
 [ext_resource type="Texture2D" uid="uid://by4pgmc08q7tn" path="res://Warspite_pookies.png" id="5_a4em4"]
 [ext_resource type="Texture2D" uid="uid://wn1ryl7galni" path="res://UI/Units/UnitList.png" id="5_wotjm"]
+[ext_resource type="Texture2D" uid="uid://ccux2nsl5td2b" path="res://UI/HealthFill.png" id="6_4u8at"]
 [ext_resource type="PackedScene" uid="uid://c510o7ictlouj" path="res://codex_entry.tscn" id="6_cbg41"]
 [ext_resource type="Texture2D" uid="uid://bvlw46r5nuvd7" path="res://Validate.png" id="7_gxl1c"]
 [ext_resource type="Theme" uid="uid://cr4wqlqrjqtjv" path="res://UI/codex.tres" id="7_iniqa"]
+[ext_resource type="Texture2D" uid="uid://c3xbxekvtuule" path="res://UI/HealthBar.png" id="7_sf2jf"]
 [ext_resource type="Texture2D" uid="uid://dcepmqmnhr7fc" path="res://Deny.png" id="7_vg8o0"]
 [ext_resource type="PackedScene" uid="uid://bro8xp2hofqo6" path="res://shop_item.tscn" id="7_y7vyt"]
 [ext_resource type="Texture2D" uid="uid://bda8pww2cmvco" path="res://UI/Enter.png" id="12_qadsr"]
@@ -518,7 +520,7 @@ offset_bottom = 977.0
 [node name="TabContainer" type="TabContainer" parent="MarginContainer"]
 layout_mode = 2
 theme = ExtResource("2_qadsr")
-current_tab = 3
+current_tab = 1
 
 [node name="Ship status" type="VBoxContainer" parent="MarginContainer/TabContainer"]
 visible = false
@@ -618,7 +620,6 @@ size_flags_vertical = 3
 layout_mode = 2
 
 [node name="Unit status" type="HBoxContainer" parent="MarginContainer/TabContainer"]
-visible = false
 layout_mode = 2
 theme = ExtResource("2_qadsr")
 metadata/_tab_index = 1
@@ -686,6 +687,17 @@ text = "Unit's position"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label/ScoutContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Scout_experience" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Label/ScoutContainer/VBoxContainer/MarginContainer4"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Unit's EXP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Separator" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
@@ -735,6 +747,17 @@ size_flags_vertical = 3
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "Unit's position"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label/TroopContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Troop_experience" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Label/TroopContainer/VBoxContainer/MarginContainer4"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Unit's EXP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -790,6 +813,17 @@ text = "Unit's position"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label/NegotiatorContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Negotiator_experience" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Label/NegotiatorContainer/VBoxContainer/MarginContainer4"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Unit's EXP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Separator3" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
@@ -839,6 +873,17 @@ size_flags_vertical = 3
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 24
 text = "Unit's position"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Label/ColonyContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Colony_experience" type="RichTextLabel" parent="MarginContainer/TabContainer/Unit status/Label/ColonyContainer/VBoxContainer/MarginContainer4"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 24
+text = "Unit's EXP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -898,6 +943,20 @@ text = "Unit position"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values/ScoutContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ProgressBar" type="TextureProgressBar" parent="MarginContainer/TabContainer/Unit status/Values/ScoutContainer/VBoxContainer/MarginContainer4"]
+layout_mode = 2
+max_value = 5.0
+rounded = true
+texture_under = ExtResource("6_4u8at")
+texture_over = ExtResource("7_sf2jf")
+texture_progress = ExtResource("6_4u8at")
+tint_under = Color(0.278431, 0.12549, 0.294118, 1)
+tint_progress = Color(0.611765, 0.278431, 0.639216, 1)
+
 [node name="Separator" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
@@ -948,6 +1007,20 @@ theme_override_font_sizes/normal_font_size = 24
 text = "Unit position"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values/TroopContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ProgressBar" type="TextureProgressBar" parent="MarginContainer/TabContainer/Unit status/Values/TroopContainer/VBoxContainer/MarginContainer4"]
+layout_mode = 2
+max_value = 5.0
+rounded = true
+texture_under = ExtResource("6_4u8at")
+texture_over = ExtResource("7_sf2jf")
+texture_progress = ExtResource("6_4u8at")
+tint_under = Color(0.278431, 0.12549, 0.294118, 1)
+tint_progress = Color(0.611765, 0.278431, 0.639216, 1)
 
 [node name="Separator2" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values"]
 custom_minimum_size = Vector2(0, 5)
@@ -1000,6 +1073,20 @@ text = "Unit position"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ProgressBar" type="TextureProgressBar" parent="MarginContainer/TabContainer/Unit status/Values/NegotiatorContainer/VBoxContainer/MarginContainer4"]
+layout_mode = 2
+max_value = 5.0
+rounded = true
+texture_under = ExtResource("6_4u8at")
+texture_over = ExtResource("7_sf2jf")
+texture_progress = ExtResource("6_4u8at")
+tint_under = Color(0.278431, 0.12549, 0.294118, 1)
+tint_progress = Color(0.611765, 0.278431, 0.639216, 1)
+
 [node name="Separator3" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values"]
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
@@ -1051,6 +1138,20 @@ text = "Unit position"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/TabContainer/Unit status/Values/ColonyContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ProgressBar" type="TextureProgressBar" parent="MarginContainer/TabContainer/Unit status/Values/ColonyContainer/VBoxContainer/MarginContainer4"]
+layout_mode = 2
+max_value = 5.0
+rounded = true
+texture_under = ExtResource("6_4u8at")
+texture_over = ExtResource("7_sf2jf")
+texture_progress = ExtResource("6_4u8at")
+tint_under = Color(0.278431, 0.12549, 0.294118, 1)
+tint_progress = Color(0.611765, 0.278431, 0.639216, 1)
+
 [node name="R&D" type="VBoxContainer" parent="MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
@@ -1095,6 +1196,7 @@ stat_params = {
 }
 
 [node name="Galactic Shop" type="VBoxContainer" parent="MarginContainer/TabContainer"]
+visible = false
 layout_mode = 2
 theme = ExtResource("2_qadsr")
 metadata/_tab_index = 3
@@ -1118,7 +1220,7 @@ size_flags_vertical = 3
 text = "Troops cost reduction"
 item_id = "TroopCost"
 tooltip = "Reduce the cost of Troops by 10%"
-price = 30000
+price = 3000
 amount = 1
 
 [node name="ShopItem2" parent="MarginContainer/TabContainer/Galactic Shop/UnitCost" instance=ExtResource("7_y7vyt")]
@@ -1128,7 +1230,7 @@ size_flags_vertical = 3
 text = "Negotiators cost reduction"
 item_id = "NegotiatorCost"
 tooltip = "Reduce the cost of Negotiators by 10%"
-price = 15000
+price = 1500
 amount = 1
 
 [node name="ShopItem3" parent="MarginContainer/TabContainer/Galactic Shop/UnitCost" instance=ExtResource("7_y7vyt")]
@@ -1138,7 +1240,7 @@ size_flags_vertical = 3
 text = "Scouts cost reduction"
 item_id = "ScoutCost"
 tooltip = "Reduce the cost of Scouts by 10%"
-price = 75000
+price = 7500
 amount = 1
 
 [node name="ShopItem4" parent="MarginContainer/TabContainer/Galactic Shop/UnitCost" instance=ExtResource("7_y7vyt")]
@@ -1148,7 +1250,7 @@ size_flags_vertical = 3
 text = "Colonies cost reduction"
 item_id = "ColonyCost"
 tooltip = "Reduce the cost of Colonies by 10%"
-price = 150000
+price = 15000
 amount = 1
 
 [node name="Category2" type="RichTextLabel" parent="MarginContainer/TabContainer/Galactic Shop"]
@@ -1170,7 +1272,7 @@ size_flags_vertical = 3
 text = "Troops strength increase"
 item_id = "TroopSTR"
 tooltip = "Increase base strength of the Troops by 10%"
-price = 20000
+price = 5000
 amount = 1
 
 [node name="ShopItem2" parent="MarginContainer/TabContainer/Galactic Shop/UnitStrength" instance=ExtResource("7_y7vyt")]
@@ -1180,7 +1282,7 @@ size_flags_vertical = 3
 text = "Negotiators strength increase"
 item_id = "NegotiatorSTR"
 tooltip = "Increase base strength of the Negotiator by 10%"
-price = 10000
+price = 2500
 amount = 1
 
 [node name="ShopItem3" parent="MarginContainer/TabContainer/Galactic Shop/UnitStrength" instance=ExtResource("7_y7vyt")]
@@ -1190,7 +1292,7 @@ size_flags_vertical = 3
 text = "Scouts strength increase"
 item_id = "ScoutSTR"
 tooltip = "Increase base strength of the Scouts by 10%"
-price = 50000
+price = 12500
 
 [node name="ShopItem4" parent="MarginContainer/TabContainer/Galactic Shop/UnitStrength" instance=ExtResource("7_y7vyt")]
 layout_mode = 2
@@ -1199,7 +1301,7 @@ size_flags_vertical = 3
 text = "Colonies strength increase"
 item_id = "ColonySTR"
 tooltip = "Increase base strength of the Colony by 10%"
-price = 100000
+price = 25000
 
 [node name="Category3" type="RichTextLabel" parent="MarginContainer/TabContainer/Galactic Shop"]
 custom_minimum_size = Vector2(0, 50)
@@ -1228,18 +1330,24 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Coming Soon"
+item_id = "Coming soon"
+tooltip = "Coming soon!"
 
 [node name="ShopItem3" parent="MarginContainer/TabContainer/Galactic Shop/ShipUpgrades" instance=ExtResource("7_y7vyt")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Coming Soon"
+item_id = "Coming soon"
+tooltip = "Coming soon!"
 
 [node name="ShopItem4" parent="MarginContainer/TabContainer/Galactic Shop/ShipUpgrades" instance=ExtResource("7_y7vyt")]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Coming Soon"
+item_id = "Coming soon"
+tooltip = "Coming soon!"
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/TabContainer/Galactic Shop"]
 layout_mode = 2

@@ -25,7 +25,7 @@ func _ready():
 	mainScene = get_tree().root.get_child(0)
 	
 func _init_stat():
-	stat_params["upgrade"] = int(unit.unit_params["upgrade"] * 10)
+	stat_params["level"] = int(unit.unit_params["level"] * 10)
 	stat_name.text = type[stat_params["type"]] + " level"
 	stat_level.text = "Lvl." + str(stat_params["upgrade"])
 

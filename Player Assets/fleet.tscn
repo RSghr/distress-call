@@ -49,7 +49,7 @@ unit_params = {
 [node name="Sprite2D" type="Sprite2D" parent="."]
 clip_children = 2
 material = ExtResource("3_k0dao")
-scale = Vector2(0.2, 0.25)
+scale = Vector2(0.3, 0.3)
 texture = ExtResource("3_kn3g4")
 
 [node name="Status" type="Button" parent="Sprite2D"]

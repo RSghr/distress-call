@@ -1,0 +1,82 @@
+[gd_scene load_steps=4 format=3 uid="uid://deitnv0webuq3"]
+
+[ext_resource type="Texture2D" uid="uid://d321324bsexvg" path="res://UI/Splash.png" id="1_pjaqs"]
+[ext_resource type="Script" uid="uid://b8x1p3r5lyaym" path="res://Login/login.gd" id="1_vihoh"]
+[ext_resource type="Theme" uid="uid://r1cmuoc1rfu2" path="res://UI/Maintheme.tres" id="2_vihoh"]
+
+[node name="Login" type="Node2D"]
+script = ExtResource("1_vihoh")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="LoginUI" type="CanvasLayer" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="LoginUI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_pjaqs")
+
+[node name="UIGeneral" type="Control" parent="LoginUI"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_vihoh")
+
+[node name="Panel" type="Panel" parent="LoginUI/UIGeneral"]
+layout_mode = 0
+offset_right = 357.0
+offset_bottom = 274.0
+
+[node name="MarginContainer" type="MarginContainer" parent="LoginUI/UIGeneral"]
+layout_mode = 0
+offset_left = 60.0
+offset_top = 37.0
+offset_right = 306.0
+offset_bottom = 231.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LoginUI/UIGeneral/MarginContainer"]
+layout_mode = 2
+
+[node name="Username" type="LineEdit" parent="LoginUI/UIGeneral/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+placeholder_text = "USERNAME"
+alignment = 1
+max_length = 15
+
+[node name="Message" type="RichTextLabel" parent="LoginUI/UIGeneral/MarginContainer/VBoxContainer"]
+modulate = Color(1, 0.25, 0.25, 1)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 12
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Submit" type="Button" parent="LoginUI/UIGeneral/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "LOG IN"
+
+[node name="HSeparator" type="HSeparator" parent="LoginUI/UIGeneral/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Create" type="Button" parent="LoginUI/UIGeneral/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Sign up"
+
+[connection signal="button_down" from="LoginUI/UIGeneral/MarginContainer/VBoxContainer/Submit" to="." method="_on_submit_button_down"]
+[connection signal="button_down" from="LoginUI/UIGeneral/MarginContainer/VBoxContainer/Create" to="." method="_on_create_button_down"]
