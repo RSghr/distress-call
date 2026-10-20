@@ -34,18 +34,44 @@ func _unhandled_input(event):
 				planet._on_details_toggled(false)
 
 func _init_player_pos():
-	if player.fleet.fleet_params["fleet_position"] == "" :
-		player.pcs.get_player_id()
-		client.send_id(player.fleet.player_id)
-		client.request_load_fleet_units(player.fleet)
-		wait_server_call()
+	# The server sends the fleet once registration is confirmed (see client.gd)
+	player.pcs.get_player_id()
+	client.send_id(player.fleet.player_id)
+	wait_server_call()
 
 func post_server_init_player_pos():
+	if !startup:
+		return
 	player.init_player()
 	displace_player(player, player.on_planet(), 1)
-	on_fleet_units_action()
 	player.fleet.set_fleet_name()
+	_update_ship_status()
 	startup = false
+
+## Applies the fleet data sent by the server, which is the only source of truth.
+func apply_fleet_state(server_now, state):
+	player.fleet.server_offset = server_now - Time.get_ticks_msec() / 1000.0
+	for key in state["fleet"]:
+		player.fleet.fleet_params[key] = state["fleet"][key]
+	player.fleet.unit_costs = state.get("costs", {})
+	for unit in player.fleet.unit_holder.get_children():
+		if state["units"].has(unit.name):
+			for key in state["units"][unit.name]:
+				unit.unit_params[key] = state["units"][unit.name][key]
+		unit.init_unit()
+	player.fleet.set_fleet_name()
+	_update_ship_status()
+
+## The server accepted an FTL jump.
+func on_fleet_moved(planet_name, _collected):
+	var planet = find_planet(planet_name)
+	if planet == null:
+		return
+	player.current_planet = planet
+	player.reset_route()
+	player.possible_routes()
+	player.enable_route()
+	displace_player(player, planet, 10)
 
 #func displace_player(player_target,planet):
 	#player_target.position = planet.position + Vector2(0, -300)
@@ -63,31 +89,28 @@ func init_fleets(fleet_list):
 	
 	for fleet in fleet_list:
 		if fleet != player.fleet.player_id :
+			var destination = find_planet(fleet_list[fleet][1])
+			if destination == null :
+				continue
 			var instance = fleet_obj.instantiate()
 			instance.player_id = fleet
 			instance.fleet_params["fleet_name"] = fleet_list[fleet][0]
 			instance.fleet_params["fleet_position"] = fleet_list[fleet][1]
 			if startup :
-				displace_player(instance, find_planet(instance.fleet_params["fleet_position"]), 1)
+				displace_player(instance, destination, 1)
 			else :
-				displace_player(instance, find_planet(instance.fleet_params["fleet_position"]), 10)
+				displace_player(instance, destination, 10)
 			fleetHolder.add_child(instance)
 			instance.set_fleet_name()
 
 func update_planet_data(planet_list):
 	galaxy.planet_list = planet_list
 	galaxy.update_galaxy_map()
-	galaxy.update_galaxy_map_cfg()
 
 func find_planet(planet_name):
 	for planet in galaxy.placed_planet :
 			if planet_name == planet.planet_params["name"] :
 				return planet
-
-func on_fleet_units_action():
-	client.request_save_fleet_units(player.fleet)
-	wait_server_call()
-	_update_ship_status()
 
 func switch_to_fleet_status():
 	if cam.is_current() :
@@ -106,34 +129,33 @@ func switch_to_fleet_status():
 		prt.visible = true
 		fleetHolder.visible = true
 
+## Refreshes the fleet screens from the local copy of the server state. Never saves.
 func _update_ship_status():
 	fleetStatus.playerUI.ship_name.text = player.fleet.fleet_params["fleet_name"]
-	fleetStatus.playerUI._init_upgrade()
 	fleetStatus.playerUI._init_cooldown()
-	for unit in player.fleet.get_child(0).get_children():
+	for unit in player.fleet.unit_holder.get_children():
 		fleetStatus.playerUI._update_unit_values(unit.unit_params)
-		fleetStatus.playerUI._update_upgrade_values(unit.unit_params)
 	fleetStatus.playerUI._update_PGR()
 	fleetStatus.playerUI._update_cooldown()
-	if !startup :
-		client.request_save_fleet_units(player.fleet)
-		wait_server_call()
+
+func rename(target, new_name):
+	client.request_rename(target, new_name)
+	wait_server_call()
 
 func _deploy_unit(unit_type, planet_name):
-	client.request_deploy_unit(player.fleet, unit_type, planet_name)
+	client.request_deploy_unit(unit_type, planet_name)
 	wait_server_call()
 
 func ftl_saver(planet_name):
-	client.request_move_fleet(player.fleet.player_id, planet_name)
+	client.request_move_fleet(planet_name)
 	wait_server_call()
 
+## A mission finished (any player's). Our own fleet state arrives separately.
 func job_done(player_id, planet_name, unit_type):
-	client.request_load_fleet_units(player.fleet)
-	wait_server_call()
 	galaxy.job_done(player_id, planet_name, unit_type)
 
 func buy_item(item_id):
-	client.request_buy_item(player.fleet.player_id, item_id)
+	client.request_buy_item(item_id)
 	wait_server_call()
 
 #Server Comms status

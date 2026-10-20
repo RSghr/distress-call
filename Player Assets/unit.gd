@@ -27,6 +27,24 @@ const COOLDOWN = {
 	"Colony": 		30.0 #60
 	}
 
+const DEFAULT_PARAMS = {
+	unit_name = "",
+	unit_type = 0,
+	unit_position = "Fleet",
+	strength = 1.0,
+	level = 0,
+	exp = 0,
+	deploying = false,
+	next_available = 0.0
+}
+
+func _ready():
+	# Fill keys missing from older scene overrides so the UI never reads a missing key
+	for key in DEFAULT_PARAMS:
+		if !unit_params.has(key):
+			unit_params[key] = DEFAULT_PARAMS[key]
+	init_unit()
+
 func init_unit():
 	##init the stats from save.
 	total_strength = unit_params["strength"] + unit_params["strength"] * (unit_params["level"] * 0.1)

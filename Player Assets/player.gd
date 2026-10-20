@@ -21,6 +21,7 @@ func _ready():
 
 #Setup of the fleet position
 func init_player():
+	reset_route()
 	current_planet = on_planet()
 	possible_routes()
 	enable_route()
@@ -55,17 +56,10 @@ func reset_route():
 			planet.get_node("Planet_Detail").switch_move()
 	nearby_planet.clear()
 
-#Action of moving fleet
+#Action of moving fleet: the server checks the jump and answers with move_result
 func move_to_planet(planet):
 	if cd_detect(4) :
 		mainScene.ftl_saver(planet.planet_params["name"])
-		if mainScene.fleetStatus.playerUI.ftl_cooldown.cd_check():
-			current_planet = planet
-			fleet.fleet_params["fleet_position"] = current_planet.planet_params["name"]
-			reset_route()
-			possible_routes()
-			enable_route()
-			mainScene.displace_player($".", planet, 10)
 	else :
 		mainScene.deny_server_call()
 
@@ -109,18 +103,13 @@ func cd_detect(unit_type):
 				return false
 	return true
 
+## Quick local check so the button feels instant; the server makes the real check.
+func unit_cost(unit_type):
+	var unit_name = ["Troop", "Negotiator", "Scout", "Colony"][unit_type]
+	if fleet.unit_costs.has(unit_name):
+		return fleet.unit_costs[unit_name]
+	var unit = fleet.unit_holder.get_node(unit_name)
+	return int(UNIT_COST[unit_type] * unit.total_strength)
+
 func cost_detect(unit_type):
-	var result = 0
-	match unit_type:
-		0 : #Troop
-			result = fleet.fleet_params["CoreUnit"] - 10000 * fleet.troop.total_strength
-		1 : #Negotiator
-			result = fleet.fleet_params["CoreUnit"] - 5000 * fleet.negotiator.total_strength
-		2 : #Scout
-			result = fleet.fleet_params["CoreUnit"] - 25000 * fleet.scout.total_strength
-		3 : #Colony
-			result = fleet.fleet_params["CoreUnit"] - 50000 * fleet.colony.total_strength
-	if result >= 0 :
-		return true
-	else :
-		return false
+	return fleet.fleet_params["CoreUnit"] >= unit_cost(unit_type)

@@ -13,7 +13,6 @@ func _ready():
 func _init_cd():
 	if server_offset == null or unit == null:
 		mainScene.fleetStatus.playerUI._init_cooldown()
-		mainScene.fleetStatus.playerUI._init_upgrade()
 	else :
 		var now = Time.get_ticks_msec() / 1000.0 + server_offset
 		remaining = unit.unit_params["next_available"] - now

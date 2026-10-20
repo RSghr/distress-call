@@ -96,6 +96,7 @@ func _draw() -> void:
 		draw_line(line[0].position, line[1].position, Color.GREEN, 5.0)
 
 func update_galaxy_map():
+	conquered_line.clear() # Rebuilt below; it used to grow on every update
 	for planet in placed_planet :
 		var planet_name = planet.name
 		if planet_list.has(planet_name):
@@ -111,24 +112,8 @@ func update_galaxy_map():
 		planet.contains_storedCU()
 	queue_redraw()
 
-func update_galaxy_map_cfg():
-	var config = ConfigFile.new()
-	var currConfig = config.load(SAVE_PATH)
-	
-	if currConfig == OK:
-		for planet in placed_planet :
-			var planet_name = planet.name
-			if planet_list.has(planet_name):
-				var summary = planet_list[planet_name]
-				for key in summary.keys():
-					if planet.planet_params.has(key):
-						config.set_value(planet_name, key, planet_list[planet_name][key])
-		config.save(SAVE_PATH)
-
 func job_done(player_id, planet_name, unit_type):
 	update_galaxy_map()
-	update_galaxy_map_cfg()
-	mainScene._update_ship_status()
 	unit_gone(player_id, planet_name, unit_type)
 
 func Unit_sent(player_id, planet_name, unit_type):
@@ -147,8 +132,3 @@ func unit_gone(player_id, planet_name, unit_type):
 			for unit in planet.get_children():
 				if unit.name == player_id + "_" + str(unit_type) + "_" + planet_name :
 					unit.queue_free()
-
-func reset_storedCU(planet_name):
-	if planet_list.has(planet_name):
-		var claimedPlanet = planet_list[planet_name]
-		claimedPlanet.planet_params["storedCU"] = 0

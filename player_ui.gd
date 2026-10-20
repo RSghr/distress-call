@@ -39,28 +39,28 @@ func _on_ship_name_text_submitted(new_text: String) -> void:
 	ship_name.text = new_text
 	mainScene.player.fleet.fleet_params["fleet_name"] = new_text
 	mainScene.player.fleet.set_fleet_name()
-	mainScene._update_ship_status()
+	mainScene.rename("Fleet", new_text)
 
 #UNIT STATUS TAB
 func _on_troop_unit_text_submitted(new_text: String) -> void:
 	troop_values.get_node("MarginContainer/Troop_Unit").text = new_text
 	mainScene.player.fleet.troop.unit_params["unit_name"] = new_text
-	mainScene._update_ship_status()
+	mainScene.rename("Troop", new_text)
 
 func _on_negotiator_unit_text_submitted(new_text: String) -> void:
 	negotiator_values.get_node("MarginContainer/Negotiator_Unit").text = new_text
 	mainScene.player.fleet.negotiator.unit_params["unit_name"] = new_text
-	mainScene._update_ship_status()
+	mainScene.rename("Negotiator", new_text)
 
 func _on_colony_unit_text_submitted(new_text: String) -> void:
 	colony_values.get_node("MarginContainer/Colony_Unit").text = new_text
 	mainScene.player.fleet.colony.unit_params["unit_name"] = new_text
-	mainScene._update_ship_status()
+	mainScene.rename("Colony", new_text)
 
 func _on_scout_unit_text_submitted(new_text: String) -> void:
 	scout_values.get_node("MarginContainer/Scout_Unit").text = new_text
 	mainScene.player.fleet.scout.unit_params["unit_name"] = new_text
-	mainScene._update_ship_status()
+	mainScene.rename("Scout", new_text)
 
 func _update_unit_values(unit_value):
 	match unit_value["unit_type"] :
@@ -126,7 +126,6 @@ func update_unit_exp(unit_value):
 func _update_PGR():
 	playerGlobalResources.CoreUnit.text = str(mainScene.player.fleet.fleet_params["CoreUnit"])
 	mainScene.prt.coreUnitCount.text = str(mainScene.player.fleet.fleet_params["CoreUnit"])
-	mainScene.player.calcul_curr_upgrades(5)
 	space.text = str(mainScene.player.fleet.fleet_params["current_space"]) + " / " + str(mainScene.player.fleet.fleet_params["total_space"])
 
 func _init_cooldown():
@@ -140,7 +139,6 @@ func _init_cooldown():
 	troop_cooldown.server_offset = mainScene.player.fleet.server_offset
 	negotiator_cooldown.server_offset = mainScene.player.fleet.server_offset
 	colony_cooldown.server_offset = mainScene.player.fleet.server_offset
-	mainScene.prt.payoutTimer.server_offset = mainScene.player.fleet.server_offset
 	
 	for unitcd in mainScene.prt.unit_holder.get_children():
 		match unitcd.type:

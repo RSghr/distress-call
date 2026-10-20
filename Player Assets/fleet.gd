@@ -30,6 +30,7 @@ var faction_type = {
 
 var mainScene
 var server_offset = 0
+var unit_costs = {} # Unit name -> cost in CU, as computed by the server
 
 var initialScale = Vector2.ZERO
 

@@ -15,11 +15,12 @@ script = ExtResource("1_a24jp")
 unit_params = {
 &"deploying": false,
 &"next_available": 0.0,
+&"exp": 0,
+&"level": 0,
 &"strength": 1.0,
 &"unit_name": "",
 &"unit_position": "In the ship",
-&"unit_type": 2,
-&"upgrade": 0.0
+&"unit_type": 2
 }
 
 [node name="Troop" parent="Unit_Holder" instance=ExtResource("2_fgvq5")]
@@ -28,22 +29,24 @@ unit_params = {
 unit_params = {
 &"deploying": false,
 &"next_available": 0.0,
+&"exp": 0,
+&"level": 0,
 &"strength": 1.0,
 &"unit_name": "",
 &"unit_position": "In the ship",
-&"unit_type": 3,
-&"upgrade": 0.0
+&"unit_type": 3
 }
 
 [node name="Negotiator" parent="Unit_Holder" instance=ExtResource("2_fgvq5")]
 unit_params = {
 &"deploying": false,
 &"next_available": 0.0,
+&"exp": 0,
+&"level": 0,
 &"strength": 1.0,
 &"unit_name": "",
 &"unit_position": "In the ship",
-&"unit_type": 1,
-&"upgrade": 0.0
+&"unit_type": 1
 }
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
