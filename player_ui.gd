@@ -189,6 +189,8 @@ const CELL_SIZE = Vector2(220, 105)
 @onready var tab_container = $MarginContainer/TabContainer
 
 var research_cells = {}   # "Column:tier" -> Button
+var tier_labels = {}      # tier -> Label
+var tiers_open = {}       # tier -> bool (this player's R&D)
 var research_nodes = {}   # node id -> data from the server
 var investment = {}       # project id -> data from the server
 var investment_rows = {}  # project id -> {"bar", "status", "buttons"}
@@ -230,7 +232,9 @@ func _build_research_tab():
 		var tier_label = Label.new()
 		tier_label.text = "Tier " + str(tier)
 		tier_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		tier_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		grid.add_child(tier_label)
+		tier_labels[tier] = tier_label
 		for column in RESEARCH_COLUMNS:
 			var cell = Button.new()
 			cell.custom_minimum_size = CELL_SIZE
@@ -259,6 +263,13 @@ func update_research(research):
 	if research == null:
 		return
 	research_nodes = research["nodes"]
+	for tier in research["tiers"]:
+		var info = research["tiers"][tier]
+		tiers_open[int(tier)] = info["open"]
+		var label = tier_labels.get(int(tier))
+		if label != null:
+			label.text = "Tier %d\n%s" % [int(tier), "open" if info["open"] else "%d pts spent" % info["required"]]
+			label.modulate = Color.WHITE if info["open"] else Color(1, 1, 1, 0.5)
 	research_points_text = "R&D points: %d available (%d earned from unit levels). Every %d points spent opens the next tier." % [research["points_available"], research["points_total"], research["tier_step"]]
 	if research_message.modulate == Color.WHITE:
 		research_message.text = _research_intro()
@@ -269,7 +280,7 @@ func update_research(research):
 			continue
 		cell.text = ("* " if node["active"] else "") + node["name"] + "\n%d/%d" % [node["rank"], node["ranks"]]
 		if node["active"]:
-			cell.text += "\nActive module"
+			cell.text += "  (active)"
 		cell.disabled = node["refusal"] != ""
 		if node["rank"] >= node["ranks"]:
 			cell.modulate = Color(0.6, 1.0, 0.6)
@@ -286,12 +297,14 @@ func _update_ship_column():
 		if project_id == "":
 			continue
 		var project = investment[project_id]
+		# Funded by everyone; its bonus or module only works once you opened this tier yourself
+		var my_tier_open = tiers_open.get(tier, tier == 1)
 		cell.text = project["name"] + "\n"
 		if project["complete"]:
-			cell.text += "1/1"
-			cell.modulate = Color(0.6, 1.0, 0.6)
+			cell.text += "Funded" if my_tier_open else "Funded\nneeds your tier %d" % tier
+			cell.modulate = Color(0.6, 1.0, 0.6) if my_tier_open else Color(0.6, 1.0, 0.6, 0.5)
 		else:
-			cell.text += "0/1\nCommunity: %d%%" % int(100.0 * project["funded"] / project["cost"])
+			cell.text += "Community: %d%%" % int(100.0 * project["funded"] / project["cost"])
 			cell.modulate = Color.WHITE if project["open"] else Color(1, 1, 1, 0.4)
 
 func _on_research_cell_pressed(column, tier):
@@ -465,36 +478,61 @@ func _build_module_list():
 	module_list.add_theme_constant_override("separation", 6)
 	scroll.add_child(module_list)
 
+## Laid out by Space: one row per slot, then the unlocked modules you can still equip.
+## Locked modules are not shown.
 func update_modules(state):
 	if state == null:
 		return
 	space.text = "%d / %d" % [state["used"], state["slots"]]
-	for module_id in state["modules"]:
-		var module = state["modules"][module_id]
-		if !module_rows.has(module_id):
-			var row = HBoxContainer.new()
-			var label = Label.new()
-			label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-			var button = Button.new()
-			button.custom_minimum_size = Vector2(150, 40)
-			button.button_down.connect(_on_module_toggle.bind(module_id))
-			row.add_child(label)
-			row.add_child(button)
-			module_list.add_child(row)
-			module_rows[module_id] = {"label": label, "button": button, "equipped": false}
-		var entry = module_rows[module_id]
-		entry["equipped"] = module["equipped"]
-		var cooldown = "%d min cooldown" % ceil(module["cooldown"] / 60.0)
-		var cost = (", %s CU per use" % format_cu(module["cu_cost"])) if module["cu_cost"] > 0 else ""
-		entry["label"].text = "%s - %s (%s%s)" % [module["name"], module["desc"], cooldown, cost]
-		if !module["unlocked"]:
-			entry["label"].text += "\n   Locked: " + module["source"]
-			entry["label"].modulate = Color(1, 1, 1, 0.45)
+	for child in module_list.get_children():
+		child.queue_free()
+	module_rows.clear()
+	var modules = state["modules"]
+	var equipped_ids = []
+	var available_ids = []
+	for module_id in modules:
+		if modules[module_id]["equipped"]:
+			equipped_ids.append(module_id)
+		elif modules[module_id]["unlocked"]:
+			available_ids.append(module_id)
+	var free_slot = state["used"] < state["slots"]
+	for slot in range(state["slots"]):
+		if slot < equipped_ids.size():
+			_add_module_row("Slot %d: " % (slot + 1), equipped_ids[slot], modules[equipped_ids[slot]], true, true)
 		else:
-			entry["label"].modulate = Color.WHITE
-		entry["button"].text = "Remove" if module["equipped"] else "Equip"
-		entry["button"].disabled = !module["unlocked"]
+			var empty = Label.new()
+			empty.text = "Slot %d: empty" % (slot + 1)
+			empty.modulate = Color(1, 1, 1, 0.5)
+			module_list.add_child(empty)
+	if !available_ids.is_empty():
+		var header = Label.new()
+		header.text = "Available modules" + ("" if free_slot else " (open a higher R&D tier for more Space)")
+		module_list.add_child(header)
+		for module_id in available_ids:
+			_add_module_row("", module_id, modules[module_id], false, free_slot)
+	elif equipped_ids.is_empty():
+		var hint = Label.new()
+		hint.text = "No modules yet: unlock them in R&D or the Investment Center."
+		hint.modulate = Color(1, 1, 1, 0.5)
+		module_list.add_child(hint)
+
+func _add_module_row(prefix, module_id, module, is_equipped, can_press):
+	var row = HBoxContainer.new()
+	var label = Label.new()
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	var cooldown = "%d min cooldown" % ceil(module["cooldown"] / 60.0)
+	var cost = (", %s CU per use" % format_cu(module["cu_cost"])) if module["cu_cost"] > 0 else ""
+	label.text = "%s%s - %s (%s%s)" % [prefix, module["name"], module["desc"], cooldown, cost]
+	var button = Button.new()
+	button.custom_minimum_size = Vector2(150, 40)
+	button.text = "Remove" if is_equipped else "Equip"
+	button.disabled = !can_press
+	button.button_down.connect(_on_module_toggle.bind(module_id))
+	row.add_child(label)
+	row.add_child(button)
+	module_list.add_child(row)
+	module_rows[module_id] = {"equipped": is_equipped}
 
 func _on_module_toggle(module_id):
 	mainScene.client.request_equip_module(module_id, !module_rows[module_id]["equipped"])
