@@ -53,6 +53,13 @@ func update_payout_timer(payTime):
 	payoutTimer.wait_time = int(round(payTime))  * 1000
 	payoutTimer.start()
 
+## Bonus for the largest group of linked conquered planets (applied at each payout).
+func update_network(network):
+	if network == null or network.get("size", 0) < 2:
+		payoutAmount.text = ""
+	else:
+		payoutAmount.text = "Network: %d planets (+%d%%)" % [network["size"], int(round(network["bonus"] * 100))]
+
 func _on_feedback_button_down() -> void:
 	if feedbackPnl.visible :
 		feedbackPnl.hide()

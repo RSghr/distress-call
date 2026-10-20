@@ -28,9 +28,6 @@ func get_player_id():
 
 func _init_uuid():
 	player_id = OS.get_unique_id()
-	if player_id == "":
-		# Web builds have no machine ID: make a random one and keep it
-		player_id = "web-" + str(randi()) + str(randi())
 	var f = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	f.store_line(player_id)
 	f.close()

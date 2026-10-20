@@ -116,15 +116,21 @@ func job_done(player_id, planet_name, unit_type):
 	update_galaxy_map()
 	unit_gone(player_id, planet_name, unit_type)
 
+## Shows a unit circling a planet. player_id is the owner's public ID.
 func Unit_sent(player_id, planet_name, unit_type):
-	if unit_type < 4 :
-		var instance = unit_display.instantiate()
-		for planet in placed_planet :
-			if planet_name == planet.name :
-				instance.planet_name = planet_name
-				instance.type = unit_type
-				instance.player_id = player_id
-				planet.add_child(instance)
+	if unit_type >= 4 :
+		return
+	for planet in placed_planet :
+		if planet_name == planet.name :
+			if planet.has_node(player_id + "_" + str(unit_type) + "_" + planet_name) :
+				return # Already shown
+			var instance = unit_display.instantiate()
+			instance.planet_name = planet_name
+			instance.type = unit_type
+			instance.player_id = player_id
+			instance.is_own = player_id == mainScene.client.public_id
+			planet.add_child(instance)
+			return
 
 func unit_gone(player_id, planet_name, unit_type):
 	if unit_type < 4 :

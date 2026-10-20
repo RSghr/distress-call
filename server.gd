@@ -81,8 +81,9 @@ func register_player(player_id: String):
 	peers[peer] = player_id
 	mainScene.display_player_list(_player_list())
 	mainScene.logging("Registered " + player_id + " on peer " + str(peer))
-	mainScene.client.rpc_id(peer, "confirm_registration", mainScene.now_server(), pcs.get_fleet_state(player_id),
-		pcs.load_all_fleet(), gcs.send_main_planet_info(), mainScene.payoutTimer.time_left)
+	mainScene.client.rpc_id(peer, "confirm_registration", mainScene.now_server(), pcs.public_id(player_id),
+		pcs.get_fleet_state(player_id), pcs.load_all_fleet(), gcs.send_main_planet_info(),
+		mainScene.payoutTimer.time_left, pcs.active_missions(), gcs.network_info())
 	# The new fleet may be visible to the others
 	mainScene.client.rpc("fleet_update", pcs.load_all_fleet())
 
@@ -110,6 +111,9 @@ func request_deploy_unit(unit_type: int, planet_name: String):
 	var error: String = ccs.deploy_unit(player_id, unit_type, planet_name)
 	_send_fleet_state(peer, player_id)
 	mainScene.client.rpc_id(peer, "deploy_result", error == "", unit_type, planet_name, error)
+	if error == "":
+		# Everyone sees the unit circling the planet
+		mainScene.client.rpc("unit_sent", pcs.public_id(player_id), planet_name, unit_type)
 
 @rpc("any_peer", "call_remote", "reliable")
 func request_move_fleet(planet_name: String):
@@ -164,7 +168,11 @@ func cooldown_done(player_id: String, planet_name: String, unit_type: int) -> vo
 		return
 	var strength: float = pcs.total_strength(player_id, unit_type)
 	match unit_type:
-		0: gcs.troop_job_done(planet_name, strength)
+		0:
+			var destroyed: int = gcs.troop_job_done(planet_name, strength)
+			var loot := int(destroyed * pcs.troop_loot_share(player_id))
+			pcs.add_core_units(player_id, loot)
+			mainScene.logging("%s's troops brought back %d CU from %s" % [player_id, loot, planet_name])
 		1: gcs.negotiator_job_done(planet_name, strength)
 		2: gcs.scout_job_done(planet_name, strength)
 		3: gcs.colony_job_done(planet_name, strength)
@@ -174,12 +182,13 @@ func cooldown_done(player_id: String, planet_name: String, unit_type: int) -> vo
 	var peer := _peer_of(player_id)
 	if peer != 0:
 		_send_fleet_state(peer, player_id)
-	mainScene.client.rpc("job_done", gcs.send_main_planet_info(), player_id, planet_name, unit_type)
+	mainScene.client.rpc("job_done", gcs.send_main_planet_info(), pcs.public_id(player_id), planet_name, unit_type)
 
 func payout() -> void:
 	if not is_server:
 		return
 	gcs.generate_stored_cu()
 	mainScene.start_payout_cycle()
-	mainScene.client.rpc("payout", gcs.send_main_planet_info(), mainScene.payoutTimer.time_left)
+	mainScene.client.rpc("payout", gcs.send_main_planet_info(), mainScene.payoutTimer.time_left, gcs.last_network)
+	mainScene.logging("Payout: network of %d planets, +%d%%" % [gcs.last_network["size"], int(gcs.last_network["bonus"] * 100)])
 #endregion

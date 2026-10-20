@@ -18,15 +18,15 @@ func _ready() -> void:
 			content.text = "You are in command of a fleet and you are tasked to conquer the galaxy along with your teammates. (other players connected) \nThis codex will teach you about everything you need to know.\n\n If something is missing, just send a message to Pengus!"
 		"Fleet":
 			label.text = codex_idx
-			content.text = "It is you own HQ and base of operation. It will display everything you need to know about your ship's status, as well as your units.\n- [u]SHIP STATUS :[/u] you can rename your ship, see how much upgrades have been allocated, and when is the next FTL jump available.\n- [u]UNIT STATUS :[/u] where you can rename your units, see on which planet they are, and what is their current level.\n- [u]R&D :[/u] where you can upgrade your units, allocating levels how ever you want, as long as the unit is NOT deployed."
+			content.text = "It is you own HQ and base of operation. It will display everything you need to know about your ship's status, as well as your units.\n- [u]SHIP STATUS :[/u] you can rename your ship, and see when is the next FTL jump available.\n- [u]UNIT STATUS :[/u] where you can rename your units, see on which planet they are, and what is their current level."
 
 		"Units":
 			label.text = codex_idx
-			content.text = "They are your main force. They carry out missions wherever you send them (with 106% success rate!)\nEach one of them has its unique purpose, but they all share these same characteristics :\n- [u]Upgrade level :[/u] which determines the strength of the unit when sent to deal with a mission.\n- [u]Price :[/u] Each unit has a base price which increases depending on its upgrade level.\n- [u]Cooldown :[/u] Each unit has a specific cooldown."
+			content.text = "They are your main force. They carry out missions wherever you send them (with 106% success rate!)\nEach one of them has its unique purpose, but they all share these same characteristics :\n- [u]Level :[/u] earned with experience from finished missions; each level adds 10% strength and needs a bit more experience than the last.\n- [u]Price :[/u] Each unit has a base price which increases with its strength.\n- [u]Cooldown :[/u] Each unit has a specific cooldown."
 
 		"Economy":
 			label.text = codex_idx
-			content.text = "You have guessed it, in order to scout, conquer and colonize a planet, you need to have money. In this world, Core Units is the main currency, tradable with every civilisation encountered.\n Every 3 minutes, all players recieve a portion of each planet's wealth under the players' control, plus a bonus for how many planets have been conquered."
+			content.text = "You have guessed it, in order to scout, conquer and colonize a planet, you need to have money. In this world, Core Units is the main currency, tradable with every civilisation encountered.\n Every 3 minutes, each conquered planet turns 1% of its wealth into Core Units stored on the planet. Anyone can collect them by jumping their fleet onto that planet.\nPlanets in the largest network of linked conquered planets store +5% more per extra planet in the network (up to +100%)."
 		#Unit Tab
 		"Scout Role":
 			label.text = codex_idx
@@ -38,7 +38,7 @@ func _ready() -> void:
 
 		"Troop Role":
 			label.text = codex_idx
-			content.text = "Troops are your special forces when a civilisation is being unruly and needs to be shutdown.\nFrom the assassination of their resillient leaders, to mass extermination of dissidents, these units will reduce the will of these rebels, but at the cost of the desctruction and consumption of the planet's own wealth reserve.\n\nUpgrading them allows them to be more destructive in every way."
+			content.text = "Troops are your special forces when a civilisation is being unruly and needs to be shutdown.\nFrom the assassination of their resillient leaders, to mass extermination of dissidents, these units will reduce the will of these rebels, but at the cost of the desctruction and consumption of the planet's own wealth reserve.\n\nThey bring back part of the destroyed wealth as Core Units: 20% at level 0, +5% per level (up to 60%).\n\nLevelling them up makes them more destructive in every way."
 
 		"Troop Stats":
 			label.text = codex_idx

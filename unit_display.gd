@@ -7,6 +7,7 @@ extends Node2D
 @export var player_id = ""
 @export var planet_name = ""
 @export var type = 0
+@export var is_own = true
 var speed = 1.0 
 var pos_x = 0
 var pos_y = 0
@@ -17,6 +18,8 @@ func _ready() -> void:
 	offset = randf_range(0.5,1.5)
 	unit_type.frame = type
 	name = player_id + "_" + str(type) + "_" + planet_name
+	if !is_own:
+		unit.self_modulate = Color(1.0, 0.6, 0.15) # Other players' units
 
 func _process(delta: float) -> void:
 	angle += speed * delta * offset

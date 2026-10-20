@@ -66,44 +66,44 @@ func _update_unit_values(unit_value):
 	match unit_value["unit_type"] :
 		0 :	#Troop
 			troop_values.get_node("MarginContainer/Troop_Unit").text = unit_value["unit_name"]
-			troop_values.get_node("MarginContainer2/Troop_Upgrade").text = "Lvl." + str(int(unit_value["exp"] / 5))
+			troop_values.get_node("MarginContainer2/Troop_Upgrade").text = "Lvl." + str(unit_value.get("level", 0))
 			if unit_value["unit_position"] == "Fleet" and mainScene.player.fleet.fleet_params["fleet_name"] != "":
 				troop_values.get_node("MarginContainer3/Troop_position").text = mainScene.player.fleet.fleet_params["fleet_name"]
 			else :
 				troop_values.get_node("MarginContainer3/Troop_position").text = unit_value["unit_position"]
 		1 :	#Negotiator
 			negotiator_values.get_node("MarginContainer/Negotiator_Unit").text = unit_value["unit_name"]
-			negotiator_values.get_node("MarginContainer2/Negotiator_Upgrade").text = "Lvl." + str(int(unit_value["exp"] / 5))
+			negotiator_values.get_node("MarginContainer2/Negotiator_Upgrade").text = "Lvl." + str(unit_value.get("level", 0))
 			if unit_value["unit_position"] == "Fleet" and mainScene.player.fleet.fleet_params["fleet_name"] != "":
 				negotiator_values.get_node("MarginContainer3/Negotiator_position").text = mainScene.player.fleet.fleet_params["fleet_name"]
 			else :
 				negotiator_values.get_node("MarginContainer3/Negotiator_position").text = unit_value["unit_position"]
 		2 :	#Scout
 			scout_values.get_node("MarginContainer/Scout_Unit").text = unit_value["unit_name"]
-			scout_values.get_node("MarginContainer2/Scout_Upgrade").text = "Lvl." + str(int(unit_value["exp"] / 5))
+			scout_values.get_node("MarginContainer2/Scout_Upgrade").text = "Lvl." + str(unit_value.get("level", 0))
 			if unit_value["unit_position"] == "Fleet" and mainScene.player.fleet.fleet_params["fleet_name"] != "":
 				scout_values.get_node("MarginContainer3/Scout_position").text = mainScene.player.fleet.fleet_params["fleet_name"]
 			else :
 				scout_values.get_node("MarginContainer3/Scout_position").text = unit_value["unit_position"]
 		3 :	#Colony
 			colony_values.get_node("MarginContainer/Colony_Unit").text = unit_value["unit_name"]
-			colony_values.get_node("MarginContainer2/Colony_Upgrade").text = "Lvl." + str(int(unit_value["exp"] / 5))
+			colony_values.get_node("MarginContainer2/Colony_Upgrade").text = "Lvl." + str(unit_value.get("level", 0))
 			if unit_value["unit_position"] == "Fleet" and mainScene.player.fleet.fleet_params["fleet_name"] != "":
 				colony_values.get_node("MarginContainer3/Colony_position").text = mainScene.player.fleet.fleet_params["fleet_name"]
 			else :
 				colony_values.get_node("MarginContainer3/Colony_position").text = unit_value["unit_position"]
 	update_unit_exp(unit_value)
 
+## XP bar shows progress inside the current level (each level needs more XP).
 func update_unit_exp(unit_value):
+	var bar
 	match unit_value["unit_type"] :
-		0 :	#Troop
-			troop_exp.value = int(fmod(unit_value["exp"], 5))
-		1 :	#Negotiator
-			negotiator_exp.value = int(fmod(unit_value["exp"], 5))
-		2 :	#Scout
-			scout_exp.value = int(fmod(unit_value["exp"], 5))
-		3 :	#Colony
-			colony_exp.value = int(fmod(unit_value["exp"], 5))
+		0 :	bar = troop_exp
+		1 :	bar = negotiator_exp
+		2 :	bar = scout_exp
+		3 :	bar = colony_exp
+	bar.max_value = unit_value.get("exp_needed", 5)
+	bar.value = unit_value.get("exp_progress", 0)
 
 #R&D TAB
 #func _update_upgrade_values(unit_value):

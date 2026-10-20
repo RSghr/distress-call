@@ -88,7 +88,7 @@ func init_fleets(fleet_list):
 		fleet_old.queue_free()
 	
 	for fleet in fleet_list:
-		if fleet != player.fleet.player_id :
+		if fleet != client.public_id :
 			var destination = find_planet(fleet_list[fleet][1])
 			if destination == null :
 				continue
