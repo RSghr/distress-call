@@ -1,71 +1,78 @@
 extends Node2D
 
+## Login / sign-up screen shown on top of the game until the server accepts the account.
+## The server checks everything again; these checks only give quick feedback.
+
+@onready var ui = $LoginUI
 @onready var username = $LoginUI/UIGeneral/MarginContainer/VBoxContainer/Username
+@onready var password = $LoginUI/UIGeneral/MarginContainer/VBoxContainer/Password
 @onready var messagelog = $LoginUI/UIGeneral/MarginContainer/VBoxContainer/Message
+@onready var submit = $LoginUI/UIGeneral/MarginContainer/VBoxContainer/Submit
+@onready var create = $LoginUI/UIGeneral/MarginContainer/VBoxContainer/Create
 
-const SAVE_PATH = "res://Player_Saver/Player_values.cfg"
-
-var debugfleet = ""
+const SAVE_DIR = "user://Player_Saver"
+const SAVE_PATH = "user://Player_Saver/last_username.txt"
+const MIN_LENGTH = 5
+const MAX_USERNAME = 16
 
 var mainScene
 
 func _ready():
 	mainScene = get_tree().root.get_child(0)
+	if FileAccess.file_exists(SAVE_PATH):
+		username.text = FileAccess.get_file_as_string(SAVE_PATH).strip_edges()
+	password.text_submitted.connect(func(_text): _on_submit_button_down())
+	set_connected(mainScene.get_node("Client").connected) # main.gd isn't ready yet here
 
-func check_login(login):
-	var config = ConfigFile.new()
-	var currConfig = config.load(SAVE_PATH)
-	
-	if currConfig == OK:
-		if config.get_value("PlayerList",login, "") != "" :
-			return true
-	return false
+func set_connected(is_connected: bool) -> void:
+	submit.disabled = !is_connected
+	create.disabled = !is_connected
+	display_message("" if is_connected else "Connecting to the server...")
 
-func save_login(login : String) -> void :
-	var config = ConfigFile.new()
-	var currConfig = config.load(SAVE_PATH)
-	
-	if currConfig == OK:
-		if login == "":
-			display_message("Enter a username")
-			return
-		if check_login(login):
-			display_message("username already exists")
-			return
-		debugfleet = "fleet_save_" + generate_word(36)
-		config.set_value("PlayerList", login, debugfleet)
-		config.save(SAVE_PATH)
-		display_message("you are in! " + username.text + " / " + debugfleet)
+func show_login(message := "") -> void:
+	ui.visible = true
+	display_message(message)
 
-func generate_word(length):
-	var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789"
-	var word: String = ""
-	var n_char = len(chars)
-	var randchar = ''
-	for i in range(length):
-		randchar = chars[randi()% n_char]
-		if randchar == "G" or randchar == "3" or randchar == "P" or randchar == "O" :
-			randchar += "-"
-		word += randchar
-	if word[len(word) - 1] == "-" :
-		word = word.left(-1)
-	return word
-
-func username_security(login : String):
-	if login.to_lower().contains("nigger") or login.to_lower().contains("fag") or login.to_lower().contains("jew") or login.to_lower().contains(" ") or login.to_lower().contains("^") or login.to_lower().contains("ù") or login.to_lower().contains("$") or login.to_lower().contains("£") or login.to_lower().contains("*") or login.to_lower().contains("/") or login.to_lower().contains("_") or login.to_lower().contains("-") or login.to_lower().contains("+") or login.to_lower().contains("(") or login.to_lower().contains(")") or login.to_lower().contains("@") or login.to_lower().contains("{") or login.to_lower().contains("}") or login.to_lower().contains("[") or login.to_lower().contains("]") or login.to_lower().contains("|") or login.to_lower().contains("=") or login.to_lower().contains("\"") or login.to_lower().contains("\\") or login.to_lower().contains("/") or login.to_lower().contains(".") or login.to_lower().contains(",") or login.to_lower().contains("?") or login.to_lower().contains("!") or login.to_lower().contains(":") or login.to_lower().contains("<") or login.to_lower().contains(">") : 
-		return false
+func on_login_result(success: bool, message: String) -> void:
+	if success:
+		ui.visible = false
+		password.text = ""
+		DirAccess.make_dir_recursive_absolute(SAVE_DIR)
+		var f = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+		if f:
+			f.store_line(username.text)
+			f.close()
 	else:
-		return true
+		display_message(message)
+		submit.disabled = false
+		create.disabled = false
+
+func validate() -> bool:
+	var regex = RegEx.new()
+	regex.compile("^[A-Za-z0-9]{%d,%d}$" % [MIN_LENGTH, MAX_USERNAME])
+	if regex.search(username.text) == null:
+		display_message("Username: %d to %d letters or digits" % [MIN_LENGTH, MAX_USERNAME])
+		return false
+	if password.text.length() < MIN_LENGTH:
+		display_message("Password: at least %d characters" % MIN_LENGTH)
+		return false
+	return true
 
 func display_message(message) :
 	messagelog.text = message
 
 func _on_submit_button_down() -> void:
-	if check_login(username.text) :
-		display_message("You are logged in!")
-	else :
-		display_message("Username not found")
+	if submit.disabled or not validate():
+		return
+	submit.disabled = true
+	create.disabled = true
+	display_message("Logging in...")
+	mainScene.client.request_login(username.text, password.text)
 
 func _on_create_button_down() -> void:
-	if username_security(username.text) :
-		save_login(username.text)
+	if create.disabled or not validate():
+		return
+	submit.disabled = true
+	create.disabled = true
+	display_message("Creating account...")
+	mainScene.client.request_create_account(username.text, password.text)

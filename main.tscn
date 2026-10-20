@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://ce4bmgcqmn00y"]
+[gd_scene load_steps=14 format=3 uid="uid://ce4bmgcqmn00y"]
 
 [ext_resource type="Script" uid="uid://qcvnci083i5m" path="res://main.gd" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://b1ubrv2hyhcqy" path="res://galaxy_map.tscn" id="1_ig7tw"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://dyakavkrkucu4" path="res://client.tscn" id="7_272bh"]
 [ext_resource type="PackedScene" uid="uid://5rbgjrx7y38m" path="res://server.tscn" id="8_5vw27"]
 [ext_resource type="Texture2D" uid="uid://b6j36kkjp6luh" path="res://Planet Assets/Background.png" id="9_kek77"]
+[ext_resource type="PackedScene" uid="uid://deitnv0webuq3" path="res://Login/login.tscn" id="11_login"]
 [ext_resource type="AudioStream" uid="uid://bhpa4qbelid2h" path="res://UI/space_exploration_OST.ogg" id="10_4c57u"]
 
 [node name="Main" type="Node2D"]
@@ -56,5 +57,7 @@ mix_target = 1
 [node name="Player UI" type="CanvasLayer" parent="."]
 
 [node name="PlayerResourceTracker" parent="Player UI" instance=ExtResource("5_efxa6")]
+
+[node name="Login" parent="." instance=ExtResource("11_login")]
 
 [connection signal="finished" from="SpaceExplorationOst" to="." method="_on_space_exploration_ost_finished"]

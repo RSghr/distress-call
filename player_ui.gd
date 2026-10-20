@@ -33,6 +33,8 @@ var mainScene
 #On ready attach objects
 func _ready():
 	mainScene = get_tree().root.get_child(0)
+	_build_research_tab()
+	_build_investment_tab()
 
 #SHIP STATUS TAB
 func _on_ship_name_text_submitted(new_text: String) -> void:
@@ -173,3 +175,259 @@ func display_tooltip(txt, hovering):
 
 func _on_donation_button_down() -> void:
 	pass # Replace with function body.
+
+#region R&D GRID
+## Built in code from the data the server sends, so the server's tables are the
+## only place to change names, prices and effects.
+const RESEARCH_COLUMNS = ["Scout", "Negotiator", "Troop", "Colony", "Ship"]
+const RESEARCH_TIERS = 4
+const CELL_SIZE = Vector2(220, 105)
+
+@onready var research_tab = $"MarginContainer/TabContainer/R&D"
+@onready var investment_tab = $"MarginContainer/TabContainer/Galactic Shop"
+@onready var tab_container = $MarginContainer/TabContainer
+
+var research_cells = {}   # "Column:tier" -> Button
+var research_nodes = {}   # node id -> data from the server
+var investment = {}       # project id -> data from the server
+var investment_rows = {}  # project id -> {"bar", "status", "buttons"}
+var research_message
+var investment_message
+
+static func format_cu(value) -> String:
+	var digits = str(int(value))
+	var out = ""
+	while digits.length() > 3:
+		out = " " + digits.right(3) + out
+		digits = digits.left(digits.length() - 3)
+	return digits + out
+
+func _build_research_tab():
+	for child in research_tab.get_children():
+		child.visible = false # Old R&D level allocation, replaced by the grid
+	research_message = Label.new()
+	research_message.text = "Permanent upgrades paid in Core Units. Spend 6 points in a tier to open the next one.\nThe Ship column is funded by every player in the Investment Center."
+	research_message.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	research_message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	research_tab.add_child(research_message)
+
+	var grid = GridContainer.new()
+	grid.columns = RESEARCH_COLUMNS.size() + 1
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	grid.add_theme_constant_override("h_separation", 8)
+	grid.add_theme_constant_override("v_separation", 8)
+	research_tab.add_child(grid)
+
+	grid.add_child(Control.new())
+	for column in RESEARCH_COLUMNS:
+		var header = Label.new()
+		header.text = column
+		header.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		grid.add_child(header)
+	for tier in range(1, RESEARCH_TIERS + 1):
+		var tier_label = Label.new()
+		tier_label.text = "Tier " + str(tier)
+		tier_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		grid.add_child(tier_label)
+		for column in RESEARCH_COLUMNS:
+			var cell = Button.new()
+			cell.custom_minimum_size = CELL_SIZE
+			cell.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			cell.text = "?"
+			cell.button_down.connect(_on_research_cell_pressed.bind(column, tier))
+			cell.mouse_entered.connect(_on_research_cell_hovered.bind(column, tier, true))
+			cell.mouse_exited.connect(_on_research_cell_hovered.bind(column, tier, false))
+			grid.add_child(cell)
+			research_cells[column + ":" + str(tier)] = cell
+
+func _node_at(column, tier):
+	for node_id in research_nodes:
+		var node = research_nodes[node_id]
+		if node["column"] == column and int(node["tier"]) == tier:
+			return node_id
+	return ""
+
+func _project_for_ship_tier(tier):
+	for project_id in investment:
+		if int(investment[project_id]["ship_tier"]) == tier:
+			return project_id
+	return ""
+
+func update_research(research):
+	if research == null:
+		return
+	research_nodes = research["nodes"]
+	for node_id in research_nodes:
+		var node = research_nodes[node_id]
+		var cell = research_cells.get(node["column"] + ":" + str(int(node["tier"])))
+		if cell == null:
+			continue
+		cell.text = "%s\n%d/%d" % [node["name"], node["rank"], node["ranks"]]
+		if node["rank"] < node["ranks"]:
+			cell.text += "\n" + format_cu(node["price"]) + " CU"
+		cell.disabled = node["refusal"] != ""
+		if node["rank"] >= node["ranks"]:
+			cell.modulate = Color(0.6, 1.0, 0.6)
+		elif not node["open"]:
+			cell.modulate = Color(1, 1, 1, 0.4)
+		else:
+			cell.modulate = Color.WHITE
+	_update_ship_column()
+
+func _update_ship_column():
+	for tier in range(1, RESEARCH_TIERS + 1):
+		var cell = research_cells["Ship:" + str(tier)]
+		var project_id = _project_for_ship_tier(tier)
+		if project_id == "":
+			continue
+		var project = investment[project_id]
+		cell.text = project["name"] + "\n"
+		if project["complete"]:
+			cell.text += "1/1"
+			cell.modulate = Color(0.6, 1.0, 0.6)
+		else:
+			cell.text += "0/1\nCommunity: %d%%" % int(100.0 * project["funded"] / project["cost"])
+			cell.modulate = Color.WHITE if project["open"] else Color(1, 1, 1, 0.4)
+
+func _on_research_cell_pressed(column, tier):
+	if column == "Ship":
+		tab_container.current_tab = tab_container.get_tab_idx_from_control(investment_tab)
+		return
+	var node_id = _node_at(column, tier)
+	if node_id != "":
+		mainScene.client.request_research(node_id)
+		mainScene.wait_server_call()
+
+func _on_research_cell_hovered(column, tier, hovering):
+	if !hovering:
+		display_tooltip("", false)
+		return
+	var text = ""
+	if column == "Ship":
+		var project_id = _project_for_ship_tier(tier)
+		if project_id == "":
+			return
+		var project = investment[project_id]
+		text = project["name"] + "\n" + project["desc"] + "\nFunded by all players: %s / %s CU" % [format_cu(project["funded"]), format_cu(project["cost"])]
+	else:
+		var node_id = _node_at(column, tier)
+		if node_id == "":
+			return
+		var node = research_nodes[node_id]
+		text = node["name"] + "\n" + node["desc"]
+		if node["refusal"] != "":
+			text += "\n(" + node["refusal"] + ")"
+	display_tooltip(text, true)
+#endregion
+
+#region INVESTMENT CENTER
+const INVEST_AMOUNTS = [1000, 10000, 100000]
+
+func _build_investment_tab():
+	for child in investment_tab.get_children():
+		child.visible = false # Old Galactic Shop
+	tab_container.set_tab_title(tab_container.get_tab_idx_from_control(investment_tab), "Investment Center")
+	investment_message = Label.new()
+	investment_message.text = "Community projects: every player's Core Units go into the same pot, and the bonus applies to everyone."
+	investment_message.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	investment_message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	investment_tab.add_child(investment_message)
+	var scroll = ScrollContainer.new()
+	scroll.name = "ScrollContainer"
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	investment_tab.add_child(scroll)
+	var list = VBoxContainer.new()
+	list.name = "Projects"
+	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	list.add_theme_constant_override("separation", 12)
+	scroll.add_child(list)
+
+func update_investment(state):
+	if state == null:
+		return
+	investment = state
+	var list = investment_tab.get_node("ScrollContainer/Projects") if investment_tab.has_node("ScrollContainer/Projects") else null
+	if list == null:
+		for child in investment_tab.get_children():
+			if child is ScrollContainer:
+				list = child.get_child(0)
+	# Ship upgrades first, in tier order, then the galaxy-wide projects
+	var order = investment.keys()
+	order.sort_custom(func(a, b):
+		var ta = int(investment[a]["ship_tier"]); var tb = int(investment[b]["ship_tier"])
+		if ta == 0: ta = 99
+		if tb == 0: tb = 99
+		return ta < tb if ta != tb else a < b)
+	for project_id in order:
+		if !investment_rows.has(project_id):
+			investment_rows[project_id] = _make_project_row(list, project_id)
+		var project = investment[project_id]
+		var row = investment_rows[project_id]
+		var prefix = "Ship tier %d - " % int(project["ship_tier"]) if int(project["ship_tier"]) > 0 else ""
+		row["title"].text = prefix + project["name"]
+		row["desc"].text = project["desc"]
+		row["bar"].max_value = project["cost"]
+		row["bar"].value = project["funded"]
+		if project["complete"]:
+			row["status"].text = "Complete"
+		elif !project["open"]:
+			row["status"].text = "Locked: fund the previous ship tier first"
+		else:
+			row["status"].text = "%s / %s CU" % [format_cu(project["funded"]), format_cu(project["cost"])]
+		for button in row["buttons"]:
+			button.disabled = project["complete"] or !project["open"]
+	_update_ship_column()
+
+func _make_project_row(list, project_id):
+	var row = HBoxContainer.new()
+	row.add_theme_constant_override("separation", 12)
+	list.add_child(row)
+	var info = VBoxContainer.new()
+	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(info)
+	var title = Label.new()
+	var desc = Label.new()
+	desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	desc.modulate = Color(1, 1, 1, 0.75)
+	var bar = ProgressBar.new()
+	bar.custom_minimum_size = Vector2(0, 24)
+	var status = Label.new()
+	for control in [title, desc, bar, status]:
+		info.add_child(control)
+	var buttons = []
+	for amount in INVEST_AMOUNTS:
+		var button = Button.new()
+		button.text = "+" + format_cu(amount)
+		button.custom_minimum_size = Vector2(110, 50)
+		button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		button.button_down.connect(_on_invest_pressed.bind(project_id, amount))
+		row.add_child(button)
+		buttons.append(button)
+	return {"title": title, "desc": desc, "bar": bar, "status": status, "buttons": buttons}
+
+func _on_invest_pressed(project_id, amount):
+	mainScene.client.request_invest(project_id, amount)
+	mainScene.wait_server_call()
+
+## Short feedback when the server refuses a purchase.
+var message_serial = 0
+
+func show_message(text):
+	message_serial += 1
+	var serial = message_serial
+	for label in [research_message, investment_message]:
+		if label != null:
+			label.text = text
+			label.modulate = Color(1, 0.4, 0.4)
+	await get_tree().create_timer(4.0).timeout
+	if serial != message_serial:
+		return # A newer message is showing
+	if research_message != null:
+		research_message.modulate = Color.WHITE
+		research_message.text = "Permanent upgrades paid in Core Units. Spend 6 points in a tier to open the next one.\nThe Ship column is funded by every player in the Investment Center."
+	if investment_message != null:
+		investment_message.modulate = Color.WHITE
+		investment_message.text = "Community projects: every player's Core Units go into the same pot, and the bonus applies to everyone."
+#endregion
+

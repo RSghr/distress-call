@@ -15,7 +15,7 @@ func _ready() -> void:
 		disabled = true
 
 func _on_button_down() -> void:
-	mainScene.buy_item(item_id)
+	pass # Old Galactic Shop button: replaced by the R&D grid and Investment Center
 
 func _on_mouse_entered() -> void:
 	mainScene.fleetStatus.playerUI.display_tooltip(tooltip, true)

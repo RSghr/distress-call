@@ -6,10 +6,12 @@ extends Node2D
 ## WebSocket address of the server.
 const SERVER_URL := "ws://distresscall.ddns.net:9009"
 const BUFFER_SIZE := 4 * 1024 * 1024 # Must match server.gd
+const RECONNECT_DELAY := 3.0
 
-var client_id = ""  # Private: only ever sent to the server
+var client_id = ""  # Old machine ID, only sent when creating an account (to keep an existing fleet)
 var public_id = ""  # What other players see (given by the server)
 var is_server := false
+var connected := false
 var registered := false
 var mainScene
 
@@ -18,31 +20,54 @@ func _ready():
 	mainScene = get_tree().root.get_child(0)
 	if is_server:
 		return
-	var peer := WebSocketMultiplayerPeer.new()
-	peer.inbound_buffer_size = BUFFER_SIZE
-	peer.outbound_buffer_size = BUFFER_SIZE
-	var result := peer.create_client(SERVER_URL)
-	if result != OK:
-		print("Failed to connect to server")
-		return
-	multiplayer.multiplayer_peer = peer
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.connection_failed.connect(_on_connection_lost)
 	multiplayer.server_disconnected.connect(_on_connection_lost)
+	_connect()
+
+func _connect():
+	var peer := WebSocketMultiplayerPeer.new()
+	peer.inbound_buffer_size = BUFFER_SIZE
+	peer.outbound_buffer_size = BUFFER_SIZE
+	if peer.create_client(SERVER_URL) != OK:
+		print("Failed to connect to server")
+		_retry()
+		return
+	multiplayer.multiplayer_peer = peer
+
+## Tries again a few seconds after the connection drops or fails.
+func _retry():
+	await get_tree().create_timer(RECONNECT_DELAY).timeout
+	if not connected:
+		_connect()
 
 func send_id(player_id) :
 	client_id = player_id
 
 func _on_connected_to_server():
-	print("Connected! Sending ID: ", client_id)
-	mainScene.server.rpc_id(1, "register_player", client_id)
+	print("Connected to the server")
+	connected = true
+	mainScene.on_connection_changed(true)
 
 func _on_connection_lost():
 	print("Connection to the server lost")
+	connected = false
 	registered = false
 	mainScene.deny_server_call()
+	mainScene.on_connection_changed(false)
+	_retry()
+
+## The raw password never leaves the machine.
+static func password_hash(username: String, password: String) -> String:
+	return (username.to_lower() + ":" + password).sha256_text()
 
 #region Requests to the server
+func request_login(username, password):
+	mainScene.server.rpc_id(1, "request_login", str(username), password_hash(username, password))
+
+func request_create_account(username, password):
+	mainScene.server.rpc_id(1, "request_create_account", str(username), password_hash(username, password), str(client_id))
+
 func request_fleet_state():
 	mainScene.server.rpc_id(1, "request_fleet_state")
 
@@ -55,8 +80,11 @@ func request_move_fleet(planet_name):
 func request_rename(target, new_name):
 	mainScene.server.rpc_id(1, "request_rename", str(target), str(new_name))
 
-func request_buy_item(item_id):
-	mainScene.server.rpc_id(1, "request_buy_item", str(item_id))
+func request_research(node_id):
+	mainScene.server.rpc_id(1, "request_research", str(node_id))
+
+func request_invest(project_id, amount):
+	mainScene.server.rpc_id(1, "request_invest", str(project_id), int(amount))
 
 func request_send_report(feedbacktxt):
 	mainScene.server.rpc_id(1, "request_send_report", str(feedbacktxt))
@@ -83,11 +111,10 @@ func confirm_registration(server_now, my_public_id, fleet_state, fleet_list, pla
 	print("Server confirmed registration for: ", client_id)
 
 @rpc("authority", "call_remote", "reliable")
-func registration_refused(reason):
+func login_result(success, message):
 	if is_server:
 		return
-	print("Registration refused: ", reason)
-	mainScene.deny_server_call()
+	mainScene.on_login_result(success, message)
 
 @rpc("authority", "call_remote", "reliable")
 func fleet_state(server_now, state):
@@ -125,6 +152,14 @@ func buy_result(success, item_id, reason):
 	else:
 		print("Purchase of ", item_id, " refused: ", reason)
 		mainScene.deny_server_call()
+		mainScene.fleetStatus.playerUI.show_message(reason)
+
+## A community project received CU (from anyone).
+@rpc("authority", "call_remote", "reliable")
+func investment_update(investment):
+	if is_server or not registered:
+		return
+	mainScene.on_investment_update(investment)
 
 ## Any player's unit left for a mission.
 @rpc("authority", "call_remote", "reliable")

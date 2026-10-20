@@ -10,6 +10,7 @@ extends Node2D
 @onready var fleetHolder = $FleetHolder
 @onready var audio_ost = $SpaceExplorationOst
 @onready var prt = $"Player UI/PlayerResourceTracker"
+@onready var login = $Login
 
 var fleet_obj = load("res://Player Assets/fleet_Other.tscn")
 
@@ -61,6 +62,20 @@ func apply_fleet_state(server_now, state):
 		unit.init_unit()
 	player.fleet.set_fleet_name()
 	_update_ship_status()
+	fleetStatus.playerUI.update_investment(state.get("investment"))
+	fleetStatus.playerUI.update_research(state.get("research"))
+
+func on_investment_update(investment):
+	fleetStatus.playerUI.update_investment(investment)
+
+#Login
+func on_connection_changed(is_connected):
+	if !is_connected:
+		login.show_login()
+	login.set_connected(is_connected)
+
+func on_login_result(success, message):
+	login.on_login_result(success, message)
 
 ## The server accepted an FTL jump.
 func on_fleet_moved(planet_name, _collected):
@@ -153,10 +168,6 @@ func ftl_saver(planet_name):
 ## A mission finished (any player's). Our own fleet state arrives separately.
 func job_done(player_id, planet_name, unit_type):
 	galaxy.job_done(player_id, planet_name, unit_type)
-
-func buy_item(item_id):
-	client.request_buy_item(item_id)
-	wait_server_call()
 
 #Server Comms status
 func validate_server_call():

@@ -69,16 +69,40 @@ func _send_fleet_state(peer: int, player_id: String) -> void:
 	mainScene.client.rpc_id(peer, "fleet_state", mainScene.now_server(), pcs.get_fleet_state(player_id))
 
 #region Requests from clients
+## Log in with an existing account. password_hash is sha256(lowercase username + ":" + password).
 @rpc("any_peer", "call_remote", "reliable")
-func register_player(player_id: String):
+func request_login(username: String, password_hash: String):
 	if not is_server:
 		return
 	var peer := multiplayer.get_remote_sender_id()
-	if not pcs.register_player(player_id):
-		mainScene.logging("Refused registration for invalid id: " + player_id)
-		mainScene.client.rpc_id(peer, "registration_refused", "Invalid player id")
+	var result: Dictionary = pcs.login(peer, username, password_hash)
+	if result["error"] != "":
+		mainScene.client.rpc_id(peer, "login_result", false, result["error"])
 		return
+	_start_session(peer, result["player_id"], username)
+
+## Create an account. legacy_id is the old machine ID, used to keep an existing fleet.
+@rpc("any_peer", "call_remote", "reliable")
+func request_create_account(username: String, password_hash: String, legacy_id: String):
+	if not is_server:
+		return
+	var peer := multiplayer.get_remote_sender_id()
+	var result: Dictionary = pcs.create_account(peer, username, password_hash, legacy_id)
+	if result["error"] != "":
+		mainScene.client.rpc_id(peer, "login_result", false, result["error"])
+		return
+	_start_session(peer, result["player_id"], username)
+
+func _start_session(peer: int, player_id: String, username: String) -> void:
+	# One connection per account: a new login replaces the old one
+	var previous := _peer_of(player_id)
+	if previous != 0 and previous != peer:
+		peers.erase(previous)
+		multiplayer.multiplayer_peer.disconnect_peer(previous)
+	pcs.register_player(player_id)
 	peers[peer] = player_id
+	mainScene.client.rpc_id(peer, "login_result", true, "")
+	mainScene.logging(username + " logged in")
 	mainScene.display_player_list(_player_list())
 	mainScene.logging("Registered " + player_id + " on peer " + str(peer))
 	mainScene.client.rpc_id(peer, "confirm_registration", mainScene.now_server(), pcs.public_id(player_id),
@@ -143,16 +167,30 @@ func request_rename(target: String, new_name: String):
 		mainScene.client.rpc("fleet_update", pcs.load_all_fleet())
 
 @rpc("any_peer", "call_remote", "reliable")
-func request_buy_item(item_id: String):
+func request_research(node_id: String):
 	if not is_server:
 		return
 	var player_id := _sender_player()
 	if player_id == "":
 		return
 	var peer := multiplayer.get_remote_sender_id()
-	var error: String = scs.buy_item(player_id, item_id)
+	var error: String = scs.buy_research(player_id, node_id)
 	_send_fleet_state(peer, player_id)
-	mainScene.client.rpc_id(peer, "buy_result", error == "", item_id, error)
+	mainScene.client.rpc_id(peer, "buy_result", error == "", node_id, error)
+
+@rpc("any_peer", "call_remote", "reliable")
+func request_invest(project_id: String, amount: int):
+	if not is_server:
+		return
+	var player_id := _sender_player()
+	if player_id == "":
+		return
+	var peer := multiplayer.get_remote_sender_id()
+	var result: Dictionary = scs.invest(player_id, project_id, amount)
+	_send_fleet_state(peer, player_id)
+	mainScene.client.rpc_id(peer, "buy_result", result["error"] == "", project_id, result["error"])
+	if result["error"] == "":
+		mainScene.client.rpc("investment_update", scs.investment_state())
 
 @rpc("any_peer", "call_remote", "reliable")
 func request_send_report(feedbacktxt: String):
@@ -169,12 +207,18 @@ func cooldown_done(player_id: String, planet_name: String, unit_type: int) -> vo
 	var strength: float = pcs.total_strength(player_id, unit_type)
 	match unit_type:
 		0:
-			var destroyed: int = gcs.troop_job_done(planet_name, strength)
+			var will_multiplier := 1.5 if pcs.has_ability(player_id, 0) else 1.0
+			var destroyed: int = gcs.troop_job_done(planet_name, strength, will_multiplier)
 			var loot := int(destroyed * pcs.troop_loot_share(player_id))
 			pcs.add_core_units(player_id, loot)
 			mainScene.logging("%s's troops brought back %d CU from %s" % [player_id, loot, planet_name])
-		1: gcs.negotiator_job_done(planet_name, strength)
-		2: gcs.scout_job_done(planet_name, strength)
+		1:
+			if pcs.has_ability(player_id, 1) and gcs.get_value(planet_name, "conquered", false):
+				var deal := int(gcs.get_value(planet_name, "wealth", 0) * 0.02)
+				pcs.add_core_units(player_id, deal)
+				mainScene.logging("%s's trade agreement on %s paid %d CU" % [player_id, planet_name, deal])
+			gcs.negotiator_job_done(planet_name, strength)
+		2: gcs.scout_job_done(planet_name, strength, pcs.has_ability(player_id, 2))
 		3: gcs.colony_job_done(planet_name, strength)
 	pcs.give_exp(player_id, unit_type)
 	mainScene.logging("%s's %s finished its mission on %s" % [player_id, pcs.UNIT_SECTIONS[unit_type], planet_name])

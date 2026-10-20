@@ -7,11 +7,11 @@
 [node name="Login" type="Node2D"]
 script = ExtResource("1_vihoh")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-
 [node name="LoginUI" type="CanvasLayer" parent="."]
+layer = 100
 
 [node name="TextureRect" type="TextureRect" parent="LoginUI"]
+mouse_filter = 0
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -36,15 +36,17 @@ theme = ExtResource("2_vihoh")
 
 [node name="Panel" type="Panel" parent="LoginUI/UIGeneral"]
 layout_mode = 0
-offset_right = 357.0
-offset_bottom = 274.0
+offset_left = -158.0
+offset_top = -170.0
+offset_right = 199.0
+offset_bottom = 170.0
 
 [node name="MarginContainer" type="MarginContainer" parent="LoginUI/UIGeneral"]
 layout_mode = 0
-offset_left = 60.0
-offset_top = 37.0
-offset_right = 306.0
-offset_bottom = 231.0
+offset_left = -98.0
+offset_top = -133.0
+offset_right = 148.0
+offset_bottom = 133.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="LoginUI/UIGeneral/MarginContainer"]
 layout_mode = 2
@@ -55,7 +57,16 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 placeholder_text = "USERNAME"
 alignment = 1
-max_length = 15
+max_length = 16
+
+[node name="Password" type="LineEdit" parent="LoginUI/UIGeneral/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+placeholder_text = "PASSWORD"
+alignment = 1
+max_length = 64
+secret = true
 
 [node name="Message" type="RichTextLabel" parent="LoginUI/UIGeneral/MarginContainer/VBoxContainer"]
 modulate = Color(1, 0.25, 0.25, 1)
